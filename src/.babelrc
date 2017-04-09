@@ -1,0 +1,21 @@
+{
+	"presets": [
+		["es2015", {"modules": false}],
+		"stage-0",
+		"react"
+	],
+	"plugins": [
+		"react-hot-loader/babel",
+		"transform-decorators-legacy",
+		"dev-expression",
+		"syntax-dynamic-import",
+		[
+			"module-resolver",
+			{
+				"root": [
+					"."
+				]
+			}
+		]
+	]
+}
