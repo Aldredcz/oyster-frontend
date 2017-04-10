@@ -19,7 +19,7 @@ export default () => {
 				`webpack-dev-server/client?${WEBPACK_DEVSERVER_IP}`,
 				'webpack/hot/only-dev-server',
 				'./src/main.js',
-			]
+			],
 		},
 		output: {
 			path: PATH_BUILD_DIR,
@@ -38,18 +38,17 @@ export default () => {
 		module: {
 			rules: [
 				{
-					test: /.js$/,
+					test: /\.js$/,
 					include: [
 						PATH_SOURCE_DIR,
 					],
 					exclude: /node_modules/,
-					use: [
-						{
-							loader: `babel-loader?${JSON.stringify({
-								cacheDirectory: true,
-							})}`,
+					use: {
+						loader: 'babel-loader',
+						options: {
+							cacheDirectory: true,
 						},
-					],
+					},
 				},
 				{
 					test: /\.styl$/,

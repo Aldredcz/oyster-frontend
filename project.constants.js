@@ -1,9 +1,11 @@
 const path = require('path')
 
-const PATH_BASE_DIR = path.normalize(path.join(__dirname, '..'))
+const PATH_BASE_DIR = __dirname
 
 const WEBPACK_DEVSERVER_PORT = 8899
 const EXPRESS_SERVER_PORT = 9090
+
+const BE_PROXY_PREFIX = '/api'
 
 
 module.exports = {
@@ -14,5 +16,7 @@ module.exports = {
 
 	WEBPACK_DEVSERVER_PORT,
 	WEBPACK_DEVSERVER_IP: `http://localhost:${WEBPACK_DEVSERVER_PORT}`,
-	EXPRESS_SERVER_PORT
+	EXPRESS_SERVER_PORT,
+
+	BE_PROXY_PREFIX,
 }

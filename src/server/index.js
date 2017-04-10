@@ -1,4 +1,5 @@
 const express = require('express')
+const request = require('request')
 const path = require('path')
 const http = require('http')
 const fs = require('fs-extra')
@@ -20,7 +21,7 @@ app.route('/favicon.ico')
 		res.end()
 	})
 
-const pageRouter = function(req, res) {
+const pageRouter = (req, res) => {
 	res.render('main', {
 		env: process.env.NODE_ENV,
 		PROJECT_CONSTANTS,
@@ -28,6 +29,11 @@ const pageRouter = function(req, res) {
 }
 
 app.route('/(:route)?').get(pageRouter)
+app.use(`${PROJECT_CONSTANTS.BE_PROXY_PREFIX}/`, (req, res) => {
+	const url = `http://api.oyster.jemelik.eu${req.originalUrl.substring(PROJECT_CONSTANTS.BE_PROXY_PREFIX.length)}`
+	console.log('[BE PROXY]', url)
+	req.pipe(request(url)).pipe(res)
+})
 
 http.createServer(app).listen(app.get('port'), () => {
 	console.log(`[EXPRESS] Server listening on port ${app.get('port')}`)

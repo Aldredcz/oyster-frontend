@@ -4,7 +4,7 @@ import webpackDevServer from 'webpack-dev-server'
 
 import {
 	WEBPACK_DEVSERVER_PORT,
-	WEBPACK_DEVSERVER_IP
+	WEBPACK_DEVSERVER_IP,
 } from '../project.constants'
 
 export default function (webpackConfig) {
