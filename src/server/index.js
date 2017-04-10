@@ -1,35 +1,34 @@
-/* eslint-disable */
+const express = require('express')
+const path = require('path')
+const http = require('http')
+const fs = require('fs-extra')
+const PROJECT_CONSTANTS = require('../../project.constants')
 
-var express = require('express'),
-	path = require('path'),
-	http = require('http'),
-	fs = require('fs-extra');
-//import PROJECT_CONSTANTS from '../../project.constants'
+const app = express()
 
-var app = express();
+const isDev = process.env.NODE_ENV === 'development'
+const __root = path.join(__dirname, '..', '..')
 
-var isDev = process.env.NODE_ENV === 'development';
-var __root = path.join(__dirname, '..', '..');
 
-app.set('port', 9090);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
-app.use(express.static(__root));
+app.set('port', PROJECT_CONSTANTS.EXPRESS_SERVER_PORT)
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'jade')
+app.use(express.static(__root))
 
 app.route('/favicon.ico')
-	.get(function(req, res) {
-		res.end();
-	});
+	.get((req, res) => {
+		res.end()
+	})
 
-var pageRouter = function(req, res) {
+const pageRouter = function(req, res) {
 	res.render('main', {
 		env: process.env.NODE_ENV,
-		//PROJECT_CONSTANTS: PROJECT_CONSTANTS
-	});
-};
+		PROJECT_CONSTANTS,
+	})
+}
 
-app.route('/(:route)?').get(pageRouter);
+app.route('/(:route)?').get(pageRouter)
 
-http.createServer(app).listen(app.get('port'), function(){
-	console.log("[EXPRESS] Server listening on port " + app.get('port'));
-});
+http.createServer(app).listen(app.get('port'), () => {
+	console.log(`[EXPRESS] Server listening on port ${app.get('port')}`)
+})

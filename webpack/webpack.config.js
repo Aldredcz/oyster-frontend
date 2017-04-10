@@ -4,7 +4,7 @@ import {
 	PATH_SOURCE_DIR,
 	PATH_BUILD_DIR,
 	PATH_ASSETS_DIR,
-	DEVSERVER_IP,
+	WEBPACK_DEVSERVER_IP,
 } from '../project.constants'
 
 
@@ -16,7 +16,7 @@ export default () => {
 		entry: {
 			main: [
 				'react-hot-loader/patch',
-				`webpack-dev-server/client?${DEVSERVER_IP}`,
+				`webpack-dev-server/client?${WEBPACK_DEVSERVER_IP}`,
 				'webpack/hot/only-dev-server',
 				'./src/main.js',
 			]
@@ -24,7 +24,7 @@ export default () => {
 		output: {
 			path: PATH_BUILD_DIR,
 			filename: '[name].js',
-			publicPath: `${DEVSERVER_IP}/build/`,
+			publicPath: `${WEBPACK_DEVSERVER_IP}/build/`,
 		},
 		resolve: {
 			modules: [

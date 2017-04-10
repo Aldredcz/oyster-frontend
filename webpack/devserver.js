@@ -3,8 +3,8 @@ import webpack from 'webpack'
 import webpackDevServer from 'webpack-dev-server'
 
 import {
-	DEVSERVER_PORT,
-	DEVSERVER_IP
+	WEBPACK_DEVSERVER_PORT,
+	WEBPACK_DEVSERVER_IP
 } from '../project.constants'
 
 export default function (webpackConfig) {
@@ -22,13 +22,13 @@ export default function (webpackConfig) {
 				chunks: false,
 				chunkModules: false,
 			},
-		}).listen(DEVSERVER_PORT, 'localhost', (err) => {
+		}).listen(WEBPACK_DEVSERVER_PORT, 'localhost', (err) => {
 			// Callback is called only once, can't be used to catch compilation errors.
 			if (err) {
 				throw new gutil.PluginError('webpack-dev-server', err)
 			}
 
-			gutil.log('[webpack-dev-server]', `${DEVSERVER_IP}/build/main.js`)
+			gutil.log('[webpack-dev-server]', `${WEBPACK_DEVSERVER_IP}/build/main.js`)
 			callback()
 		})
 	}
