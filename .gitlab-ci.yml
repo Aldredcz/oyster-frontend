@@ -17,6 +17,6 @@ build:
 deploy_staging:
   stage: deploy
   script:
-  - rsync --recursive --progress dist/ coypu.local.jemelik.eu:/var/www/html/
+  - rsync --recursive --progress dist/ gitlab-deploy@coypu.local.jemelik.eu:/var/www/html/
   environment:
     name: staging
