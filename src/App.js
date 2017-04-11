@@ -20,7 +20,7 @@ class StandardLayout extends React.Component {
 }
 
 export default class App extends React.Component {
-	render () {
+	render () { // eslint-disable-line class-methods-use-this
 		const isLogged = Boolean(getAuthorizationData().token)
 
 		return (

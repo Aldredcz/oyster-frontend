@@ -6,7 +6,7 @@ export default async function request (url, options = {}) {
 	}, options.headers)
 
 	const {token} = getAuthorizationData()
-	if (token && url.startsWith(`SETTINGS.oysterApi`)) {
+	if (token && url.startsWith('/api')) {
 		headers.authToken = token
 	}
 

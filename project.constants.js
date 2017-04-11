@@ -13,6 +13,7 @@ module.exports = {
 	PATH_SOURCE_DIR: path.join(PATH_BASE_DIR, 'src'),
 	PATH_BUILD_DIR: path.join(PATH_BASE_DIR, 'build'),
 	PATH_ASSETS_DIR: path.join(PATH_BASE_DIR, 'assets'),
+	PATH_DIST_DIR: path.join(PATH_BASE_DIR, 'dist'),
 
 	WEBPACK_DEVSERVER_PORT,
 	WEBPACK_DEVSERVER_IP: `http://localhost:${WEBPACK_DEVSERVER_PORT}`,

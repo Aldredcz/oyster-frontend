@@ -11,7 +11,7 @@ export default class DashboardWrapper extends React.Component {
 		}
 	}
 
-	render () {
+	render () { // eslint-disable-line class-methods-use-this
 		return <Dashboard />
 	}
 }

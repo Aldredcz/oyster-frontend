@@ -127,6 +127,7 @@
 	],
 	"globals": {
 		"__DEV__": true,
-		"NBSP": true // Unicode nbsp char helper for React render
+		"NBSP": true, // Unicode nbsp char helper for React render
+		"ENVIRONMENT": true
 	}
 }

@@ -17,12 +17,12 @@ export default function (webpackConfig) {
 				}
 
 				process.env.BUILD_HASH = jsonStats.hash
-				const mainChunk = jsonStats.assetsByChunkName.main
+				/*const mainChunk = jsonStats.assetsByChunkName.main
 				if (mainChunk && typeof mainChunk.filter === 'function') { // `devtool: inline-source-maps` causes this to be undefined
 					process.env.BUILD_CSS_FILE = jsonStats.assetsByChunkName.main.filter(
 						(val) => val.match(/^main\..*\.css$/),
 					)[0]
-				}
+				}*/
 
 				gutil.log('[webpack]', stats.toString({
 					colors: true,
