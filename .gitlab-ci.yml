@@ -1,6 +1,7 @@
 stages:
   - test
   - build
+  - deploy
 test:
   stage: test
   script:
@@ -19,4 +20,3 @@ deploy_staging:
   - rsync --recursive --progress dist/ /var/www/html/
   environment:
     name: staging
-
