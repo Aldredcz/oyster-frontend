@@ -13,4 +13,10 @@ build:
     paths:
     - dist/*
     expire_in: 5 weeks
+deploy_staging:
+  stage: deploy
+  script:
+  - rsync --recursive --progress dist/ /var/www/html/
+  envirenment:
+    name: staging
 
