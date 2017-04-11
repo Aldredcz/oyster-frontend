@@ -4,11 +4,11 @@ stages:
 test:
   stage: test
   script:
-    - npm run test
+    - sh test.sh
 build:
   stage: build
   script:
-    - npm run deploy
+    - sh deploy.sh
   artifacts:
     paths:
     - dist/*
