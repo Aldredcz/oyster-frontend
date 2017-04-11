@@ -1,0 +1,16 @@
+stages:
+  - test
+  - build
+test:
+  stage: test
+  script:
+    - npm run test
+build:
+  stage: build
+  script:
+    - npm run deploy
+  artifacts:
+    paths:
+    - dist/*
+    expire_in: 5 weeks
+
