@@ -17,6 +17,6 @@ deploy_staging:
   stage: deploy
   script:
   - rsync --recursive --progress dist/ /var/www/html/
-  envirenment:
+  environment:
     name: staging
 
