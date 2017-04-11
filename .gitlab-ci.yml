@@ -1,0 +1,22 @@
+stages:
+  - test
+  - build
+  - deploy
+test:
+  stage: test
+  script:
+    - sh test.sh
+build:
+  stage: build
+  script:
+    - sh deploy.sh
+  artifacts:
+    paths:
+    - dist/*
+    expire_in: 5 weeks
+deploy_staging:
+  stage: deploy
+  script:
+  - rsync --recursive --progress dist/ gitlab-deploy@coypu.local.jemelik.eu:/var/www/html/
+  environment:
+    name: staging
