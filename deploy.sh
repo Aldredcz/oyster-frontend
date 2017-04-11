@@ -11,4 +11,4 @@
 export NODE_ENV=production
 yarn install || npm install
 
-./node_modules/.bin/gulp deploy -p
+npm run deploy
