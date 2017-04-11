@@ -38,12 +38,13 @@ export default class Signup extends React.Component {
 					this.props.history.push('/dashboard')
 				},
 				async ({response}) => {
+					const responseJson = await response.json()
 					this.setState({
 						formData: {
 							...this.state.formData,
 							password: '',
 						},
-						error: await response.text(), // TODO: change
+						error: responseJson && responseJson.error || null,
 						processing: false,
 					})
 				},
