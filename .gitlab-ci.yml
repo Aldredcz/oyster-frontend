@@ -14,9 +14,25 @@ build:
     paths:
     - dist/*
     expire_in: 5 weeks
+deploy_devel:
+  stage: deploy
+  script:
+  - rsync --recursive --progress dist/ gitlab-deploy@walrus.local.jemelik.eu:/var/www/html/
+  environment:
+    name: devel
 deploy_staging:
   stage: deploy
   script:
   - rsync --recursive --progress dist/ gitlab-deploy@coypu.local.jemelik.eu:/var/www/html/
   environment:
     name: staging
+  only:
+  - master
+deploy_canary:
+  stage: deploy
+  script:
+  - rsync --recursive --progress dist/ gitlab-deploy@riverrat.local.jemelik.eu:/var/www/html/
+  environment:
+    name: canary
+  only:
+  - master
