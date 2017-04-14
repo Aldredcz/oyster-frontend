@@ -1,12 +1,21 @@
+// @flow
 import React from 'react'
 
 // https://gist.github.com/acdlite/a68433004f9d6b4cbc83b5cc3990c194
 
 // getComponent is a function that returns a promise for a component
 // It will not be called until the first mount
-export default function asyncComponent (getComponent, pathToComponent) {
-	return class AsyncComponent extends React.Component {
-		static Component = null;
+
+interface IGetComponent {
+	(): Promise<ReactClass<any>> // http://stackoverflow.com/a/41861934
+}
+type TState = {
+	Component: ?ReactClass<any>
+}
+
+export default function asyncComponent (getComponent: IGetComponent) {
+	return class AsyncComponent extends React.Component<void, void, TState> {
+		static Component: ?ReactClass<any>  = null;
 		state = {Component: AsyncComponent.Component};
 
 		componentWillMount () {

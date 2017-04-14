@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import {withRouter, Link} from 'react-router-dom'
 
@@ -15,16 +16,18 @@ export default class Login extends React.Component {
 		error: null,
 	}
 
-	handleChange = (ev) => {
-		this.setState({
-			formData: {
-				...this.state.formData,
-				[ev.target.name]: ev.target.value,
-			},
-		})
+	handleChange = (ev: KeyboardEvent) => {
+		if (ev.target instanceof HTMLInputElement) {
+			this.setState({
+				formData: {
+					...this.state.formData,
+					[ev.target.name]: ev.target.value,
+				},
+			})
+		}
 	}
 
-	handleSubmit = (ev) => {
+	handleSubmit = (ev: Event) => {
 		ev.preventDefault()
 
 		this.setState({

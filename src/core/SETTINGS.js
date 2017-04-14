@@ -1,6 +1,12 @@
+// @flow
 import {BE_PROXY_PREFIX} from '../../project.constants'
 
-const SETTINGS = {
+export type TSETTINGS = {
+	+oysterApi: string,
+	+env: 'development' | 'production',
+}
+
+const SETTINGS: TSETTINGS = {
 	oysterApi: BE_PROXY_PREFIX,
 	env: typeof ENVIRONMENT !== 'undefined' ? ENVIRONMENT : 'production',
 }

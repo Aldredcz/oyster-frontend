@@ -1,3 +1,4 @@
+// @flow
 import 'babel-polyfill'
 import 'isomorphic-fetch'
 
@@ -5,9 +6,13 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {AppContainer} from 'react-hot-loader'
 
-import App from 'App'
+import App from './App'
 
-const renderApp = (AppComponent) => {
+interface IRender {
+	(AppComponent: React.Component<*, *, *>): void
+}
+
+const renderApp: IRender = (AppComponent) => {
 	ReactDOM.render((
 			<AppContainer>
 				<AppComponent />
@@ -24,4 +29,3 @@ if (module && module.hot) {
 		renderApp(App)
 	})
 }
-

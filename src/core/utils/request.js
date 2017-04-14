@@ -1,6 +1,14 @@
+// @flow
 import {getAuthorizationData} from '../authorization'
 
-export default async function request (url, options = {}) {
+type TOptions = {
+	headers?: {[key: string]: string},
+	method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
+	data?: Blob | FormData | URLSearchParams | string
+}
+
+
+export default async function request (url: string, options: TOptions = {}) {
 	const headers = Object.assign({}, {
 		'Content-Type': 'application/json',
 	}, options.headers)
@@ -10,7 +18,7 @@ export default async function request (url, options = {}) {
 		headers.authToken = token
 	}
 
-	const response = await fetch(url, {
+	const response: Response = await fetch(url, {
 		...options,
 		headers,
 	})
@@ -20,9 +28,13 @@ export default async function request (url, options = {}) {
 	return response
 }
 
-export function throwErrorIfAny (response) {
+type ErrorWithResponse = Error & {
+	response?: Response
+}
+
+export function throwErrorIfAny (response: Response): void {
 	if (response.ok !== true) {
-		const error = new Error(response.statusText)
+		const error: ErrorWithResponse = new Error(response.statusText)
 		error.response = response
 		throw error
 	}

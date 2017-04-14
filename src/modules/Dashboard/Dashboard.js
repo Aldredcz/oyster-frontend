@@ -1,11 +1,17 @@
+// @flow
 import React from 'react'
 import {withRouter} from 'react-router-dom'
+import type {ContextRouter} from 'react-router-dom'
 
 import {removeAuthorizationData} from 'core/authorization'
 
+type TProps = {
+	history: ContextRouter,
+}
+
 @withRouter
-export default class Dashboard extends React.Component {
-	logout = (ev) => {
+export default class Dashboard extends React.Component<void, TProps, void> {
+	logout = (ev: MouseEvent) => {
 		ev.preventDefault()
 
 		removeAuthorizationData()

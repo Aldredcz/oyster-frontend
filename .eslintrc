@@ -1,7 +1,8 @@
 {
 	"extends": [
 		"eslint:recommended",
-		"plugin:react/recommended"
+		"plugin:react/recommended",
+		"plugin:flowtype/recommended"
 	],
 	"rules": {
 		// Possible errors
@@ -123,6 +124,7 @@
 	"plugins": [
 		"react",
 		"babel",
+		"flowtype",
 		"import"
 	],
 	"globals": {

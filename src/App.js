@@ -1,3 +1,5 @@
+// TODO: flow - not possible now because of the dynamic import()
+
 import React from 'react'
 import {Route, Redirect} from 'react-router'
 import {BrowserRouter} from 'react-router-dom'
