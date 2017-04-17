@@ -25,7 +25,7 @@ const renderApp: IRender = (AppComponent) => {
 renderApp(App)
 
 if (module && module.hot) {
-	module.hot.accept('App', () => {
+	module.hot.accept('./App', () => {
 		renderApp(App)
 	})
 }

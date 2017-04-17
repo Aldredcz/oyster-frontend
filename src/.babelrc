@@ -5,7 +5,6 @@
 		"react"
 	],
 	"plugins": [
-		"react-hot-loader/babel",
 		"transform-decorators-legacy",
 		"dev-expression",
 		"syntax-dynamic-import",
@@ -17,5 +16,12 @@
 				]
 			}
 		]
-	]
+	],
+	"env": {
+		"development": {
+			"plugins": [
+				"react-hot-loader/babel"
+			]
+		}
+	}
 }
