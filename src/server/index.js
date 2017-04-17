@@ -31,7 +31,7 @@ app.route('/(:route)?').get(pageRouter)
 app.use(`${PROJECT_CONSTANTS.BE_PROXY_PREFIX}/`, (req, res) => {
 	const deployConfig = fs.readJSONFileSync(path.join(__dirname, 'deployConfigs', `${process.env.DEPLOY_CONFIG}.json`))
 
-	let url = deployConfig && deployConfig.oysterApi || 'http://api.oyster.jemelik.eu'
+	let url = deployConfig && deployConfig.oysterApi
 	url += req.originalUrl.substring(PROJECT_CONSTANTS.BE_PROXY_PREFIX.length)
 
 	console.log('[BE PROXY]', url)
