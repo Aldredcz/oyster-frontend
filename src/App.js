@@ -2,6 +2,7 @@
 
 import React from 'react'
 import {Route, Redirect} from 'react-router'
+import ACLRoute from 'core/utils/ACLRoute'
 import {BrowserRouter} from 'react-router-dom'
 import asyncComponent from 'libs/async-component'
 
@@ -33,12 +34,12 @@ export default class App extends React.Component {
 						exact={true}
 						render={() => isLogged
 							? <Redirect to='/dashboard' />
-							: <Redirect to='login' />
+							: <Redirect to='/login' />
 						}
 					/>
-					<Route path='/login' render={() => <Login />} />
+					<Route path='/login' component={Login} />
 					<Route path='/signup' component={Signup} />
-					<Route
+					<ACLRoute
 						path='/dashboard'
 						render={() =>
 							<StandardLayout>

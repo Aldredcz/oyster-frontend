@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import {withRouter} from 'react-router-dom'
+import request from 'core/utils/request'
 import type {ContextRouter} from 'react-router-dom'
 
 import {removeAuthorizationData} from 'core/authorization'
@@ -10,7 +11,25 @@ type TProps = {
 }
 
 @withRouter
-export default class Dashboard extends React.Component<void, TProps, void> {
+export default class Dashboard extends React.Component<void, TProps, *> {
+	state = {
+		projectsData: null,
+	}
+
+	constructor (props: TProps) {
+		super(props)
+
+		request('/api/project/all')
+			.then((response) => response.json())
+			.then(
+				(data) => {
+					this.setState({
+						projectsData: data,
+					})
+				},
+			)
+	}
+
 	logout = (ev: MouseEvent) => {
 		ev.preventDefault()
 
@@ -30,6 +49,14 @@ export default class Dashboard extends React.Component<void, TProps, void> {
 						Logout!
 					</a>
 				</p>
+				{this.state.projectsData &&
+					<pre>
+						<code>
+							Projects data:{'\n'}
+							{JSON.stringify(this.state.projectsData)}
+						</code>
+					</pre>
+				}
 			</div>
 		)
 	}

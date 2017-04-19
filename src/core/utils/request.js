@@ -15,7 +15,7 @@ export default async function request (url: string, options: TOptions = {}) {
 
 	const {token} = getAuthorizationData()
 	if (token && url.startsWith('/api')) {
-		headers.authToken = token
+		headers['Authorization-Token'] = token
 	}
 
 	const response: Response = await fetch(url, {
