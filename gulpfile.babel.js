@@ -78,6 +78,7 @@ gulp.task('copy-files', () => {
 gulp.task('test', (done) => runSequence(
 	'eslint',
 	'flowtype',
+	'jest',
 	hideStackTrace(done),
 ))
 
@@ -87,6 +88,11 @@ gulp.task('testBuild', (done) => runSequence(
 	'build-webpack-test',
 	done,
 ))
+
+gulp.task('jest', (done) => {
+	spawnProcess('npm', ['run', '--silent', 'jest'], {stdio: 'inherit'})
+		.on('close', hideStackTrace(done))
+})
 
 gulp.task('flowtype', (done) => {
 	spawnProcess('npm', ['run', '--silent', 'flow:check'], {stdio: 'inherit'})
