@@ -149,7 +149,6 @@ gulp.task('deploy', (done) => {
 	}
 
 	runSequence(
-		'eslint',
 		'build',
 		'generate-html',
 		'copy-files',
