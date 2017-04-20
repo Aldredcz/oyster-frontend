@@ -1,9 +1,10 @@
-//script(src='/assets/dll/vendor.js')
 script.
 	var ENVIRONMENT = '#{env}'
 
 if env === 'development'
+	script(src='/assets/dll/libs.js')
 	script(src=PROJECT_CONSTANTS.WEBPACK_DEVSERVER_IP + '/build/main.js')
 
 if env === 'production'
+	script(src='/build/#{dllFilename}')
 	script(src='/build/main.#{buildHash}.js')

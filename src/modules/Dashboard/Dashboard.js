@@ -53,7 +53,7 @@ export default class Dashboard extends React.Component<void, TProps, *> {
 					<pre>
 						<code>
 							Projects data:{'\n'}
-							{JSON.stringify(this.state.projectsData)}
+							{JSON.stringify(this.state.projectsData, null, '\t')}
 						</code>
 					</pre>
 				}

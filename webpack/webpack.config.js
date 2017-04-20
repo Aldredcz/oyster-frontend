@@ -91,10 +91,10 @@ export default (params) => {
 						NODE_ENV: JSON.stringify(process.env.NODE_ENV),
 					},
 				}),
-				/*new webpack.DllReferencePlugin({
-				 context: '.',
-				 manifest: require('../dll/vendor-manifest.json'),
-				 }),*/
+				new webpack.DllReferencePlugin({
+					context: '.',
+					manifest: require('../dll/libs-manifest.json'),
+				}),
 			]
 
 			if (isDev) {

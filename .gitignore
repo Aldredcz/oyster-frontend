@@ -1,6 +1,11 @@
 .idea
 node_modules
-build
+/build
+/dist
 flow-typed
 
+/dll
+/assets/dll
+
 npm-debug.log
+yarn-error.log

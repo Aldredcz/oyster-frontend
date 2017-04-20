@@ -6,10 +6,12 @@ import runSequence from 'run-sequence'
 import jade from 'jade'
 import gulp from 'gulp'
 import bg from 'gulp-bg'
+import webpack from 'webpack'
 
 import webpackBuild from './webpack/build'
 import webpackDevServer from './webpack/devserver'
 import createWebpackConfig from './webpack/webpack.config'
+import createWebpackDllConfig from './webpack/webpack.dllconfig'
 
 import PROJECT_CONSTANTS from './project.constants'
 
@@ -46,10 +48,12 @@ gulp.task('clean', () => {
 
 gulp.task('generate-html', () => {
 	fs.mkdirSync(PROJECT_CONSTANTS.PATH_DIST_DIR)
+	const dllFiles = fs.readJSONFileSync(path.join(PROJECT_CONSTANTS.PATH_BUILD_DIR, 'stats.dll.json'))
 
 	const jadeOptions = {
 		env: process.env.NODE_ENV,
 		buildHash: process.env.BUILD_HASH,
+		dllFilename: dllFiles.libs,
 		PROJECT_CONSTANTS,
 	}
 
@@ -79,7 +83,7 @@ gulp.task('test', (done) => runSequence(
 
 gulp.task('testBuild', (done) => runSequence(
 	'clean',
-	//'build-vendor',
+	'build-dll',
 	'build-webpack-test',
 	done,
 ))
@@ -92,6 +96,13 @@ gulp.task('flowtype', (done) => {
 gulp.task('eslint', (done) => {
 	spawnProcess('npm', ['run', '--silent', 'eslint'], {stdio: 'inherit'})
 		.on('close', hideStackTrace(done))
+})
+
+gulp.task('build-dll', (done) => {
+	webpack(
+		createWebpackDllConfig({isDev: process.env.NODE_ENV !== 'production'}),
+		done,
+	)
 })
 
 gulp.task('build-webpack-test', (done) => {
@@ -121,6 +132,7 @@ gulp.task('build-webpack', [process.env.NODE_ENV === 'production'
 gulp.task('build', (done) =>
 	runSequence(
 		'clean',
+		'build-dll',
 		'build-webpack',
 		done,
 	),
