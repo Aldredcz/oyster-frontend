@@ -5,6 +5,7 @@
 		"react"
 	],
 	"plugins": [
+		"transform-flow-strip-types",
 		"transform-decorators-legacy",
 		"dev-expression",
 		"syntax-dynamic-import"
