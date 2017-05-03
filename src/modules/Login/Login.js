@@ -86,8 +86,12 @@ export default class Login extends React.Component {
 						</p>
 					)}
 					<p>
-						<Link to='/signup'>
+						<Link to='/signup?invite=1e863a9f-1f0d-40e7-8de8-60462838b6d8'>
 							Go to signup
+						</Link>
+						{' '}|{' '}
+						<Link to='/signup?invite=1e863a9f-1f0d-40e7-8de8-60462838b6d8&email=tester@getoyster.com'>
+							Go to signup (with predefined email)
 						</Link>
 					</p>
 				</form>
