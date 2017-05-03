@@ -13,7 +13,7 @@ type TState = {
 	Component: ?ReactClass<any>
 }
 
-export default function asyncComponent (getComponent: IGetComponent) {
+export default function asyncComponent (getComponent: IGetComponent): ReactClass<any> {
 	return class AsyncComponent extends React.Component<void, void, TState> {
 		static Component: ?ReactClass<any>  = null;
 		state = {Component: AsyncComponent.Component};

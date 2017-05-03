@@ -1,6 +1,7 @@
 // @flow
 export type TAuthorizationData = {
-	token: ?string
+	+token?: string,
+	+uuid?: string,
 }
 
 export function setAuthorizationData (data: TAuthorizationData): void {

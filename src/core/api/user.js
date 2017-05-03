@@ -2,19 +2,34 @@
 import request from 'core/utils/request'
 import SETTINGS from 'core/SETTINGS'
 
-type TParams = {
-	email: string,
-	password: string,
+type TLoginParams = {|
+	+email: string,
+	+password: string,
+|}
+
+type TLoginResponse = {
+	uuid: string,
+	token: string,
 }
 
-export function oysterRequestUserSignup (params: TParams) {
+type TSignupParams = {|
+	+email: string,
+	+password: string,
+	+name: string,
+	+surname: string,
+	+invite: string,
+|}
+
+type TSignupResponse = TLoginResponse
+
+export function oysterRequestUserSignup (params: TSignupParams): Promise<TSignupResponse> {
 	return request(`${SETTINGS.oysterApi}/user/sign_up`, {
 		method: 'POST',
 		body: JSON.stringify(params),
 	}).then((response) => response.json())
 }
 
-export function oysterRequestUserLogin (params: TParams) {
+export function oysterRequestUserLogin (params: TLoginParams): Promise<TLoginResponse> {
 	return request(`${SETTINGS.oysterApi}/user/login`, {
 		method: 'POST',
 		body: JSON.stringify(params),

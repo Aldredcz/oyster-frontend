@@ -9,7 +9,7 @@ import {AppContainer} from 'react-hot-loader'
 import App from './App'
 
 interface IRender {
-	(AppComponent: React.Component<*, *, *>): void
+	(AppComponent: ReactClass<any>): void
 }
 
 const renderApp: IRender = (AppComponent) => {

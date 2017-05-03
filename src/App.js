@@ -1,10 +1,15 @@
-// TODO: flow - not possible now because of the dynamic import()
+// @flow
 
 import React from 'react'
-import {Route, Redirect} from 'react-router'
 import ACLRoute from 'core/utils/ACLRoute'
-import {BrowserRouter} from 'react-router-dom'
+import {Router} from 'react-router'
+import {Route, Redirect} from 'react-router-dom'
+import {Provider} from 'react-redux'
+import DevTools from 'core/store/DevTools'
 import asyncComponent from 'libs/async-component'
+
+import browserHistory from 'core/utils/browserHistory'
+import store from 'core/store'
 
 import {getAuthorizationData} from 'core/authorization'
 
@@ -22,33 +27,38 @@ class StandardLayout extends React.Component {
 	}
 }
 
-export default class App extends React.Component {
+export default class App extends React.Component<void, void, void> {
 	render () { // eslint-disable-line class-methods-use-this
 		const isLogged = Boolean(getAuthorizationData().token)
 
 		return (
-			<BrowserRouter>
-				<div className='wrapper'>
-					<Route
-						path='/'
-						exact={true}
-						render={() => isLogged
-							? <Redirect to='/dashboard' />
-							: <Redirect to='/login' />
-						}
-					/>
-					<Route path='/login' component={Login} />
-					<Route path='/signup' component={Signup} />
-					<ACLRoute
-						path='/dashboard'
-						render={() =>
-							<StandardLayout>
-								<Dashboard />
-							</StandardLayout>
-						}
-					/>
+			<Provider store={store}>
+				<div>
+					<Router history={browserHistory}>
+						<div className='wrapper'>
+							<Route
+								path='/'
+								exact={true}
+								render={() => isLogged
+									? <Redirect to='/dashboard' />
+									: <Redirect to='/login' />
+								}
+							/>
+							<Route path='/login' component={Login} />
+							<Route path='/signup' component={Signup} />
+							<ACLRoute
+								path='/dashboard'
+								render={() =>
+									<StandardLayout>
+										<Dashboard />
+									</StandardLayout>
+								}
+							/>
+						</div>
+					</Router>
+					{__DEV__ && <DevTools />}
 				</div>
-			</BrowserRouter>
+			</Provider>
 		)
 	}
 }
