@@ -4,7 +4,7 @@ export type TAuthorizationData = {
 	+uuid?: string,
 }
 
-export function setAuthorizationData (data: TAuthorizationData): void {
+export function setAuthorizationData (data: TAuthorizationData) {
 	localStorage.setItem('authorization', JSON.stringify(data))
 }
 
@@ -12,7 +12,7 @@ export function getAuthorizationData (): TAuthorizationData {
 	return JSON.parse(localStorage.getItem('authorization') || '{}')
 }
 
-export function removeAuthorizationData (): void {
+export function removeAuthorizationData () {
 	localStorage.removeItem('authorization')
 }
 

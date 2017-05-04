@@ -43,7 +43,7 @@ type TProps = {
 )
 @withRouter
 export default class Signup extends React.Component<void, TProps, void> {
-	static fieldsConfig: {[key: TSignupFormField]: *} = {
+	static fieldsConfig: {[key: TSignupFormField]: {type: string, title: string}} = {
 		name: {
 			type: 'text',
 			title: 'Name',
@@ -134,7 +134,7 @@ export default class Signup extends React.Component<void, TProps, void> {
 						value={formData[fieldId]}
 						onChange={(value) => this.handleChange(fieldId, value)}
 						onBlur={() => this.handleBlur(fieldId)}
-						disabled={formMetadata[fieldId].disabled}
+						disabled={Boolean(formMetadata[fieldId].disabled)}
 						isDirty={formMetadata[fieldId].dirty}
 						validation={validateField(fieldId, formData[fieldId])}
 					/>

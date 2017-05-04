@@ -1,3 +1,4 @@
+// @noflow
 import * as Authorization from './authorization'
 
 const input = {token: 'bla-bla-bla-bla'}

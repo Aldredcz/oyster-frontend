@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 
 import Login from './Login'
@@ -11,7 +12,7 @@ export default class LoginWrapper extends React.Component {
 		}
 	}
 
-	render () { // eslint-disable-line class-methods-use-this
+	render () {
 		return <Login />
 	}
 }

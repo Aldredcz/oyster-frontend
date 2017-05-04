@@ -10,13 +10,13 @@ interface IGetComponent {
 	(): Promise<ReactClass<any>> // http://stackoverflow.com/a/41861934
 }
 type TState = {
-	Component: ?ReactClass<any>
+	Component: ?ReactClass<any>,
 }
 
 export default function asyncComponent (getComponent: IGetComponent): ReactClass<any> {
 	return class AsyncComponent extends React.Component<void, void, TState> {
-		static Component: ?ReactClass<any>  = null;
-		state = {Component: AsyncComponent.Component};
+		static Component: ?ReactClass<any>  = null
+		state = {Component: AsyncComponent.Component}
 
 		componentWillMount () {
 			if (!this.state.Component) {
@@ -36,6 +36,4 @@ export default function asyncComponent (getComponent: IGetComponent): ReactClass
 			return null
 		}
 	}
-
-
 }

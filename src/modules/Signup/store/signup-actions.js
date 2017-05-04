@@ -15,7 +15,7 @@ export const SIGNUP_ACTION_TYPES = {
 }
 
 type TGetState = () => TSignupModuleState
-type TDispatch = (action: TSignupAction | (dispatch: TDispatch, getState: TGetState) => any) => *
+type TDispatch = (action: TSignupAction | (dispatch: TDispatch, getState: TGetState) => *) => string
 
 export function setInviteToken (
 	{inviteToken}: {inviteToken: string},
@@ -28,7 +28,7 @@ export function setInviteToken (
 	}
 }
 
-export function setNextStep (): * {
+export function setNextStep () {
 	return (dispatch: TDispatch, getState: TGetState) => {
 		const currentStep = getState().signup.step
 
@@ -77,12 +77,13 @@ export function setFormDisabled (
 	}
 }
 
-export function submitForm (): * {
+export function submitForm () {
 	return (dispatch: TDispatch, getState: TGetState) => {
 		const {name, surname, email, password} = getState().signup.formData
 
 		dispatch(setNextStep())
-		oysterRequestUserSignup({
+
+		return oysterRequestUserSignup({
 			name,
 			surname,
 			email,

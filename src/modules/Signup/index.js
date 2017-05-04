@@ -17,7 +17,7 @@ export default class SignupWrapper extends React.Component {
 		}
 	}
 
-	render () { // eslint-disable-line class-methods-use-this
+	render () {
 		return (
 			<AppContainer>
 				<SignupAny />

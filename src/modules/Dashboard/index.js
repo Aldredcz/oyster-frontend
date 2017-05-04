@@ -1,6 +1,8 @@
+// @flow
 import React from 'react'
 
 import Dashboard from './Dashboard'
+const DashboardAny: any = Dashboard
 
 export default class DashboardWrapper extends React.Component {
 	componentDidMount () {
@@ -11,7 +13,7 @@ export default class DashboardWrapper extends React.Component {
 		}
 	}
 
-	render () { // eslint-disable-line class-methods-use-this
-		return <Dashboard />
+	render () {
+		return <DashboardAny />
 	}
 }

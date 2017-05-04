@@ -15,11 +15,11 @@ export type TSignupState = {
 	+step: number,
 	+inviteToken: string,
 	+formData: {
-		+[key: TSignupFormField]: string
+		+[key: TSignupFormField]: string,
 	},
 	+formMetadata: {
-		+[key: TSignupFormField]: TSignupFormMetadata
-	}
+		+[key: TSignupFormField]: TSignupFormMetadata,
+	},
 }
 
 export type TSignupActions = {

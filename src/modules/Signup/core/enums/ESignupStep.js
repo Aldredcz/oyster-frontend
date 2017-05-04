@@ -1,3 +1,5 @@
+// @flow
+
 export default {
 	FIRST: 'FIRST',
 	SECOND: 'SECOND',

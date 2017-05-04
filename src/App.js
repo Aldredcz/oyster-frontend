@@ -1,5 +1,4 @@
 // @flow
-
 import React from 'react'
 import ACLRoute from 'core/utils/ACLRoute'
 import {Router} from 'react-router'
@@ -17,7 +16,7 @@ const Login = asyncComponent(() => import('modules/Login').then((module) => modu
 const Signup = asyncComponent(() => import('modules/Signup').then((module) => module.default))
 const Dashboard = asyncComponent(() => import('modules/Dashboard').then((module) => module.default))
 
-class StandardLayout extends React.Component {
+class StandardLayout extends React.Component<void, *, void> {
 	render () {
 		return (
 			<div className='standard-layout' style={{width: 800, margin: '0 auto'}}>
@@ -28,7 +27,7 @@ class StandardLayout extends React.Component {
 }
 
 export default class App extends React.Component<void, void, void> {
-	render () { // eslint-disable-line class-methods-use-this
+	render () {
 		const isLogged = Boolean(getAuthorizationData().token)
 
 		return (
@@ -56,7 +55,7 @@ export default class App extends React.Component<void, void, void> {
 							/>
 						</div>
 					</Router>
-					{__DEV__ && <DevTools />}
+					{__DEV__ && DevTools && <DevTools />}
 				</div>
 			</Provider>
 		)

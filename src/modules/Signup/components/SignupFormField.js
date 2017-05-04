@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 
 type TProps = {
@@ -17,7 +18,11 @@ const SignupFormField = (props: TProps) => (
 			type={props.type}
 			placeholder={props.placeholder}
 			value={props.value}
-			onChange={(ev) => props.onChange(ev.target.value, ev)}
+			onChange={(ev: KeyboardEvent) => {
+				if (ev.target instanceof HTMLInputElement) {
+					props.onChange(ev.target.value, ev)
+				}
+			}}
 			onBlur={props.onBlur}
 			disabled={props.disabled}
 		/>

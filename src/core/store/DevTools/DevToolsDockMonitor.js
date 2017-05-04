@@ -1,3 +1,4 @@
+// @flow
 let DockMonitor
 
 if (__DEV__) {

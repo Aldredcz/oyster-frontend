@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 
 import LogMonitor from './DevToolsLogMonitor'
@@ -12,6 +13,19 @@ if (__DEV__) {
 export const HOTKEY_TOGGLE_DEVTOOLS_DEFAULT = 'ctrl-h'
 export const HOTKEY_CHANGE_DEVTOOLS_POSITION_DEFAULT = 'ctrl-q'
 
+type TParams = {
+	children?: React$Element<*>,
+	defaultIsVisible: boolean,
+	toggleVisibilityKey: string,
+	changePositionKey: string,
+	changeMonitorKey?: string,
+	fluid: boolean,
+	defaultSize: number,
+	defaultPosition: 'left' | 'right',
+}
+
+type TDevTools = ReactClass<*> & {instrument: () => void}
+
 export function devToolsFactory ({
 	children,
 	defaultIsVisible = false,
@@ -21,8 +35,8 @@ export function devToolsFactory ({
 	fluid = true,
 	defaultSize = 0.25,
 	defaultPosition = 'right',
- } = {}) {
-	return __DEV__
+ }: TParams = {}): ?TDevTools {
+	return __DEV__ && DockMonitor
 		? createDevTools(
 			<DockMonitor
 				defaultIsVisible={defaultIsVisible}
@@ -33,7 +47,7 @@ export function devToolsFactory ({
 				defaultSize={defaultSize}
 				defaultPosition={defaultPosition}
 			>
-				{children || <LogMonitor />}
+				{children || (LogMonitor ? <LogMonitor /> : null)}
 			</DockMonitor>,
 		)
 		: null

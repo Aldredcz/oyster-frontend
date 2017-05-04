@@ -1,3 +1,4 @@
+// @flow
 let LogMonitor
 
 if (__DEV__) {
