@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import {withRouter, Link} from 'react-router-dom'
+import {isEmail, isPassword} from 'libs/validation/validators'
 
 import {oysterRequestUserLogin} from 'core/api/user'
 import {setAuthorizationData} from 'core/authorization'
@@ -56,6 +57,7 @@ export default class Login extends React.Component {
 
 	render () {
 		const {formData, processing, error} = this.state
+		const isValid = isEmail(formData.email) && isPassword(formData.password)
 
 		return (
 			<div>
@@ -78,7 +80,7 @@ export default class Login extends React.Component {
 					<input
 						type='submit'
 						value='Log me in!'
-						disabled={processing}
+						disabled={processing || !isValid}
 					/>
 					{error && (
 						<p style={{color: 'red'}}>
