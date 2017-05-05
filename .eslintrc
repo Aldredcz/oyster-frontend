@@ -104,6 +104,7 @@
 		"react/jsx-no-duplicate-props": 2,
 		"react/jsx-uses-react": 2,
 		"react/jsx-uses-vars": 2,
+		"react/jsx-wrap-multilines": 2,
 		"react/display-name": 0, // because of stateless functions
 		"react/no-danger": 0, // sometimes it's necessary
 		"react/no-did-mount-set-state": 2,
@@ -112,7 +113,6 @@
 		"react/no-unknown-property": 2,
 		"react/prop-types": 0,
 		"react/self-closing-comp": 2,
-		"react/wrap-multilines": 2,
 		"react/prefer-es6-class": 2,
 		"react/forbid-component-props": [2, {"forbid": ["className", "style"]}],
 		"react/no-array-index-key": 2,
@@ -134,12 +134,7 @@
 			"any": false,
 			"Object": false,
 			"Function": false
-		}],
-		"flowtype/require-valid-file-annotation": [
-			2,
-			"always",
-			{"annotationStyle": "line"}
-		]
+		}]
 	},
 	"env": {
 		"es6": true,

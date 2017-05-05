@@ -1,7 +1,6 @@
 import fs from 'fs-extra'
 import path from 'path'
 import yargs from 'yargs'
-import spawnProcess from 'cross-spawn-async'
 import runSequence from 'run-sequence'
 import jade from 'jade'
 import gulp from 'gulp'
@@ -30,7 +29,7 @@ process.env.NODE_ENV = args.production ? 'production' : 'development'
 process.env.SERVER_PORT = args.port
 process.env.DEPLOY_CONFIG = args.deployConfig
 
-function hideStackTrace (done, message = '[see above]') {
+function hideStackTrace (done, message = '[see above]') { // eslint-disable-line no-unused-vars
 	return (exitCode) => {
 		if (exitCode) {
 			exitCode = new Error(message)
@@ -75,34 +74,12 @@ gulp.task('copy-files', () => {
 	)
 })
 
-gulp.task('test', (done) => runSequence(
-	'eslint',
-	'flowtype',
-	'jest',
-	hideStackTrace(done),
-))
-
 gulp.task('testBuild', (done) => runSequence(
 	'clean',
 	'build-dll',
 	'build-webpack-test',
 	done,
 ))
-
-gulp.task('jest', (done) => {
-	spawnProcess('npm', ['run', '--silent', 'jest'], {stdio: 'inherit'})
-		.on('close', hideStackTrace(done))
-})
-
-gulp.task('flowtype', (done) => {
-	spawnProcess('npm', ['run', '--silent', 'flow:check'], {stdio: 'inherit'})
-		.on('close', hideStackTrace(done))
-})
-
-gulp.task('eslint', (done) => {
-	spawnProcess('npm', ['run', '--silent', 'eslint'], {stdio: 'inherit'})
-		.on('close', hideStackTrace(done))
-})
 
 gulp.task('build-dll', (done) => {
 	webpack(

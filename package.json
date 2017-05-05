@@ -3,13 +3,13 @@
 	"version": "0.0.1",
 	"author": "Aldredcz <devel@aldred.cz>",
 	"scripts": {
-		"eslint": "eslint src",
+		"eslint:check": "eslint src",
 		"flow:check": "flow check --strip-root --color=never",
 		"flow:server": "flow --strip-root",
 		"flow-typed:install": "flow-typed install",
-		"deploy": "gulp deploy -p",
-		"test": "gulp test",
-		"jest": "cross-env BABEL_ENV=test jest"
+		"jest:check": "cross-env BABEL_ENV=test jest",
+		"test": "npm run eslint:check && npm run flow:check && npm run jest:check",
+		"deploy": "gulp deploy -p"
 	},
 	"engines": {
 		"node": ">=6.10"
