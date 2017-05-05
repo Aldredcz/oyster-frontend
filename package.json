@@ -3,6 +3,7 @@
 	"version": "0.0.1",
 	"author": "Aldredcz <devel@aldred.cz>",
 	"scripts": {
+		"start": "gulp server",
 		"eslint:check": "eslint src",
 		"flow:check": "flow check --strip-root --color=never",
 		"flow:server": "flow --strip-root",
