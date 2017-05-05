@@ -11,9 +11,22 @@ declare var NBSP: string
 // webpack hot module reload
 declare var module: {
 	hot: {
-		accept(path: string, callback: () => void): void
-	}
+		accept(path: string, callback: () => void): void,
+	},
+	require(path: string | number): void,
 }
 
+// webpack `require` API
+interface webpackRequireExtras {
+	resolveWeak(path: string): ?number,
+}
+
+declare var require: require & webpackRequireExtras
+
+
 // override
-declare var localStorage: Storage & any
+declare var localStorage: Storage
+
+// webpack
+declare var __webpack_modules__: any // eslint-disable-line
+declare var __webpack_require__: Function  // eslint-disable-line

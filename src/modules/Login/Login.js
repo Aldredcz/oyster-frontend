@@ -1,12 +1,12 @@
 // @flow
 import React from 'react'
-import {withRouter, Link} from 'react-router-dom'
+import {Link} from 'react-router-dom'
+import browserHistory from 'core/utils/browserHistory'
 import {isEmail, isPassword} from 'libs/validation/validators'
 
 import {oysterRequestUserLogin} from 'core/api/user'
 import {setAuthorizationData} from 'core/authorization'
 
-@withRouter
 export default class Login extends React.Component {
 	state = {
 		formData: {
@@ -39,7 +39,7 @@ export default class Login extends React.Component {
 			.then(
 				(userData) => {
 					setAuthorizationData(userData)
-					this.props.history.push('/dashboard')
+					browserHistory.push('/dashboard')
 				},
 				async ({response}) => {
 					const responseJson = await response.json()

@@ -132,8 +132,8 @@
 		],
 		"flowtype/no-weak-types": [2, {
 			"any": false,
-			"Object": false,
-			"Function": false
+			"Object": true,
+			"Function": true
 		}]
 	},
 	"env": {

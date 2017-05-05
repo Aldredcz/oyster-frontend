@@ -5,16 +5,34 @@ import {Router} from 'react-router'
 import {Route, Redirect} from 'react-router-dom'
 import {Provider} from 'react-redux'
 import DevTools from 'core/store/DevTools'
-import asyncComponent from 'libs/async-component'
+import Loadable from 'libs/loadable'
 
 import browserHistory from 'core/utils/browserHistory'
 import store from 'core/store'
 
 import {getAuthorizationData} from 'core/authorization'
 
-const Login = asyncComponent(() => import('modules/Login').then((module) => module.default))
-const Signup = asyncComponent(() => import('modules/Signup').then((module) => module.default))
-const Dashboard = asyncComponent(() => import('modules/Dashboard').then((module) => module.default))
+const Login = Loadable({
+	loader: () => import('modules/Login/component').then((m) => m.default),
+	webpackRequireWeakId: () => require.resolveWeak('modules/Login/component'),
+	hotReload: (callback) => {
+		module.hot.accept('modules/Login/component', callback)
+	},
+})
+const Signup = Loadable({
+	loader: () => import('modules/Signup/component').then((m) => m.default),
+	webpackRequireWeakId: () => require.resolveWeak('modules/Signup/component'),
+	hotReload: (callback) => {
+		module.hot.accept('modules/Signup/component', callback)
+	},
+})
+const Dashboard = Loadable({
+	loader: () => import('modules/Dashboard/component').then((m) => m.default),
+	webpackRequireWeakId: () => require.resolveWeak('modules/Dashboard/component'),
+	hotReload: (callback) => {
+		module.hot.accept('modules/Dashboard/component', callback)
+	},
+})
 
 class StandardLayout extends React.Component<void, *, void> {
 	render () {

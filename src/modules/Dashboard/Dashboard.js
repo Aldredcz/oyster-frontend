@@ -1,22 +1,16 @@
 // @flow
 import React from 'react'
-import {withRouter} from 'react-router-dom'
 import request from 'core/utils/request'
-import type {ContextRouter} from 'react-router-dom'
+import browserHistory from 'core/utils/browserHistory'
 
 import {removeAuthorizationData} from 'core/authorization'
 
-type TProps = {
-	history: ContextRouter,
-}
-
-@withRouter
-export default class Dashboard extends React.Component<void, TProps, *> {
+export default class Dashboard extends React.Component<void, void, *> {
 	state = {
 		projectsData: null,
 	}
 
-	constructor (props: TProps) {
+	constructor (props: void) {
 		super(props)
 
 		request('/api/project/all')
@@ -34,13 +28,13 @@ export default class Dashboard extends React.Component<void, TProps, *> {
 		ev.preventDefault()
 
 		removeAuthorizationData()
-		this.props.history.push('/login?logout')
+		browserHistory.push('/login?logout')
 	}
 
 	render () {
 		return (
 			<div>
-				<h1>Dashboard!</h1>
+				<h1>Dashboard</h1>
 				<p>
 					<a
 						href='javascript://'
