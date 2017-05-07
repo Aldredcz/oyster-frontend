@@ -1,6 +1,6 @@
 // @flow
 import browserHistory from 'core/utils/browserHistory'
-import {oysterRequestUserSignup} from 'core/api/user'
+import {oysterRequestUserSignup} from 'core/api/login-signup'
 import {setAuthorizationData} from 'core/authorization'
 
 import type {TSignupModuleState} from 'core/store/types'

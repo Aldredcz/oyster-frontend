@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import browserHistory from 'core/utils/browserHistory'
 import {isEmail, isPassword} from 'libs/validation/validators'
 
-import {oysterRequestUserLogin} from 'core/api/user'
+import {oysterRequestUserLogin} from 'core/api/login-signup'
 import {setAuthorizationData} from 'core/authorization'
 
 export default class Login extends React.Component {
