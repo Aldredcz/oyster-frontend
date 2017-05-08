@@ -14,15 +14,17 @@
 type TEntityId = string
 type TEntityFields = Array<any>
 type TAllEntities = 'all'
+type TEntityIds = Array<TEntityId> | TAllEntities
 type TObject = {[key: string]: any}
 type TPromiseResolvable<T> = Promise<T> & {resolve?: any}
+type TGetEntityResult = {[key: string]: Promise<any>}
 
 type TParams = {
-	+fetch?: (id: TEntityId, fields: TEntityFields) => Promise<any>,
-	+fetchAll?: (ids: Array<TEntityId> | TAllEntities, fields: TEntityFields) => Promise<any>,
+	+fetch?: (entityId: TEntityId, fields: TEntityFields) => Promise<any>,
+	+fetchAll?: (entityIds: TEntityIds, fields: TEntityFields) => Promise<any>,
 	+create?: (entityState: any) => Promise<any>,
 	+update?: (entityState: any) => Promise<any>,
-	+remove?: (id: TEntityId) => Promise<any>,
+	+remove?: (entityId: TEntityId) => Promise<any>,
 	+cacheExpiration?: number,
 	+stateReviver?: (entityState: any) => TObject,
 	+scope?: () => any,
@@ -35,14 +37,13 @@ export function createEntityStore (
 		create: APICreate,
 		update: APIUpdate,
 		remove: APIRemove,
-		cacheExpiration: APICacheExpiration = 0,
+		cacheExpiration: APICacheExpiration = Infinity,
 		stateReviver: APIStateReviver,
 		scope: APIScope = () => '',
 	}: TParams = {},
 ) {
-	const cache = {}
+	let cache = {} // eslint-disable-line
 	const listeners = {}
-	const loadingState = {}
 	const fetchPromises = {}
 	const updatingState = {}
 
@@ -259,7 +260,7 @@ export function createEntityStore (
 		entityId: TEntityId,
 		fields: TEntityFields,
 		{forceFetch = false}: {forceFetch: boolean} = {},
-	): {[key: string]: Promise<any>} {
+	): TGetEntityResult {
 		const entityCache = getObjectForEntity(cache, entityId)
 		const result = {}
 
@@ -296,13 +297,6 @@ export function createEntityStore (
 		if (fieldsToFetch.length > 0) {
 			const fetchPromise = APIFetch // consider how to behave when fetcher is undefined
 				? APIFetch(entityId, fieldsToFetch)
-					.then((result) => {
-						fieldsCached.forEach((field) => {
-							result[field] = entityCache[field].value
-						})
-
-						return result
-					})
 				: new Promise(() => {})
 
 			fieldsToFetch.forEach((field) => {
@@ -350,14 +344,18 @@ export function createEntityStore (
 		]
 	}
 
+	function invalidateCache () {
+		cache = {}
+	}
+
 	return {
 		getEntity,
 		updateEntity,
 		getState,
 		subscribe,
+		invalidateCache,
 		__debug: {
 			cache,
-			loadingState,
 			updatingState,
 			fetchPromises,
 			listeners,

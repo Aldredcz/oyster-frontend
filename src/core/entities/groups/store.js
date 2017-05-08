@@ -4,7 +4,8 @@ import {oysterRequestFetchGroup} from './api'
 
 const GroupsStore = createEntityStore({
 	fetch: oysterRequestFetchGroup,
-	cacheExpiration: Infinity,
 })
+window.GroupsStore = GroupsStore
+
 
 export default GroupsStore

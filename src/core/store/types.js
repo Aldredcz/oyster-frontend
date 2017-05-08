@@ -1,8 +1,9 @@
 // @flow
+import type {TAccountState} from './account/types'
 import type {TSignupState} from 'modules/Signup/store/types'
 
 export type TGlobalState = {
-	+app: any, // TODO
+	+account: TAccountState,
 }
 
 export type TRootState = TGlobalState & {

@@ -2,9 +2,9 @@
 import {createEntityStore} from 'libs/entity-manager/core'
 import {oysterRequestFetchTask} from './api'
 
-const ProjectsStore = createEntityStore({
+const TasksStore = createEntityStore({
 	fetch: oysterRequestFetchTask,
-	cacheExpiration: Infinity,
 })
+window.TasksStore = TasksStore
 
-export default ProjectsStore
+export default TasksStore

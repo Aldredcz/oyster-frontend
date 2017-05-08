@@ -4,7 +4,7 @@ import {oysterRequestFetchUser} from './api'
 
 const UsersStore = createEntityStore({
 	fetch: oysterRequestFetchUser,
-	cacheExpiration: Infinity,
 })
+window.UsersStore = UsersStore
 
 export default UsersStore

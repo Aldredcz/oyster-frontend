@@ -12,6 +12,8 @@ import store from 'core/store'
 
 import {getAuthorizationData} from 'core/authorization'
 
+import AccountWrapper from 'core/component/wrappers/AccountWrapper'
+
 const Login = Loadable({
 	loader: () => import('modules/Login/component').then((m) => m.default),
 	webpackRequireWeakId: () => require.resolveWeak('modules/Login/component'),
@@ -44,6 +46,24 @@ class StandardLayout extends React.Component<void, *, void> {
 	}
 }
 
+function addStandardLayout (elem: React$Element<*>): * {
+	return (
+		<StandardLayout>
+			{elem}
+		</StandardLayout>
+	)
+}
+
+function addAccountWrapper (elem: React$Element<*>): * {
+	const AccountWrapperAny: any = AccountWrapper
+
+	return (
+		<AccountWrapperAny>
+			{elem}
+		</AccountWrapperAny>
+	)
+}
+
 export default class App extends React.Component<void, void, void> {
 	render () {
 		const isLogged = Boolean(getAuthorizationData().token)
@@ -65,11 +85,7 @@ export default class App extends React.Component<void, void, void> {
 							<Route path='/signup' component={Signup} />
 							<ACLRoute
 								path='/dashboard'
-								render={() =>
-									<StandardLayout>
-										<Dashboard />
-									</StandardLayout>
-								}
+								render={() => addAccountWrapper(addStandardLayout(<Dashboard/>))}
 							/>
 						</div>
 					</Router>
