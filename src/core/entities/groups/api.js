@@ -8,8 +8,9 @@ export function oysterRequestFetchGroup (
 	uuid: string,
 	fields: Array<TGroupField>,
 ): Promise<TGroup> {
-	return request(`${SETTINGS.oysterApi}/group/${uuid}`).then(
-		(response) => response.json(),
-		// TODO: error handling
-	)
+	return request(`${SETTINGS.oysterApi}/group/${uuid}?fields=${fields.join(',')}`)
+		.then(
+			(response) => response.json(),
+			// TODO: error handling
+		)
 }
