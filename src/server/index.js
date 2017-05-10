@@ -20,15 +20,6 @@ app.route('/favicon.ico')
 		res.end()
 	})
 
-const pageRouter = (req, res) => {
-	res.render('main', {
-		env: process.env.NODE_ENV,
-		buildHash: process.env.BUILD_HASH,
-		PROJECT_CONSTANTS,
-	})
-}
-
-app.route('/(:route)?').get(pageRouter)
 app.use(`${PROJECT_CONSTANTS.BE_PROXY_PREFIX}/`, (req, res) => {
 	const deployConfig = fs.readJSONFileSync(path.join(__dirname, 'deployConfigs', `${process.env.DEPLOY_CONFIG}.json`))
 
@@ -38,6 +29,16 @@ app.use(`${PROJECT_CONSTANTS.BE_PROXY_PREFIX}/`, (req, res) => {
 	console.log('[BE PROXY]', url)
 	req.pipe(request(url)).pipe(res)
 })
+
+const pageRouter = (req, res) => {
+	res.render('main', {
+		env: process.env.NODE_ENV,
+		buildHash: process.env.BUILD_HASH,
+		PROJECT_CONSTANTS,
+	})
+}
+
+app.route('/*').get(pageRouter)
 
 http.createServer(app).listen(app.get('port'), () => {
 	console.log(`[EXPRESS] Server listening on port ${app.get('port')}`)

@@ -51,9 +51,14 @@ export default class AccountWrapper extends React.Component<void, TProps, void> 
 	}
 
 	render () {
+		const {uuid, usersByIds, groupsByIds} = this.props
+
+		if (!uuid || !usersByIds || !groupsByIds) {
+			return <p>Loading account data...</p>
+		}
+
 		return (
 			this.props.children
 		)
 	}
 }
-

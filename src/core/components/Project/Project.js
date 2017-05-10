@@ -1,11 +1,17 @@
 // @flow
 import React from 'react'
+import {Link} from 'react-router-dom'
 import {connectEntity} from 'libs/entity-manager/react'
 
 import {ProjectsStore} from 'core/entities/projects'
 import type {TProject} from 'core/entities/projects'
 
 import TaskPreviewBox from 'core/components/Task/TaskPreviewBox'
+
+type TProps = TProject & {
+	loading?: boolean,
+}
+
 
 @connectEntity({
 	entityStore: ProjectsStore,
@@ -14,15 +20,21 @@ import TaskPreviewBox from 'core/components/Task/TaskPreviewBox'
 	mapStateToProps: (entityState, loadingState, updatingState) => ({
 		name: entityState.name,
 		tasksByIds: entityState.tasksByIds,
+		loading: Object.values(loadingState).some(Boolean),
 	}),
 })
-export default class Project extends React.Component<*, TProject, *> {
+export default class Project extends React.Component<void, TProps, void> {
 	render () {
-		const {uuid, name, tasksByIds} = this.props
+		const {uuid, name, tasksByIds, loading} = this.props
 
 		return (
 			<div>
-				<h1 title={uuid}>{name || '[unnamed project]'}</h1>
+				<Link to={`/project/${uuid}`}>
+						{loading
+						? <h1>{uuid} <small>loading...</small></h1>
+						: <h1 title={uuid}>{name || '[unnamed project]'}</h1>
+					}
+				</Link>
 				{tasksByIds && (
 					<div className='tasks' style={{width: '100%', float: 'left'}}>
 						{tasksByIds.length === 0 && 'No tasks!'}

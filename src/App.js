@@ -35,6 +35,13 @@ const Dashboard = Loadable({
 		module.hot.accept('modules/Dashboard/component', callback)
 	},
 })
+const ProjectDetail = Loadable({
+	loader: () => import('modules/ProjectDetail/component').then((m) => m.default),
+	webpackRequireWeakId: () => require.resolveWeak('modules/ProjectDetail/component'),
+	hotReload: (callback) => {
+		module.hot.accept('modules/ProjectDetail/component', callback)
+	},
+})
 
 class StandardLayout extends React.Component<void, *, void> {
 	render () {
@@ -46,7 +53,7 @@ class StandardLayout extends React.Component<void, *, void> {
 	}
 }
 
-function addStandardLayout (elem: React$Element<*>): * {
+function addStandardLayout (elem: React$Element<any>): React$Element<any> {
 	return (
 		<StandardLayout>
 			{elem}
@@ -54,7 +61,7 @@ function addStandardLayout (elem: React$Element<*>): * {
 	)
 }
 
-function addAccountWrapper (elem: React$Element<*>): * {
+function addAccountWrapper (elem: React$Element<any>): React$Element<any> {
 	const AccountWrapperAny: any = AccountWrapper
 
 	return (
@@ -86,6 +93,12 @@ export default class App extends React.Component<void, void, void> {
 							<ACLRoute
 								path='/dashboard'
 								render={() => addAccountWrapper(addStandardLayout(<Dashboard/>))}
+							/>
+							<ACLRoute
+								path='/project/:uuid'
+								render={({match}) => addAccountWrapper(addStandardLayout(
+									<ProjectDetail uuid={match.params.uuid} />,
+								))}
 							/>
 						</div>
 					</Router>

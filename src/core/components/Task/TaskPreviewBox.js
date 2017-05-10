@@ -40,10 +40,9 @@ class OwnerIco extends React.Component<void, TUser, void> {
 @connectEntity({
 	entityStore: TasksStore,
 	id: (props) => props.uuid,
-	fields: ['name', 'status', 'ownersByIds'],
+	fields: ['name', 'ownersByIds'],
 	mapStateToProps: (entityState, loadingState, updatingState) => ({
 		name: entityState.name,
-		status: entityState.status,
 		ownersByIds: entityState.ownersByIds,
 	}),
 })
