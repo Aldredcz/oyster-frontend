@@ -7,6 +7,7 @@ const initialState: TAccountState = {
 	name: null,
 	usersByIds: null,
 	groupsByIds: null,
+	projectsByIds: null,
 }
 
 export default function accountReducer (

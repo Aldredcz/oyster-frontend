@@ -2,11 +2,11 @@
 export type TGroup = {
 	uuid: string,
 	name?: string,
-	tasks?: Array<string>,
-	owners?: Array<string>,
+	tasksByIds?: Array<string>,
+	ownersByIds?: Array<string>,
 	deadline?: string,
 	archived?: boolean,
-	accounts?: Array<string>,
+	accountsByIds?: Array<string>,
 }
 
 export type TGroupField = $Keys<TGroup>

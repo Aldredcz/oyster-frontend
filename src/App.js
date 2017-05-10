@@ -12,7 +12,7 @@ import store from 'core/store'
 
 import {getAuthorizationData} from 'core/authorization'
 
-import AccountWrapper from 'core/component/wrappers/AccountWrapper'
+import AccountWrapper from 'core/components/wrappers/AccountWrapper'
 
 const Login = Loadable({
 	loader: () => import('modules/Login/component').then((m) => m.default),

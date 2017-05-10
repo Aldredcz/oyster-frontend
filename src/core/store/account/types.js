@@ -4,6 +4,7 @@ export type TAccountState = {
 	+name: ?string,
 	+usersByIds: ?Array<string>,
 	+groupsByIds: ?Array<string>,
+	+projectsByIds: ?Array<string>,
 }
 export type TSetDataPayloadVariants = {
 	string: {
@@ -11,7 +12,7 @@ export type TSetDataPayloadVariants = {
 		value: ?string,
 	},
 	arrayOfStrings: {
-		key: 'usersByIds' | 'groupsByIds',
+		key: 'usersByIds' | 'groupsByIds' | 'projectsByIds',
 		value: ?Array<string>,
 	},
 }

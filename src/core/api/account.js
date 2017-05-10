@@ -2,19 +2,16 @@
 import request from 'core/utils/request'
 import SETTINGS from 'core/SETTINGS'
 
+import type {TAccount} from 'core/entities/accounts'
 import {UsersStore} from 'core/entities/users'
 import type {TUser} from 'core/entities/users'
 import {GroupsStore} from 'core/entities/groups'
 import type {TGroup} from 'core/entities/groups'
 import {ProjectsStore} from 'core/entities/projects'
-import type {TProjectFromApi} from 'core/entities/projects'
+import type {TProjectFromApi, TProject} from 'core/entities/projects'
 import {TasksStore} from 'core/entities/tasks'
-import type {TTask} from 'core/entities/tasks'
+import type {TTaskFromApi, TTask} from 'core/entities/tasks'
 
-type TAccount = {
-	uuid: string,
-	name?: string,
-}
 
 export function oysterRequestFetchAccount (): Promise<TAccount> {
 	return request(`${SETTINGS.oysterApi}/account/mine`).then(
@@ -58,17 +55,22 @@ export function oysterRequestFetchAccountProjects (): Promise<Array<string>> {
 		(response) => response.json(),
 		// TODO: error handling
 	).then(
-		(projects: Array<TProjectFromApi>) => {
-			projects.forEach((projectFromApi) => {
-				projectFromApi.tasks = projectFromApi.tasks || []
-				projectFromApi.tasks.forEach((task: TTask) => {
+		(projects: Array<TProjectFromApi>): Array<string> => {
+			projects.forEach((projectFromApi: TProjectFromApi) => {
+				const tasks = projectFromApi.tasks || []
+				tasks.forEach((taskFromApi: TTaskFromApi) => {
+					const task: TTask = {
+						...taskFromApi,
+						ownersByIds: taskFromApi.owners,
+					}
 					TasksStore.updateEntity(task.uuid, task, {updateOnServer: false})
 				})
 
-				const project: any = { // in fact its valid TProject, flow fails here to understand
+				const project: TProject = {
 					...projectFromApi,
-					tasks: projectFromApi.tasks && projectFromApi.tasks.map((task) => task.uuid),
+					tasksByIds: tasks.map((task) => task.uuid),
 				}
+
 				ProjectsStore.updateEntity(project.uuid, project, {updateOnServer: false})
 			})
 
