@@ -2,14 +2,13 @@
 import React from 'react'
 import ACLRoute from 'core/utils/ACLRoute'
 import {Router} from 'react-router'
+import {Provider as MobxProvider} from 'mobx-react'
 import {Route, Redirect} from 'react-router-dom'
-import {Provider} from 'react-redux'
-import DevTools from 'core/store/DevTools'
 import Loadable from 'libs/loadable'
 
 import browserHistory from 'core/utils/browserHistory'
-import store from 'core/store'
 
+import accountStore from 'core/store/account'
 import {getAuthorizationData} from 'core/authorization'
 
 import AccountWrapper from 'core/components/wrappers/AccountWrapper'
@@ -76,7 +75,7 @@ export default class App extends React.Component<void, void, void> {
 		const isLogged = Boolean(getAuthorizationData().token)
 
 		return (
-			<Provider store={store}>
+			<MobxProvider accountStore={accountStore}>
 				<div>
 					<Router history={browserHistory}>
 						<div className='wrapper'>
@@ -102,9 +101,8 @@ export default class App extends React.Component<void, void, void> {
 							/>
 						</div>
 					</Router>
-					{__DEV__ && DevTools && <DevTools />}
 				</div>
-			</Provider>
+			</MobxProvider>
 		)
 	}
 }

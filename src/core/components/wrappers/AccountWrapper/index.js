@@ -1,49 +1,41 @@
 // @flow
 import React from 'react'
-import {connect} from 'react-redux'
+import {inject, observer} from 'mobx-react'
 
-import type {TGlobalState} from 'core/store/types'
-import type {TAccountState} from 'core/store/account/types'
-import {setData} from 'core/store/account/account-actions'
+import type {TAccountStore} from 'core/store/account'
 
 import {oysterRequestFetchAccount, oysterRequestFetchAccountGroups, oysterRequestFetchAccountUsers} from 'core/api/account'
 
-type TProps = TAccountState & {
-	setData: typeof setData,
+type TProps = {
+	accountStore: TAccountStore,
 	children: React$Element<*>,
 }
 
-@connect(
-	(state: TGlobalState) => ({...state.account}),
-	{
-		setData,
-	},
-)
+@inject('accountStore') @observer
 export default class AccountWrapper extends React.Component<void, TProps, void> {
 	componentWillMount () {
-		const {uuid, usersByIds, groupsByIds, setData} = this.props
+		const {accountStore} = this.props
 
-		if (!uuid) {
+		if (!accountStore.uuid) {
 			oysterRequestFetchAccount().then(
 				({uuid, name}) => {
-					setData({key: 'uuid', value: uuid})
-					setData({key: 'name', value: name})
+					accountStore.setUuidAndName(uuid, name)
 				},
 				// TODO: handle error
 			)
 		}
-		if (!usersByIds) {
+		if (!accountStore.usersByIds) {
 			oysterRequestFetchAccountUsers().then(
 				(usersByIds) => {
-					setData({key: 'usersByIds', value: usersByIds})
+					accountStore.setUsersByIds(usersByIds)
 				},
 				// TODO: handle error
 			)
 		}
-		if (!groupsByIds) {
+		if (!accountStore.groupsByIds) {
 			oysterRequestFetchAccountGroups().then(
 				(groupsByIds) => {
-					setData({key: 'groupsByIds', value: groupsByIds})
+					accountStore.setGroupsByIds(groupsByIds)
 				},
 				// TODO: handle error
 			)
@@ -51,7 +43,7 @@ export default class AccountWrapper extends React.Component<void, TProps, void> 
 	}
 
 	render () {
-		const {uuid, usersByIds, groupsByIds} = this.props
+		const {accountStore: {uuid, usersByIds, groupsByIds}} = this.props
 
 		if (!uuid || !usersByIds || !groupsByIds) {
 			return <p>Loading account data...</p>

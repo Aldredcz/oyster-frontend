@@ -21,7 +21,8 @@ module.exports = (params) => {
 				'react-dom',
 				'react-router',
 				'react-router-dom',
-				'redux',
+				'mobx',
+				'mobx-react',
 			],
 		},
 		output: {

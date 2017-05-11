@@ -3,45 +3,23 @@ import React from 'react'
 import URI from 'urijs'
 import {withRouter} from 'react-router-dom'
 import type {Location} from 'react-router'
-import {connect} from 'react-redux'
+import {runInAction} from 'mobx'
+import {inject, observer} from 'mobx-react'
 
-import type {TSignupState, TSignupFormField} from '../store/types'
-import type {TSignupModuleState} from 'core/store/types'
+import type {TSignupStore} from '../store'
+import type {TSignupFormField} from '../store/types'
 
 import {validateField, validatePasswords} from '../core/validation'
-import {setFormValue, setFormDirty, setNextStep, submitForm, setInviteToken, setFormDisabled} from '../store/signup-actions'
 
 import SignupFormField from './SignupFormField'
 
 type TProps = {
 	+location: Location,
-	+step: $PropertyType<TSignupState, 'step'>,
-	+formData: $PropertyType<TSignupState, 'formData'>,
-	+formMetadata: $PropertyType<TSignupState, 'formMetadata'>,
-	+setFormValue: typeof setFormValue,
-	+setFormDirty: typeof setFormDirty,
-	+setNextStep: typeof setNextStep,
-	+submitForm: typeof submitForm,
-	+setInviteToken: typeof setInviteToken,
-	+setFormDisabled: typeof setFormDisabled,
+	+signupStore: TSignupStore,
 }
 
-@connect(
-	(state: TSignupModuleState) => ({
-		step: state.signup.step,
-		formData: state.signup.formData,
-		formMetadata: state.signup.formMetadata,
-	}),
-	{
-		setFormValue,
-		setFormDirty,
-		setNextStep,
-		submitForm,
-		setInviteToken,
-		setFormDisabled,
-	},
-)
 @withRouter
+@inject('signupStore', 'accountStore') @observer
 export default class Signup extends React.Component<void, TProps, void> {
 	static fieldsConfig: {[key: TSignupFormField]: {type: string, title: string}} = {
 		name: {
@@ -67,57 +45,45 @@ export default class Signup extends React.Component<void, TProps, void> {
 	}
 
 	componentWillMount () {
+		const {signupStore} = this.props
 		const query = URI.parseQuery(this.props.location.search)
 
 		if (!query.invite) {
 			alert('Nemas invite token, chod dopice. TODO: make this more user friendly :D')
 		} else {
-			this.props.setInviteToken({
-				inviteToken: query.invite,
-			})
+			signupStore.setInviteToken(query.invite)
 		}
 
 		if (query.email) {
-			this.props.setFormValue({
-				field: 'email',
-				value: query.email,
-			})
-			this.props.setFormDisabled({
-				field: 'email',
-				value: true,
+			runInAction('setPredefinedEmail', () => {
+				signupStore.setFormValue('email', query.email)
+				signupStore.setFormDisabled('email', true)
 			})
 		}
-
 	}
 
 	handleChange = (field: TSignupFormField, value: string) => {
-		this.props.setFormValue({
-			field,
-			value,
-		})
+		this.props.signupStore.setFormValue(field, value)
 	}
 
 	handleBlur = (field: TSignupFormField) => {
-		this.props.setFormDirty({
-			field,
-			value: true,
-		})
+		this.props.signupStore.setFormDirty(field, true)
 	}
 
 	nextStep = (ev: Event) => {
 		ev.preventDefault()
 
-		this.props.setNextStep()
+		this.props.signupStore.setNextStep()
 	}
 
 	handleFormSubmit = (ev: Event) => {
 		ev.preventDefault()
 
-		this.props.submitForm()
+		this.props.signupStore.submitForm()
 	}
 
 	renderStep1 () {
-		const {formData, formMetadata} = this.props
+		const {signupStore: {formData, formMetadata}} = this.props
 		const fields: Array<TSignupFormField> = ['name', 'surname', 'email']
 		const isWholeStepValid = fields.every(
 			(fieldId) => !validateField(fieldId, formData[fieldId]),
@@ -149,7 +115,7 @@ export default class Signup extends React.Component<void, TProps, void> {
 	}
 
 	renderStep2 () {
-		const {formData, formMetadata} = this.props
+		const {signupStore: {formData, formMetadata}} = this.props
 		const fields: Array<TSignupFormField> = ['password', 'passwordConfirm']
 		const passwordsMatchValidation = validatePasswords(formData)
 		const isWholeStepValid = !passwordsMatchValidation && fields.every(
@@ -191,7 +157,7 @@ export default class Signup extends React.Component<void, TProps, void> {
 	}
 
 	render () {
-		const {step} = this.props
+		const {signupStore: {step}} = this.props
 
 		return (
 			<div data-comment='layout and shit'>

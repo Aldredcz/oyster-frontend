@@ -1,36 +1,27 @@
 // @flow
 import React from 'react'
 import browserHistory from 'core/utils/browserHistory'
-import {connect} from 'react-redux'
+import {observer, inject} from 'mobx-react'
 
 import {oysterRequestFetchAccountProjects} from 'core/api/account'
-import type {TGlobalState} from 'core/store/types'
-import type {TAccountState} from 'core/store/account/types'
-import {setData} from 'core/store/account/account-actions'
+import type {TAccountStore} from 'core/store/account'
 
 import {removeAuthorizationData} from 'core/authorization'
 
 import Project from 'core/components/Project/Project'
 
-type TProps = TAccountState & {
-	setData: typeof setData,
+type TProps = {
+	accountStore: TAccountStore,
 }
 
-@connect(
-	(state: TGlobalState) => ({projectsByIds: state.account.projectsByIds}),
-	{
-		setData,
-	},
-)
+@inject('accountStore') @observer
 export default class Dashboard extends React.Component<void, TProps, void> {
 	componentWillMount () {
-		const {projectsByIds, setData} = this.props
+		const {accountStore} = this.props
 
-		if (!projectsByIds) {
+		if (!accountStore.projectsByIds) {
 			oysterRequestFetchAccountProjects().then(
-				(projectsByIds) => {
-					setData({key: 'projectsByIds', value: projectsByIds})
-				},
+				(data) => accountStore.setProjectsByIds(data),
 				// TODO: handle error
 			)
 		}
@@ -44,7 +35,7 @@ export default class Dashboard extends React.Component<void, TProps, void> {
 	}
 
 	render () {
-		const {projectsByIds} = this.props
+		const {accountStore: {projectsByIds}} = this.props
 
 		return (
 			<div>

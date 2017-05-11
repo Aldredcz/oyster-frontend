@@ -1,6 +1,6 @@
 // @flow
 import {isEmail, isPassword} from 'libs/validation/validators'
-import type {TSignupFormField, TSignupState} from '../store/types'
+import type {TSignupFormField, ISignupStoreShape} from '../store/types'
 
 export function validateField (
 	field: TSignupFormField,
@@ -24,7 +24,7 @@ export function validateField (
 	}
 }
 
-export function validatePasswords (formData: $PropertyType<TSignupState, 'formData'>): ?string {
+export function validatePasswords (formData: $PropertyType<ISignupStoreShape, 'formData'>): ?string {
 	if (formData.password !== formData.passwordConfirm) {
 		return 'Passwords do not match'
 	}
