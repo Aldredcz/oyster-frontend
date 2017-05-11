@@ -1,2 +1,2 @@
 // @flow
-export type {TAccount} from './types'
+export type {TAccount, TAccountFromApi} from './types'

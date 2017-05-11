@@ -1,7 +1,7 @@
 // @flow
 import type {TTaskFromApi} from 'core/entities/tasks'
-/*import type {TUser} from 'core/entities/users'
-import type {TAccount} from 'core/entities/accounts'*/
+import type {TUserFromApi} from 'core/entities/users'
+import type {TAccountFromApi} from 'core/entities/accounts'
 
 export type TProjectCommon = {
 	uuid: string,
@@ -17,9 +17,9 @@ export type TProject = TProjectCommon & {
 }
 
 export type TProjectFromApi = TProjectCommon & {
-	accounts?: Array<string>,
+	accounts?: Array<TUserFromApi>,
 	tasks?: Array<TTaskFromApi>,
-	owners?: Array<string>,
+	owners?: Array<TAccountFromApi>,
 }
 
 export type TProjectField = $Keys<TProject>

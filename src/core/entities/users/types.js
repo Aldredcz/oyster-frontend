@@ -1,4 +1,6 @@
 // @flow
+import type {TAccountFromApi} from 'core/entities/accounts'
+
 export type TUserCommon = {
 	uuid: string,
 	name?: string,
@@ -10,9 +12,8 @@ export type TUser = TUserCommon & {
 	accountsByIds?: Array<string>,
 }
 
-
 export type TUserFromApi = TUserCommon & {
-	accounts?: Array<string>,
+	accounts?: Array<TAccountFromApi>,
 }
 
 export type TUserField = $Keys<TUser>

@@ -13,8 +13,8 @@ export function processProjectFromApi (projectFromApi: TProjectFromApi): TProjec
 		tasksByIds: projectFromApi.tasks && projectFromApi.tasks.map(
 			(taskFromApi) => processTaskFromApi(taskFromApi).uuid,
 		),
-		accountsById: projectFromApi.accounts,
-		ownersById: projectFromApi.owners,
+		accountsById: projectFromApi.accounts && projectFromApi.accounts.map((a) => a.uuid),
+		ownersById: projectFromApi.owners && projectFromApi.owners.map((u) => u.uuid),
 	}
 
 	ProjectsStore.updateEntity.locally(project.uuid, project)

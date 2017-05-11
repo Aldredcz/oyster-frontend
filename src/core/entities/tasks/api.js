@@ -8,7 +8,7 @@ import type {TTask, TTaskFromApi, TTaskField} from './types'
 export function processTaskFromApi (taskFromApi: TTaskFromApi): TTask {
 	const task: TTask = {
 		...taskFromApi,
-		ownersByIds: taskFromApi.owners,
+		ownersByIds: taskFromApi.owners && taskFromApi.owners.map((u) => u.uuid),
 	}
 
 	TasksStore.updateEntity.locally(task.uuid, task)

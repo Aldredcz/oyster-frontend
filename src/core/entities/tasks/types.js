@@ -1,4 +1,6 @@
 // @flow
+import type {TUserFromApi} from 'core/entities/users'
+
 export type TTaskCommon = {
 	uuid: string,
 	name?: string,
@@ -11,8 +13,7 @@ export type TTask = TTaskCommon & {
 }
 
 export type TTaskFromApi = TTaskCommon & {
-	owners?: Array<string>,
+	owners?: Array<TUserFromApi>,
 }
-
 
 export type TTaskField = $Keys<TTask>
