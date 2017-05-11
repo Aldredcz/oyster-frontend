@@ -9,12 +9,15 @@ import {processTaskFromApi} from 'core/entities/tasks'
 
 export function processProjectFromApi (projectFromApi: TProjectFromApi): TProject {
 	const project: TProject = {
-		...projectFromApi,
+		uuid: projectFromApi.uuid,
+		name: projectFromApi.name || null,
+		deadline: projectFromApi.deadline || null,
+		archived: projectFromApi.archived || null,
 		tasksByIds: projectFromApi.tasks && projectFromApi.tasks.map(
 			(taskFromApi) => processTaskFromApi(taskFromApi).uuid,
 		),
-		accountsById: projectFromApi.accounts && projectFromApi.accounts.map((a) => a.uuid),
-		ownersById: projectFromApi.owners && projectFromApi.owners.map((u) => u.uuid),
+		accountsByIds: projectFromApi.accounts && projectFromApi.accounts.map((a) => a.uuid),
+		ownersByIds: projectFromApi.owners && projectFromApi.owners.map((u) => u.uuid),
 	}
 
 	ProjectsStore.updateEntity.locally(project.uuid, project)

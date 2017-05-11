@@ -8,9 +8,9 @@ import type {TProject} from 'core/entities/projects'
 
 import TaskPreviewBox from 'core/components/Task/TaskPreviewBox'
 
-type TProps = TProject & {
-	loading?: boolean,
-}
+type TProps = $Shape<TProject & {
+	loading: boolean,
+}>
 
 
 @connectEntity({

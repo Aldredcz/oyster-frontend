@@ -1,7 +1,7 @@
 // @flow
 export type TSignupFormMetadata = {|
 	dirty: boolean,
-	disabled?: boolean,
+	disabled: boolean,
 |}
 
 export type TSignupFormField =

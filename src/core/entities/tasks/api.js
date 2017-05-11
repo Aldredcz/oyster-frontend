@@ -7,7 +7,10 @@ import type {TTask, TTaskFromApi, TTaskField} from './types'
 
 export function processTaskFromApi (taskFromApi: TTaskFromApi): TTask {
 	const task: TTask = {
-		...taskFromApi,
+		uuid: taskFromApi.uuid,
+		name: taskFromApi.name || null,
+		deadline: taskFromApi.deadline || null,
+		brief: taskFromApi.brief || null,
 		ownersByIds: taskFromApi.owners && taskFromApi.owners.map((u) => u.uuid),
 	}
 

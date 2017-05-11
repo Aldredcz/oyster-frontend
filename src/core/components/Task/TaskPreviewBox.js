@@ -7,7 +7,6 @@ import type {TTask} from 'core/entities/tasks'
 import {UsersStore} from 'core/entities/users'
 import type {TUser} from 'core/entities/users'
 
-
 @connectEntity({
 	entityStore: UsersStore,
 	id: (props) => props.uuid,
@@ -18,7 +17,7 @@ import type {TUser} from 'core/entities/users'
 		email: entityState.email,
 	}),
 })
-class OwnerIco extends React.Component<void, TUser, void> {
+class OwnerIco extends React.Component<void, $Shape<TUser>, void> {
 	render () {
 		const {uuid, name, surname, email} = this.props
 
@@ -46,7 +45,7 @@ class OwnerIco extends React.Component<void, TUser, void> {
 		ownersByIds: entityState.ownersByIds,
 	}),
 })
-export default class TaskPreviewBox extends React.Component<void, TTask, void> {
+export default class TaskPreviewBox extends React.Component<void, $Shape<TTask>, void> {
 	render () {
 		const {uuid, name, ownersByIds} = this.props
 

@@ -3,10 +3,10 @@ import request from 'core/utils/request'
 import SETTINGS from 'core/SETTINGS'
 
 import type {TAccount} from 'core/entities/accounts'
-import {UsersStore} from 'core/entities/users'
-import type {TUser} from 'core/entities/users'
-import {GroupsStore} from 'core/entities/groups'
-import type {TGroup} from 'core/entities/groups'
+import {processUserFromApi} from 'core/entities/users'
+import type {TUserFromApi} from 'core/entities/users'
+import {processGroupFromApi} from 'core/entities/groups'
+import type {TGroupFromApi} from 'core/entities/groups'
 import {processProjectFromApi} from 'core/entities/projects'
 import type {TProjectFromApi} from 'core/entities/projects'
 
@@ -22,30 +22,18 @@ export function oysterRequestFetchAccountUsers (): Promise<Array<string>> {
 	return request(`${SETTINGS.oysterApi}/account/users`).then(
 		(response) => response.json(),
 		// TODO: error handling
-	).then(
-		(users: Array<TUser>) => {
-			users.forEach((user) => {
-				UsersStore.updateEntity.locally(user.uuid, user)
-			})
-
-			return users.map((user) => user.uuid)
-		},
-	)
+	).then((users: Array<TUserFromApi>) => {
+		return users.map((user) => processUserFromApi(user).uuid)
+	})
 }
 
 export function oysterRequestFetchAccountGroups (): Promise<Array<string>> {
 	return request(`${SETTINGS.oysterApi}/account/groups`).then(
 		(response) => response.json(),
 		// TODO: error handling
-	).then(
-		(groups: Array<TGroup>) => {
-			groups.forEach((group) => {
-				GroupsStore.updateEntity.locally(group.uuid, group)
-			})
-
-			return groups.map((group) => group.uuid)
-		},
-	)
+	).then((groups: Array<TGroupFromApi>) => {
+		return groups.map((group) => processGroupFromApi(group).uuid)
+	})
 }
 
 export function oysterRequestFetchAccountProjects (): Promise<Array<string>> {
