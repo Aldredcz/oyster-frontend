@@ -17,7 +17,7 @@ export function processProjectFromApi (projectFromApi: TProjectFromApi): TProjec
 		ownersById: projectFromApi.owners,
 	}
 
-	ProjectsStore.updateEntity(project.uuid, project, {updateOnServer: false})
+	ProjectsStore.updateEntity.locally(project.uuid, project)
 
 	return project
 }

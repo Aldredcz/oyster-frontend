@@ -11,7 +11,7 @@ export function processTaskFromApi (taskFromApi: TTaskFromApi): TTask {
 		ownersByIds: taskFromApi.owners,
 	}
 
-	TasksStore.updateEntity(task.uuid, task, {updateOnServer: false})
+	TasksStore.updateEntity.locally(task.uuid, task)
 
 	return task
 }

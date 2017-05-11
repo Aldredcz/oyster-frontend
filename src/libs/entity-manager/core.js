@@ -23,7 +23,7 @@ type TParams = {
 	+fetch?: (entityId: TEntityId, fields: TEntityFields) => Promise<any>,
 	+fetchAll?: (entityIds: TEntityIds, fields: TEntityFields) => Promise<any>,
 	+create?: (entityState: any) => Promise<any>,
-	+update?: (entityState: any) => Promise<any>,
+	+update?: (entityState: any, newState: any) => Promise<any>,
 	+remove?: (entityId: TEntityId) => Promise<any>,
 	+cacheExpiration?: number,
 	+stateReviver?: (entityState: any) => TObject,
@@ -223,6 +223,13 @@ export function createEntityStore (
 
 			notifyListeners(entityId, affectedFields)
 		})
+	}
+
+	updateEntity.locally = function updateEntityLocally (
+		entityId: TEntityId,
+		newState: any,
+	): Promise<any> {
+		return updateEntity(entityId, newState, {updateOnServer: false})
 	}
 
 	function subscribe (

@@ -25,7 +25,7 @@ export function oysterRequestFetchAccountUsers (): Promise<Array<string>> {
 	).then(
 		(users: Array<TUser>) => {
 			users.forEach((user) => {
-				UsersStore.updateEntity(user.uuid, user, {updateOnServer: false})
+				UsersStore.updateEntity.locally(user.uuid, user)
 			})
 
 			return users.map((user) => user.uuid)
@@ -40,7 +40,7 @@ export function oysterRequestFetchAccountGroups (): Promise<Array<string>> {
 	).then(
 		(groups: Array<TGroup>) => {
 			groups.forEach((group) => {
-				GroupsStore.updateEntity(group.uuid, group, {updateOnServer: false})
+				GroupsStore.updateEntity.locally(group.uuid, group)
 			})
 
 			return groups.map((group) => group.uuid)
