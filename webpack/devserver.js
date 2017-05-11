@@ -11,6 +11,7 @@ export default function (webpackConfig) {
 	return function (callback) {
 		new webpackDevServer(webpack(webpackConfig), {
 			hot: true,
+			headers: {'Access-Control-Allow-Origin': '*'},
 			publicPath: webpackConfig.output.publicPath,
 			// Remove console.log mess during watch.
 			stats: {
