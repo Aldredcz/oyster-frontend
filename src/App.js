@@ -3,6 +3,7 @@ import React from 'react'
 import ACLRoute from 'core/utils/ACLRoute'
 import {Router} from 'react-router'
 import {Provider as MobxProvider} from 'mobx-react'
+import MobxDevTools from 'mobx-react-devtools'
 import {Route, Redirect} from 'react-router-dom'
 import Loadable from 'libs/loadable'
 
@@ -101,6 +102,7 @@ export default class App extends React.Component<void, void, void> {
 							/>
 						</div>
 					</Router>
+					<MobxDevTools />
 				</div>
 			</MobxProvider>
 		)
