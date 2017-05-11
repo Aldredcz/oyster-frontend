@@ -51,7 +51,7 @@ export class SignupStore implements ISignupStoreShape {
 	}
 
 	@action setFormDirty (field: TSignupFormField, value: boolean) {
-		this.formMetadata[field].dirty = !value
+		this.formMetadata[field].dirty = value
 	}
 
 	@action setNextStep () {
