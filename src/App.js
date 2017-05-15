@@ -5,9 +5,12 @@ import {Router} from 'react-router'
 import {Provider as MobxProvider} from 'mobx-react'
 import MobxDevTools from 'mobx-react-devtools'
 import {Route, Redirect} from 'react-router-dom'
+import {Provider as FelaProvider, ThemeProvider} from 'react-fela'
 import Loadable from 'libs/loadable'
+import {visualTheme} from 'core/config/themes/theme'
 
 import browserHistory from 'core/utils/browserHistory'
+import {getRenderer, getMountNode} from 'core/config/fela'
 
 import accountStore from 'core/store/account'
 import {getAuthorizationData} from 'core/authorization'
@@ -77,44 +80,38 @@ export default class App extends React.Component<void, void, void> {
 
 		return (
 			<MobxProvider accountStore={accountStore}>
-				<div>
-					<Router history={browserHistory}>
-						<div className='wrapper'>
-							<Route
-								path='/'
-								exact={true}
-								render={() => isLogged
-									? <Redirect to='/dashboard' />
-									: <Redirect to='/login' />
-								}
-							/>
-							<Route path='/login' component={Login} />
-							<Route path='/signup' component={Signup} />
-							<ACLRoute
-								path='/dashboard'
-								render={() => addAccountWrapper(addStandardLayout(<Dashboard/>))}
-							/>
-							<ACLRoute
-								path='/project/:projectUuid/task/:taskUuid'
-								exact={true}
-								render={({match}) => addAccountWrapper(addStandardLayout(
-									<ProjectDetail
-										uuid={match.params.projectUuid}
-										selectedTaskUuid={match.params.taskUuid}
-									/>,
-								))}
-							/>
-							<ACLRoute
-								path='/project/:uuid'
-								exact={true}
-								render={({match}) => addAccountWrapper(addStandardLayout(
-									<ProjectDetail uuid={match.params.uuid} />,
-								))}
-							/>
+				<FelaProvider mountNode={getMountNode()} renderer={getRenderer()}>
+					<ThemeProvider theme={visualTheme}>
+						<div>
+							<Router history={browserHistory}>
+								<div className='wrapper'>
+									<Route
+										path='/'
+										exact={true}
+										render={() => isLogged
+											? <Redirect to='/dashboard' />
+											: <Redirect to='/login' />
+										}
+									/>
+									<Route path='/login' component={Login} />
+									<Route path='/signup' component={Signup} />
+									<ACLRoute
+										path='/dashboard'
+										render={() => addAccountWrapper(addStandardLayout(<Dashboard/>))}
+									/>
+									<ACLRoute
+										path='/project/:uuid'
+										exact={true}
+										render={({match}) => addAccountWrapper(addStandardLayout(
+											<ProjectDetail uuid={match.params.uuid} />,
+										))}
+									/>
+								</div>
+							</Router>
+							{MobxDevTools}
 						</div>
-					</Router>
-					<MobxDevTools />
-				</div>
+					</ThemeProvider>
+				</FelaProvider>
 			</MobxProvider>
 		)
 	}
