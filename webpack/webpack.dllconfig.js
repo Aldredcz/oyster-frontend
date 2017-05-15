@@ -13,6 +13,7 @@ module.exports = (params) => {
 
 	const config = {
 		cache: isDev,
+		devtool: isDev ? '#eval-source-map' : '#source-map',
 		entry: {
 			libs: [
 				'babel-polyfill',

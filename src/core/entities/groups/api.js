@@ -2,7 +2,7 @@
 import request from 'core/utils/request'
 import SETTINGS from 'core/SETTINGS'
 
-import GroupsStore from './store'
+import groupsStore from './store'
 import type {TGroup, TGroupFromApi, TGroupField} from './types'
 
 export function processGroupFromApi (groupFromApi: TGroupFromApi): TGroup {
@@ -11,16 +11,16 @@ export function processGroupFromApi (groupFromApi: TGroupFromApi): TGroup {
 		name: groupFromApi.name || undefined,
 	}
 
-	GroupsStore.updateEntity.locally(group.uuid, group)
+	groupsStore.setGroup(group.uuid, {data: group})
 
 	return group
 }
 
 export function oysterRequestFetchGroup (
 	uuid: string,
-	fields: Array<TGroupField>,
+	fields?: Array<TGroupField>,
 ): Promise<TGroup> {
-	return request(`${SETTINGS.oysterApi}/group/${uuid}?fields=${fields.join(',')}`)
+	return request(`${SETTINGS.oysterApi}/group/${uuid}`)
 		.then(
 			(response) => response.json(),
 			// TODO: error handling

@@ -12,6 +12,8 @@ interface IRender {
 	(AppComponent: ReactClass<any>): void
 }
 
+//useStrict(true)
+
 const renderApp: IRender = (AppComponent) => {
 	ReactDOM.render((
 			<AppContainer>

@@ -2,7 +2,7 @@
 import request from 'core/utils/request'
 import SETTINGS from 'core/SETTINGS'
 
-import ProjectsStore from './store'
+import projectsStore from './store'
 import type {TProject, TProjectFromApi, TProjectField} from './types'
 
 import {processTaskFromApi} from 'core/entities/tasks'
@@ -20,17 +20,17 @@ export function processProjectFromApi (projectFromApi: TProjectFromApi): TProjec
 		ownersByIds: projectFromApi.owners && projectFromApi.owners.map((u) => u.uuid),
 	}
 
-	ProjectsStore.updateEntity.locally(project.uuid, project)
+	projectsStore.setProject(project.uuid, {data: project})
 
 	return project
 }
 
 export function oysterRequestFetchProject (
 	uuid: string,
-	fields: Array<TProjectField>,
+	fields?: Array<TProjectField>,
 ): Promise<TProject> {
 	// TODO; change URL - more info: https://getoyster.slack.com/archives/D4XJBLQAY/p1494430385106624
-	return request(`${SETTINGS.oysterApi}/project/${uuid}/tasks?fields=${fields.join(',')}`)
+	return request(`${SETTINGS.oysterApi}/project/${uuid}/tasks`)
 		.then(
 			(response) => response.json(),
 			// TODO: error handling

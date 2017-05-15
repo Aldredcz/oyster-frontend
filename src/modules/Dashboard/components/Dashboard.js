@@ -2,13 +2,23 @@
 import React from 'react'
 import browserHistory from 'core/utils/browserHistory'
 import {observer, inject} from 'mobx-react'
+import {Link} from 'react-router-dom'
 
 import {oysterRequestFetchAccountProjects} from 'core/api/account'
 import type {TAccountStore} from 'core/store/account'
 
 import {removeAuthorizationData} from 'core/authorization'
 
-import Project from 'core/components/Project/Project'
+import {projectFactory} from 'core/components/Project/Project'
+
+
+const Project = projectFactory({
+	titleRenderer: (title, props) => (
+		<Link to={`/project/${props.uuid}`}>
+			{title}
+		</Link>
+	),
+})
 
 type TProps = {
 	accountStore: TAccountStore,

@@ -1,28 +1,39 @@
 // @flow
 import React from 'react'
-import {connectEntity} from 'libs/entity-manager/react'
+import {observer} from 'mobx-react'
+import injectEntity from 'core/utils/mobx/entityInjector'
 
-import {TasksStore} from 'core/entities/tasks'
+import {tasksStore} from 'core/entities/tasks'
 import type {TTask} from 'core/entities/tasks'
 
 
-type TProps = TTask & {}
+type TProps = $Shape<{
+	uuid: string,
+	projectUuid: string,
+	task: TTask,
+}>
 
-@connectEntity({
-	entityStore: TasksStore,
+
+@injectEntity({
+	entityStore: tasksStore,
 	id: (props) => props.uuid,
-	fields: ['name'],
-	mapStateToProps: (entityState, loadingState, updatingState) => ({
-		name: entityState.name,
+	mapEntityToProps: (entity) => ({
+		task: entity.data,
 	}),
 })
-export default class Task extends React.Component<*, TProps, *> {
+@observer
+export default class TaskDetail extends React.Component<void, TProps, void> {
 	render () {
-		const {uuid, name} = this.props
+		const {uuid, name, brief} = this.props.task
 
 		return (
-			<h1><code>{uuid}</code>{name}</h1>
+			<div>
+				<h1 title={uuid}>{name}</h1>
+				<h4>Brief:</h4>
+				<div>
+					{brief}
+				</div>
+			</div>
 		)
 	}
 }
-

@@ -1,25 +1,26 @@
 // @flow
 import React from 'react'
-import {connectEntity} from 'libs/entity-manager/react'
+import {observer} from 'mobx-react'
+import injectEntity from 'core/utils/mobx/entityInjector'
+import {Link} from 'react-router-dom'
 
-import {TasksStore} from 'core/entities/tasks'
+import {tasksStore} from 'core/entities/tasks'
 import type {TTask} from 'core/entities/tasks'
-import {UsersStore} from 'core/entities/users'
+import {usersStore} from 'core/entities/users'
 import type {TUser} from 'core/entities/users'
 
-@connectEntity({
-	entityStore: UsersStore,
+
+@injectEntity({
+	entityStore: usersStore,
 	id: (props) => props.uuid,
-	fields: ['name', 'surname', 'email'],
-	mapStateToProps: (entityState, loadingState, updatingState) => ({
-		name: entityState.name,
-		surname: entityState.surname,
-		email: entityState.email,
+	mapEntityToProps: (entity) => ({
+		owner: entity.data,
 	}),
 })
-class OwnerIco extends React.Component<void, $Shape<TUser>, void> {
+@observer
+class OwnerIco extends React.Component<void, $Shape<{owner: TUser, uuid: string}>, void> {
 	render () {
-		const {uuid, name, surname, email} = this.props
+		const {uuid, name, surname, email} = this.props.owner
 
 		return (
 			<div title={uuid}>
@@ -35,23 +36,30 @@ class OwnerIco extends React.Component<void, $Shape<TUser>, void> {
 	}
 }
 
+type TProps = $Shape<{
+	task: TTask,
+	uuid: string,
+	projectUuid: string,
+}>
 
-@connectEntity({
-	entityStore: TasksStore,
+@injectEntity({
+	entityStore: tasksStore,
 	id: (props) => props.uuid,
-	fields: ['name', 'ownersByIds'],
-	mapStateToProps: (entityState, loadingState, updatingState) => ({
-		name: entityState.name,
-		ownersByIds: entityState.ownersByIds,
+	mapEntityToProps: (entity) => ({
+		task: entity.data,
 	}),
 })
-export default class TaskPreviewBox extends React.Component<void, $Shape<TTask>, void> {
+@observer
+export default class TaskPreviewBox extends React.Component<void, TProps, void> {
 	render () {
-		const {uuid, name, ownersByIds} = this.props
+		const {projectUuid, task} = this.props
+		const {uuid, name, ownersByIds} = task
 
 		return (
 			<div style={{border: '1px solid black', borderRadius: 5, padding: 10, margin: 10}}>
-				<h1 title={uuid}>{name}</h1>
+				<Link to={`/project/${projectUuid}/task/${uuid}`}>
+					<h1 title={uuid}>{name}</h1>
+				</Link>
 				{ownersByIds &&
 					ownersByIds.map((ownerId) => (
 						<OwnerIco key={ownerId} uuid={ownerId} />

@@ -2,7 +2,7 @@
 import request from 'core/utils/request'
 import SETTINGS from 'core/SETTINGS'
 
-import UsersStore from './store'
+import usersStore from './store'
 import type {TUser, TUserFromApi, TUserField} from './types'
 
 export function processUserFromApi (userFromApi: TUserFromApi): TUser {
@@ -14,16 +14,16 @@ export function processUserFromApi (userFromApi: TUserFromApi): TUser {
 		accountsByIds: userFromApi.accounts ? userFromApi.accounts.map((a) => a.uuid) : null,
 	}
 
-	UsersStore.updateEntity.locally(user.uuid, user)
+	usersStore.setUser(user.uuid, {data: user})
 
 	return user
 }
 
 export function oysterRequestFetchUser (
 	uuid: string,
-	fields: Array<TUserField>,
+	fields?: Array<TUserField>,
 ): Promise<TUser> {
-	return request(`${SETTINGS.oysterApi}/user/${uuid}?fields=${fields.join(',')}`)
+	return request(`${SETTINGS.oysterApi}/user/${uuid}`)
 		.then(
 			(response) => response.json(),
 			// TODO: error handling
