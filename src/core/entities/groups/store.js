@@ -25,7 +25,6 @@ class Group implements IGroupState {
 		data: $Shape<TGroup>,
 		{clearLoading = true}: {clearLoading: boolean} = {},
 	) {
-		//$FlowFixMe
 		Object.assign(this.data, data)
 
 		if (clearLoading) {

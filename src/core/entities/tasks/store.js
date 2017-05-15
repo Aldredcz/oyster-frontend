@@ -46,16 +46,16 @@ export class Task implements ITaskState {
 
 		this.data[field] = value
 
-		let request
+		let request: Promise<any>
 		switch (field) {
 			case 'name':
-				request = TaskAPI.oysterRequestTaskRename(this.data.uuid, value)
+				request = (TaskAPI.oysterRequestTaskRename(this.data.uuid, value): Promise<any>)
 				break
 			case 'brief':
-				request = TaskAPI.oysterRequestTaskBriefChange(this.data.uuid, value)
+				request = (TaskAPI.oysterRequestTaskBriefChange(this.data.uuid, value): Promise<any>)
 				break
 			case 'deadline':
-				request = TaskAPI.oysterRequestTaskDeadlineChange(this.data.uuid, value)
+				request = (TaskAPI.oysterRequestTaskDeadlineChange(this.data.uuid, value): Promise<any>)
 				break
 			default:
 				throw new Error(`Cannot update field '${field} in Task'`)
