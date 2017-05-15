@@ -10,7 +10,7 @@ interface IProjectState {
 	isLoading: boolean,
 }
 
-class Project implements IProjectState {
+export class Project implements IProjectState {
 	@observable data = {
 		uuid: '',
 		name: null,
@@ -35,6 +35,10 @@ class Project implements IProjectState {
 		if (clearLoading) {
 			this.isLoading = false
 		}
+	}
+
+	@action addNewTask (uuid: string) {
+		this.data.tasksByIds && this.data.tasksByIds.push(uuid)
 	}
 }
 

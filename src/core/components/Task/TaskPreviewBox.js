@@ -58,7 +58,7 @@ export default class TaskPreviewBox extends React.Component<void, TProps, void> 
 		return (
 			<div style={{border: '1px solid black', borderRadius: 5, padding: 10, margin: 10}}>
 				<Link to={`/project/${projectUuid}/task/${uuid}`}>
-					<h1 title={uuid}>{name}</h1>
+					<h1 title={uuid}>{name || '[unnamed]'}</h1>
 				</Link>
 				{ownersByIds &&
 					ownersByIds.map((ownerId) => (

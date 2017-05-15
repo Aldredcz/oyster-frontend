@@ -1,5 +1,5 @@
 // @flow
-import {oysterRequestFetchTask} from './api'
+import * as TaskAPI from './api'
 import type {TTask} from './types'
 import {observable, action} from 'mobx'
 
@@ -10,7 +10,7 @@ interface ITaskState {
 	isLoading: boolean,
 }
 
-class Task implements ITaskState {
+export class Task implements ITaskState {
 	@observable data = {
 		uuid: '',
 		name: null,
@@ -18,6 +18,7 @@ class Task implements ITaskState {
 		deadline: null,
 		completedAt: null,
 		ownersByIds: null,
+		actionsSet: null,
 	}
 	@observable isLoading = false
 
@@ -35,6 +36,37 @@ class Task implements ITaskState {
 		if (clearLoading) {
 			this.isLoading = false
 		}
+	}
+
+	@action updateField (field: $Keys<TTask>, value: any): Promise<any> {
+		const oldValue = (this.data: any)[field]
+		if (oldValue === value) {
+			return Promise.resolve(value)
+		}
+
+		this.data[field] = value
+
+		let request
+		switch (field) {
+			case 'name':
+				request = TaskAPI.oysterRequestTaskRename(this.data.uuid, value)
+				break
+			case 'brief':
+				request = TaskAPI.oysterRequestTaskBriefChange(this.data.uuid, value)
+				break
+			case 'deadline':
+				request = TaskAPI.oysterRequestTaskDeadlineChange(this.data.uuid, value)
+				break
+			default:
+				throw new Error(`Cannot update field '${field} in Task'`)
+		}
+
+		request.catch(() => {
+			alert(`Updating '${oldValue}' -> ${value} failed... Sorry.`)
+			this.data[field] = oldValue
+		})
+
+		return request
 	}
 }
 
@@ -63,7 +95,7 @@ export class TasksStore {
 		const newTask = this.setTask(uuid)
 
 		newTask.setLoading(true)
-		oysterRequestFetchTask(uuid)
+		TaskAPI.oysterRequestFetchTask(uuid)
 			.then((data) => {
 				newTask.setData(data)
 			})

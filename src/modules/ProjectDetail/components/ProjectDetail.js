@@ -10,7 +10,7 @@ import TaskDetail from 'core/components/Task/TaskDetail'
 
 type TProps = TProject & {
 	uuid: string,
-	selectedTaskUuid: string,
+	selectedTaskUuid?: string,
 }
 
 export default class ProjectDetail extends React.Component<void, TProps, void> {
@@ -23,6 +23,7 @@ export default class ProjectDetail extends React.Component<void, TProps, void> {
 				<Project uuid={uuid} />
 				{selectedTaskUuid && (
 					<TaskDetail
+						key={selectedTaskUuid}
 						uuid={selectedTaskUuid}
 						projectUuid={uuid}
 					/>
