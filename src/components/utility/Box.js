@@ -1,5 +1,5 @@
 // @flow
-import type {Color} from 'core/config/themes/types'
+import type {TColor} from 'core/config/themes/types'
 import PropTypes from 'prop-types'
 import React from 'react'
 import withTheme from './withTheme'
@@ -30,9 +30,9 @@ import withTheme from './withTheme'
 type TMaybeRhythm = number | string
 
 export type TBoxProps = {
-	as?: string | ((props: object) => React.Element<*>),
+	as?: string | ((props: Object) => React.Element<*>), // eslint-disable-line flowtype/no-weak-types
 	isReactNative?: boolean,
-	style?: object,
+	style?: Object,  // eslint-disable-line flowtype/no-weak-types
 
 	margin?: TMaybeRhythm,
 	marginHorizontal?: TMaybeRhythm,
@@ -73,7 +73,7 @@ export type TBoxProps = {
 	flexWrap?: 'wrap' | 'nowrap',
 	justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around',
 
-	backgroundColor?: Color,
+	backgroundColor?: TColor,
 	opacity?: number,
 	overflow?: 'visible' | 'hidden' | 'scroll',
 	position?: 'absolute' | 'relative',
@@ -93,7 +93,7 @@ export type TBoxProps = {
 	borderTopLeftRadius?: number,
 	borderTopRightRadius?: number,
 
-	borderColor?: Color,
+	borderColor?: TColor,
 	borderBottomColor?: Color,
 	borderLeftColor?: Color,
 	borderRightColor?: Color,
@@ -111,9 +111,11 @@ const reactNativeEmulationForBrowsers = {
 }
 
 const reduce = (props: TBoxProps, getValue) =>
-	object.keys(props).reduce((style, prop) => {
+	Object.keys(props).reduce((style, prop) => {
 		const value = props[prop]
-		if (value === undefined) return style
+		if (value === undefined) {
+			return style
+		}
 		return {
 			...style,
 			[prop]: getValue(value),
@@ -121,9 +123,9 @@ const reduce = (props: TBoxProps, getValue) =>
 	}, {})
 
 const maybeRhythm = (rhythm, props) =>
-	reduce(props, value => (typeof value === 'number' ? rhythm(value) : value))
+	reduce(props, (value) => (typeof value === 'number' ? rhythm(value) : value))
 
-const justValue = props => reduce(props, value => value)
+const justValue = (props) => reduce(props, (value) => value)
 
 // https://facebook.github.io/react-native/releases/0.44/docs/layout-props.html#flex
 // https://github.com/necolas/react-native-web expandStyle-test.js
@@ -131,28 +133,36 @@ const restrictedFlex = (
 	flex,
 	flexBasis = 'auto',
 	flexShrink = 1,
-	isReactNative
+	isReactNative,
 ) => {
-	if (flex === undefined) return null
-	if (flex < 1) throw new Error('Not implemented yet')
-	return isReactNative ? {flex} : { flexBasis, flexGrow: flex, flexShrink }
+	if (flex === undefined) {
+		return null
+	}
+	if (flex < 1) {
+		throw new Error('Not implemented yet')
+	}
+	return isReactNative ? {flex} : {flexBasis, flexGrow: flex, flexShrink}
 }
 
 // Color any type, because Flow can't infere props for some reason.
 const themeColor = (colors: any, props) =>
-	reduce(props, value => colors[value])
+	reduce(props, (value) => colors[value])
 
 // Try to ensure vertical and horizontal rhythm.
-const tryToEnsureRhythmViaPaddingCompensation = style =>
+const tryToEnsureRhythmViaPaddingCompensation = (style) =>
 	['Bottom', 'Left', 'Right', 'Top'].reduce((style, prop) => {
 		const borderXWidth = style[`border${prop}Width`]
 		const paddingProp = `padding${prop}`
 		const paddingX = style[paddingProp]
 		const canCompute =
 			typeof borderXWidth === 'number' && typeof paddingX === 'number'
-		if (!canCompute) return style
+		if (!canCompute) {
+			return style
+		}
 		const compensatedPaddingX = paddingX - borderXWidth
-		if (compensatedPaddingX < 0) return style
+		if (compensatedPaddingX < 0) {
+			return style
+		}
 		return {...style, [paddingProp]: compensatedPaddingX}
 	}, style)
 
