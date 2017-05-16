@@ -100,6 +100,16 @@ export default class App extends React.Component<void, void, void> {
 										render={() => addAccountWrapper(addStandardLayout(<Dashboard/>))}
 									/>
 									<ACLRoute
+										path='/project/:projectUuid/task/:taskUuid'
+										exact={true}
+										render={({match}) => addAccountWrapper(addStandardLayout(
+											<ProjectDetail
+												uuid={match.params.projectUuid}
+												selectedTaskUuid={match.params.taskUuid}
+											/>,
+										))}
+									/>
+									<ACLRoute
 										path='/project/:uuid'
 										exact={true}
 										render={({match}) => addAccountWrapper(addStandardLayout(
