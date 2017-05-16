@@ -49,8 +49,9 @@ export default class Signup extends React.Component<void, TProps, void> {
 		const query = URI.parseQuery(this.props.location.search)
 
 		if (!query.invite) {
-			alert('Nemas invite token, chod dopice. TODO: make this more user friendly :D')
+			signupStore.ui.isInviteTokenInputVisible = true
 		} else {
+			signupStore.ui.isInviteTokenInputVisible = false
 			signupStore.setInviteToken(query.invite)
 		}
 
@@ -80,14 +81,18 @@ export default class Signup extends React.Component<void, TProps, void> {
 		ev.preventDefault()
 
 		this.props.signupStore.submitForm()
+			.catch(() => {
+				alert('Signup was unsuccessful :( You have probably entered wrong token. TODO')
+			})
 	}
 
 	renderStep1 () {
-		const {signupStore: {formData, formMetadata}} = this.props
+		const {signupStore} = this.props
+		const {formData, inviteToken, formMetadata, ui} = signupStore
 		const fields: Array<TSignupFormField> = ['name', 'surname', 'email']
 		const isWholeStepValid = fields.every(
 			(fieldId) => !validateField(fieldId, formData[fieldId]),
-		)
+		) && (ui.isInviteTokenInputVisible ? inviteToken : true)
 
 		return (
 			<form onSubmit={this.nextStep} noValidate>
@@ -105,6 +110,20 @@ export default class Signup extends React.Component<void, TProps, void> {
 						validation={validateField(fieldId, formData[fieldId])}
 					/>
 				))}
+				{ui.isInviteTokenInputVisible && (
+					<div>
+						<input
+							type='text'
+							placeholder='Invite token'
+							value={inviteToken || ''}
+							onChange={(ev: KeyboardEvent) => {
+								if (ev.target instanceof HTMLInputElement) {
+									signupStore.setInviteToken(ev.target.value)
+								}
+							}}
+						/>
+					</div>
+				)}
 				<input
 					type='submit'
 					value='Next'

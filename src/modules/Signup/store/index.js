@@ -34,9 +34,12 @@ export class SignupStore implements ISignupStoreShape {
 	}
 
 	@observable step = 1
-	@observable inviteToken = null
+	@observable inviteToken = ''
 	@observable formData = generateFormData()
 	@observable formMetadata = generateFormMetadata()
+	@observable ui = {
+		isInviteTokenInputVisible: false,
+	}
 
 	@action setInviteToken (token: string) {
 		this.inviteToken = token
@@ -60,20 +63,18 @@ export class SignupStore implements ISignupStoreShape {
 
 	@action submitForm () {
 		this.setNextStep()
-		if (this.inviteToken) {
-			oysterRequestUserSignup({
-				name: this.formData.name,
-				surname: this.formData.surname,
-				email: this.formData.email,
-				password: this.formData.password,
-				invite: this.inviteToken,
-			}).then(
-				(data) => {
-					setAuthorizationData(data)
-					browserHistory.push('/dashboard') // TODO: some global store?
-				},
-			)
-		}
+		return oysterRequestUserSignup({
+			name: this.formData.name,
+			surname: this.formData.surname,
+			email: this.formData.email,
+			password: this.formData.password,
+			invite: this.inviteToken,
+		}).then(
+			(data) => {
+				setAuthorizationData(data)
+				browserHistory.push('/dashboard') // TODO: some global store?
+			},
+		)
 	}
 }
 
