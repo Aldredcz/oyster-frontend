@@ -17,6 +17,17 @@ export function persistStateSingleton<T> (store: T & Object): T {
 		store = new StoreClass(existingState)
 	}
 
+	Object.defineProperty(store, 'resetStore', {
+		value () {
+			const newStore = new StoreClass()
+			Object.assign(this, newStore)
+			Object.keys(this).forEach((key) => {
+				this[key] = newStore[key]
+			})
+		},
+		enumerable: false,
+	})
+
 	window.mobx[StoreClass.name] = store
 	return store
 }

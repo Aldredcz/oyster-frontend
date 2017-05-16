@@ -37,14 +37,6 @@ export class AccountStore implements IAccountStoreShape {
 	@action setProjectsByIds (projectsByIds: Array<string>) {
 		this.projectsByIds = projectsByIds
 	}
-
-	@action clear () {
-		this.uuid = null
-		this.name = null
-		this.usersByIds = null
-		this.groupsByIds = null
-		this.projectsByIds = null
-	}
 }
 
 export type TAccountStore = AccountStore
