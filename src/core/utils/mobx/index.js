@@ -3,7 +3,7 @@
 window.mobx = {}
 
 // eslint-disable-next-line flowtype/no-weak-types
-export function persistStateSingleton<T> (store: T & Object): T {
+export function persistStateSingleton<T: Object> (store: T): T {
 	let existingState
 	const StoreClass = store.constructor
 
@@ -12,7 +12,6 @@ export function persistStateSingleton<T> (store: T & Object): T {
 	}
 
 	// TODO: add localStorage rehydration option
-
 	if (existingState) {
 		store = new StoreClass(existingState)
 	}

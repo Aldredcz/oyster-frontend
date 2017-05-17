@@ -18,9 +18,10 @@ export function processProjectFromApi (projectFromApi: TProjectFromApi): TProjec
 		),
 		accountsByIds: projectFromApi.accounts && projectFromApi.accounts.map((a) => a.uuid),
 		ownersByIds: projectFromApi.owners && projectFromApi.owners.map((u) => u.uuid),
+		actionsSet: projectFromApi.actions ? new Set(projectFromApi.actions) : null,
 	}
 
-	projectsStore.setProject(project.uuid, {data: project})
+	projectsStore.setEntity(project.uuid, {data: project})
 
 	return project
 }
@@ -36,4 +37,28 @@ export function oysterRequestFetchProject (
 			// TODO: error handling
 		)
 		.then(processProjectFromApi)
+}
+
+export function oysterRequestProjectRename (uuid: string, name: string): Promise<string> {
+	return request(`${SETTINGS.oysterApi}/project/${uuid}/rename`, {
+		method: 'PUT',
+		body: JSON.stringify({name}),
+	})
+		.then(
+			(response) => response.json(),
+			// TODO: error handling
+		)
+		.then(({name}) => name)
+}
+
+export const ProjectAPI = {
+	fetch: oysterRequestFetchProject,
+	update: (uuid: string, field: string, value: any): Promise<any> => {
+		switch (field) {
+			case 'name':
+				return oysterRequestProjectRename(uuid, value)
+			default:
+				return Promise.reject(`Cannot update field '${field}' in Project`)
+		}
+	},
 }

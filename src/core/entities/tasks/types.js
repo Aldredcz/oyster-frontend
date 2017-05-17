@@ -27,3 +27,13 @@ export type TTaskFromApi = $Shape<TTaskCommon & {
 }>
 
 export type TTaskField = $Keys<TTask>
+
+export const initialState: TTask = {
+	uuid: '',
+	name: null,
+	brief: null,
+	deadline: null,
+	completedAt: null,
+	ownersByIds: null,
+	actionsSet: null,
+}
