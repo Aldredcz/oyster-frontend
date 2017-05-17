@@ -11,19 +11,28 @@ import {oysterRequestCreateTask} from 'core/entities/tasks'
 
 import TaskPreviewBox from 'core/components/Task/TaskPreviewBox'
 
-type TProps = $Shape<TProject & {
+type TProps = $Shape<{
+	uuid: string,
+	project: TProject,
 	isLoading: boolean,
 	addNewTask: $PropertyType<Project, 'addNewTask'>,
+	updateField: $PropertyType<Project, 'updateField'>,
 }>
 
 type TState = {
 	creatingNewTask: boolean,
+	name: {
+		isEditing: boolean,
+		value: ?$PropertyType<TProject, 'name'>,
+	},
 }
 
+type TStateField = 'name'
+
 export const projectFactory = ({
-	titleRenderer = (title, props) => title,
+	titleRenderer = (title, self) => title,
 }: {
-	titleRenderer: (title: React$Element<any>, props: TProps) => React$Element<any>,
+	titleRenderer: (title: React$Element<any>, self: *) => React$Element<any>,
 } = {}) => {
 
 	@injectEntity({
@@ -31,20 +40,26 @@ export const projectFactory = ({
 		id: (props) => props.uuid,
 		mapEntityToProps: (entity) => ({
 			isLoading: entity.isLoading,
-			uuid: entity.data.uuid,
-			name: entity.data.name,
+			project: entity.data,
 			tasksByIds: entity.data.tasksByIds,
 			addNewTask: entity.addNewTask.bind(entity),
+			updateField: entity.updateField.bind(entity),
 		}),
 	})
 	@observer
 	class Project extends React.Component<void, TProps, TState> {
 		state = {
 			creatingNewTask: false,
+			name: {
+				isEditing: false,
+				value: null,
+			},
 		}
 
+		nameEl: ?HTMLInputElement = null
+
 		createNewTask () {
-			const {uuid: projectUuid, addNewTask} = this.props
+			const {project: {uuid: projectUuid}, addNewTask} = this.props
 
 			this.setState({
 				creatingNewTask: true,
@@ -62,8 +77,40 @@ export const projectFactory = ({
 				)
 		}
 
+		editField (field: TStateField) {
+			this.setState({
+				[field]: {
+					isEditing: true,
+					value: this.props.project[field],
+				},
+			}, () => {
+				const fieldEl = (this: any)[`${field}El`]
+				fieldEl && typeof fieldEl.focus === 'function' && fieldEl.focus()
+			})
+
+		}
+
+		updateEditingField (field: TStateField, value: any) {
+			this.setState({
+				[field]: {
+					isEditing: true,
+					value,
+				},
+			})
+		}
+
+		submitEditingField (field: TStateField) {
+			this.props.updateField(field, this.state[field].value)
+			this.setState({
+				[field]: {
+					isEditing: false,
+					value: null,
+				},
+			})
+		}
+
 		render () {
-			const {isLoading, uuid, name, tasksByIds} = this.props
+			const {isLoading, uuid, project: {name, tasksByIds}} = this.props
 
 			return (
 				<div>
@@ -71,7 +118,7 @@ export const projectFactory = ({
 						isLoading
 							? <h1>{uuid} <small>loading...</small></h1>
 							: <h1 title={uuid}>{name || '[unnamed project]'}</h1>,
-						this.props,
+						this,
 					)}
 					<div className='tasks' style={{width: '100%', float: 'left'}}>
 						{tasksByIds && (

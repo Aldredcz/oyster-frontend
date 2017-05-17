@@ -66,11 +66,11 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 	componentDidMount () {
 		const {editNameOnMount, task: {actionsSet}} = this.props
 		if (editNameOnMount && actionsSet && actionsSet.has('rename')) {
-			this.edit('name')
+			this.editField('name')
 		}
 	}
 
-	edit (field: TStateField) {
+	editField (field: TStateField) {
 		this.setState({
 			[field]: {
 				isEditing: true,
@@ -83,7 +83,7 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 
 	}
 
-	update (field: TStateField, value: any) {
+	updateEditingField (field: TStateField, value: any) {
 		this.setState({
 			[field]: {
 				isEditing: true,
@@ -92,7 +92,7 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 		})
 	}
 
-	submit (field: TStateField) {
+	submitEditingField (field: TStateField) {
 		this.props.updateField(field, this.state[field].value)
 		this.setState({
 			[field]: {
@@ -114,7 +114,7 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 							<div>
 								Name: <h1 title={uuid}> {name}</h1>
 								{actionsSet && actionsSet.has('rename') && (
-									<a href='javascript://' onClick={() => this.edit('name')}>edit</a>
+									<a href='javascript://' onClick={() => this.editField('name')}>edit</a>
 								)}
 							</div>
 						)
@@ -122,8 +122,8 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 							<input
 								ref={(el) => this.nameEl = el}
 								value={state.name.value || ''}
-								onChange={(ev) => this.update('name', ev.target.value)}
-								onKeyDown={(ev) => ev.key === 'Enter' && this.submit('name')}
+								onChange={(ev) => this.updateEditingField('name', ev.target.value)}
+								onKeyDown={(ev) => ev.key === 'Enter' && this.submitEditingField('name')}
 							/>
 						)
 					}
@@ -133,11 +133,11 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 					{!state.brief.isEditing
 						? (
 							<div>
-								Brief: {brief && brief.split('\n').map((paragraph) => (
-									<p>{paragraph}</p>
+								Brief: {brief && brief.split('\n').map((paragraph, i) => (
+									<p key={String(i)}>{paragraph}</p>
 								))}
 								{actionsSet && actionsSet.has('brief') && (
-									<a href='javascript://' onClick={() => this.edit('brief')}>edit</a>
+									<a href='javascript://' onClick={() => this.editField('brief')}>edit</a>
 								)}
 							</div>
 						)
@@ -146,8 +146,8 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 								ref={(el) => this.briefEl = el}
 								style={{width: '100%', height: 200}}
 								value={state.brief.value || ''}
-								onChange={(ev) => this.update('brief', ev.target.value)}
-								onKeyDown={(ev) => ev.key === 'Enter' && ev.shiftKey && this.submit('brief')}
+								onChange={(ev) => this.updateEditingField('brief', ev.target.value)}
+								onKeyDown={(ev) => ev.key === 'Enter' && ev.shiftKey && this.submitEditingField('brief')}
 							/>
 						)
 					}

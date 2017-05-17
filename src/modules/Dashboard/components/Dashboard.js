@@ -13,8 +13,8 @@ import {projectFactory} from 'core/components/Project/Project'
 
 
 const Project = projectFactory({
-	titleRenderer: (title, props) => (
-		<Link to={`/project/${props.uuid}`}>
+	titleRenderer: (title, self) => (
+		<Link to={`/project/${self.props.project.uuid}`}>
 			{title}
 		</Link>
 	),
