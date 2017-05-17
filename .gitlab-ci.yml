@@ -35,4 +35,4 @@ deploy_canary:
   environment:
     name: canary
   only:
-  - master
+  - canary
