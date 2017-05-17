@@ -17,3 +17,11 @@ export type TUserFromApi = $Shape<TUserCommon & {
 }>
 
 export type TUserField = $Keys<TUser>
+
+export const initialState: TUser = {
+	uuid: '',
+	name: null,
+	surname: null,
+	email: null,
+	accountsByIds: null,
+}
