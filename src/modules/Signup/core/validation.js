@@ -1,6 +1,6 @@
 // @flow
 import {isEmail, isPassword} from 'libs/validation/validators'
-import type {TSignupFormField, ISignupStoreShape} from '../store/types'
+import type {TSignupFormField, ISignupStoreShape} from './store/types'
 
 export function validateField (
 	field: TSignupFormField,

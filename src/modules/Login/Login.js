@@ -1,11 +1,9 @@
 // @flow
 import React from 'react'
-import {Link} from 'react-router-dom'
-import browserHistory from 'core/utils/browserHistory'
 import {isEmail, isPassword} from 'libs/validation/validators'
-
-import {oysterRequestUserLogin} from 'core/api/login-signup'
+import {moduleManager} from 'core/store/router'
 import {setAuthorizationData} from 'core/authorization'
+import {oysterRequestUserLogin} from 'core/api/login-signup'
 
 export default class Login extends React.Component {
 	state = {
@@ -39,7 +37,7 @@ export default class Login extends React.Component {
 			.then(
 				(userData) => {
 					setAuthorizationData(userData)
-					browserHistory.push('/dashboard')
+					moduleManager.setModule('dashboard')
 				},
 				async ({response}) => {
 					const responseJson = await response.json()
@@ -53,6 +51,10 @@ export default class Login extends React.Component {
 					})
 				},
 			)
+	}
+
+	goToSignup = (ev: MouseEvent) => {
+		moduleManager.setModule('signup', null, ev)
 	}
 
 	render () {
@@ -88,17 +90,17 @@ export default class Login extends React.Component {
 						</p>
 					)}
 					<p>
-						<Link to='/signup'>
+						<a href='/signup' onClick={this.goToSignup}>
 							Go to signup
-						</Link>
+						</a>
 						{' '}|{' '}
-						<Link to='/signup?invite=1e863a9f-1f0d-40e7-8de8-60462838b6d8'>
+						<a href='/signup?invite=1e863a9f-1f0d-40e7-8de8-60462838b6d8'>
 							Go to signup (with predefined token)
-						</Link>
+						</a>
 						{' '}|{' '}
-						<Link to='/signup?invite=1e863a9f-1f0d-40e7-8de8-60462838b6d8&email=tester@getoyster.com'>
+						<a href='/signup?invite=1e863a9f-1f0d-40e7-8de8-60462838b6d8&email=tester@getoyster.com'>
 							Go to signup (with predefined token and email)
-						</Link>
+						</a>
 					</p>
 				</form>
 			</div>

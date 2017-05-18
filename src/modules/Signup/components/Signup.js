@@ -1,24 +1,20 @@
 // @flow
 import React from 'react'
 import URI from 'urijs'
-import {withRouter} from 'react-router-dom'
-import type {Location} from 'react-router'
 import {runInAction} from 'mobx'
 import {inject, observer} from 'mobx-react'
 
-import type {TSignupStore} from '../store'
-import type {TSignupFormField} from '../store/types'
+import type {TSignupStore} from '../core/store'
+import type {TSignupFormField} from '../core/store/types'
 
 import {validateField, validatePasswords} from '../core/validation'
 
 import SignupFormField from './SignupFormField'
 
 type TProps = {
-	+location: Location,
 	+signupStore: TSignupStore,
 }
 
-@withRouter
 @inject('signupStore', 'accountStore') @observer
 export default class Signup extends React.Component<void, TProps, void> {
 	static fieldsConfig: {[key: TSignupFormField]: {type: string, title: string}} = {
@@ -46,7 +42,11 @@ export default class Signup extends React.Component<void, TProps, void> {
 
 	componentWillMount () {
 		const {signupStore} = this.props
-		const query = URI.parseQuery(this.props.location.search)
+		const query = URI.parseQuery(window.location.search)
+
+		// TODO: move to router
+
+		signupStore.resetStore()
 
 		if (!query.invite) {
 			signupStore.ui.isInviteTokenInputVisible = true

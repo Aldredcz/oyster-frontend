@@ -1,12 +1,11 @@
 // @flow
 import React from 'react'
+import {observer} from 'mobx-react'
+import injectEntity from 'core/utils/mobx/entityInjector'
+import {moduleManager} from 'core/store/router'
 
 import {projectsStore, Project} from 'core/entities/projects'
 import type {TProject} from 'core/entities/projects'
-import {observer} from 'mobx-react'
-import injectEntity from 'core/utils/mobx/entityInjector'
-import browserHistory from 'core/utils/browserHistory'
-
 import {oysterRequestCreateTask} from 'core/entities/tasks'
 
 import TaskPreviewBox from 'core/components/Task/TaskPreviewBox'
@@ -72,7 +71,10 @@ export const projectFactory = ({
 							creatingNewTask: false,
 						})
 						addNewTask(taskUuid)
-						browserHistory.push(`/project/${projectUuid}/task/${taskUuid}`)
+						moduleManager.setModule('projectDetail', {
+							projectUuid,
+							selectedTaskUuid: taskUuid,
+						})
 					},
 				)
 		}

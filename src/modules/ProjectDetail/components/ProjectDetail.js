@@ -1,8 +1,8 @@
 // @flow
 import React from 'react'
-import {Link} from 'react-router-dom'
-
-import type {TProject} from 'core/entities/projects'
+import {inject, observer} from 'mobx-react'
+import {moduleManager} from 'core/store/router'
+import type {TProjectDetailStore} from '../core/store'
 
 import {projectFactory} from 'core/components/Project/Project'
 import TaskDetail from 'core/components/Task/TaskDetail'
@@ -41,24 +41,28 @@ const Project = projectFactory({
 	},
 })
 
-type TProps = TProject & {
-	uuid: string,
-	selectedTaskUuid?: string,
+type TProps = {
+	projectDetailStore: TProjectDetailStore,
 }
 
+@inject('projectDetailStore') @observer
 export default class ProjectDetail extends React.Component<void, TProps, void> {
+	goToDashboard = (ev: MouseEvent) => {
+		moduleManager.setModule('dashboard', null, ev)
+	}
+
 	render () {
-		const {uuid, selectedTaskUuid} = this.props
+		const {projectDetailStore: {projectUuid, selectedTaskUuid}} = this.props
 
 		return (
 			<div>
-				<p><Link to='/dashboard'>{'<'} Back to dashboard</Link></p>
-				<Project uuid={uuid} />
-				{selectedTaskUuid && (
+				<p><a href='javascript://' onClick={this.goToDashboard}>{'<'} Back to dashboard</a></p>
+				{projectUuid && <Project uuid={projectUuid} />}
+				{projectUuid && selectedTaskUuid && (
 					<TaskDetail
 						key={selectedTaskUuid}
 						uuid={selectedTaskUuid}
-						projectUuid={uuid}
+						projectUuid={projectUuid}
 					/>
 				)}
 			</div>

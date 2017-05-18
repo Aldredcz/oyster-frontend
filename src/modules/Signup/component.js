@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import {Provider} from 'mobx-react'
-import signupStore from './store'
+import signupStore from './core/store'
 import Signup from './components/Signup'
 
 

@@ -2,8 +2,12 @@
 
 window.mobx = {}
 
+export interface IPersistStateSingletonExtras {
+	resetStore: () => void,
+}
+
 // eslint-disable-next-line flowtype/no-weak-types
-export function persistStateSingleton<T: Object> (store: T): T {
+export function persistStateSingleton<T: Object> (store: T): T & IPersistStateSingletonExtras {
 	let existingState
 	const StoreClass = store.constructor
 

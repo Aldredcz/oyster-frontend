@@ -2,7 +2,8 @@
 import React from 'react'
 import {observer} from 'mobx-react'
 import injectEntity from 'core/utils/mobx/entityInjector'
-import {Link} from 'react-router-dom'
+
+import {moduleManager} from 'core/store/router'
 
 import {tasksStore} from 'core/entities/tasks'
 import type {TTask} from 'core/entities/tasks'
@@ -51,15 +52,24 @@ type TProps = $Shape<{
 })
 @observer
 export default class TaskPreviewBox extends React.Component<void, TProps, void> {
-	render () {
+	goToTaskDetail = (ev: MouseEvent) => {
 		const {projectUuid, task} = this.props
+
+		moduleManager.setModule('projectDetail', {
+			projectUuid,
+			selectedTaskUuid: task.uuid,
+		}, ev)
+	}
+
+	render () {
+		const {task} = this.props
 		const {uuid, name, ownersByIds} = task
 
 		return (
 			<div style={{border: '1px solid black', borderRadius: 5, padding: 10, margin: 10}}>
-				<Link to={`/project/${projectUuid}/task/${uuid}`}>
+				<a href='javascript://' onClick={this.goToTaskDetail}>
 					<h1 title={uuid}>{name || '[unnamed]'}</h1>
-				</Link>
+				</a>
 				{ownersByIds &&
 					ownersByIds.map((ownerId) => (
 						<OwnerIco key={ownerId} uuid={ownerId} />

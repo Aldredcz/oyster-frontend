@@ -1,11 +1,12 @@
 // @flow
 import {observable, action} from 'mobx'
-import browserHistory from 'core/utils/browserHistory'
 import {persistStateSingleton} from 'core/utils/mobx'
+import type {IPersistStateSingletonExtras} from 'core/utils/mobx'
+import {moduleManager} from 'core/store/router'
+import {setAuthorizationData} from 'core/authorization'
+import {oysterRequestUserSignup} from 'core/api/login-signup'
 
 import type {ISignupStoreShape, TSignupFormField} from './types'
-import {oysterRequestUserSignup} from 'core/api/login-signup'
-import {setAuthorizationData} from 'core/authorization'
 
 const signupFormFields: Array<TSignupFormField> = ['name', 'surname', 'email', 'password', 'passwordConfirm']
 
@@ -72,12 +73,12 @@ export class SignupStore implements ISignupStoreShape {
 		}).then(
 			(data) => {
 				setAuthorizationData(data)
-				browserHistory.push('/dashboard') // TODO: some global store?
+				moduleManager.setModule('dashboard')
 			},
 		)
 	}
 }
 
-export type TSignupStore = SignupStore
+export type TSignupStore = SignupStore & IPersistStateSingletonExtras
 
 export default persistStateSingleton(new SignupStore())
