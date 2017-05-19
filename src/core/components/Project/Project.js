@@ -86,7 +86,7 @@ export const projectFactory = ({
 					value: this.props.project[field],
 				},
 			}, () => {
-				const fieldEl = (this: any)[`${field}El`]
+				const fieldEl = (this: $FlowFixMe)[`${field}El`]
 				fieldEl && typeof fieldEl.focus === 'function' && fieldEl.focus()
 			})
 

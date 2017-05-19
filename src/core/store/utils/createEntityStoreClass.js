@@ -40,7 +40,7 @@ export default function createUpdatableEntityClass<T: IUpdatableEntity<*>> ({
 		@action setEntity (id, entityState) {
 			let entity: T
 			if (this.entities.has(id)) {
-				entity = (this.entities.get(id): any)
+				entity = (this.entities.get(id): $FlowFixMe)
 			} else {
 				entity = this.initEntity(id)
 			}
@@ -52,7 +52,7 @@ export default function createUpdatableEntityClass<T: IUpdatableEntity<*>> ({
 
 		getEntity (id) {
 			if (this.entities.has(id)) {
-				return (this.entities.get(id): any)
+				return (this.entities.get(id): $FlowFixMe)
 			}
 
 			const newEntity = this.initEntity(id)

@@ -29,12 +29,11 @@ function addStandardLayout (elem: React$Element<any>): React$Element<any> {
 }
 
 function addAccountWrapper (elem: React$Element<any>): React$Element<any> {
-	const AccountWrapperAny: any = AccountWrapper
-
 	return (
-		<AccountWrapperAny>
+		//$FlowFixMe
+		<AccountWrapper>
 			{elem}
-		</AccountWrapperAny>
+		</AccountWrapper>
 	)
 }
 

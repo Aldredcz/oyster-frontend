@@ -77,7 +77,7 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 				value: this.props.task[field],
 			},
 		}, () => {
-			const fieldEl = (this: any)[`${field}El`]
+			const fieldEl = (this: $FlowFixMe)[`${field}El`]
 			fieldEl && typeof fieldEl.focus === 'function' && fieldEl.focus()
 		})
 
