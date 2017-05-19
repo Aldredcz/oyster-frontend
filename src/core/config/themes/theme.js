@@ -10,32 +10,39 @@ export const visualTheme: TTheme = {
 	}),
 	colors: {
 	},
-	page: {
+	states: {
+		active: {
+			darken: 0.2,
+			opacity: 0.7,
+		},
+		disabled: {
+			opacity: 0.5,
+		},
+	},
+	container: {
+		maxWidths: {
+			small: 540,
+			medium: 720,
+			big: 960,
+			bigger: 1140,
+		},
 	},
 	text: {
 		bold: 600,
-		color: 'black',
-		fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+		fontFamily: 'Verdana, sans-serif',
 	},
-	heading: {
-		fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-	},
-	p: {
-		marginBottom: 1,
-	},
-	button: {
-		borderRadius: 2,
-		borderWidth: 1,
-		marginHorizontal: 0.25,
-		marginVertical: 0.3,
-		paddingVertical: 0.2,
-		disabledOpacity: 0.5,
-	},
-	form: {
+	block: {
 		marginBottom: 1,
 		maxWidth: 21,
 	},
-	textInput: {
-		disabledOpacity: 0.5,
+	button: {
+		borderRadius: 2,
+	},
+	heading: {
+		fontFamily: 'Verdana, sans-serif',
+		marginBottom: 1,
+	},
+	paragraph: {
+		marginBottom: 1,
 	},
 }

@@ -1,5 +1,5 @@
 // @flow
-import type {TColor} from 'core/config/themes/types'
+import type {TColor, TTheme} from 'core/config/themes/types'
 import PropTypes from 'prop-types'
 import React from 'react'
 import withTheme from './withTheme'
@@ -94,10 +94,15 @@ export type TBoxProps = {
 	borderTopRightRadius?: number,
 
 	borderColor?: TColor,
-	borderBottomColor?: Color,
-	borderLeftColor?: Color,
-	borderRightColor?: Color,
-	borderTopColor?: Color,
+	borderBottomColor?: TColor,
+	borderLeftColor?: TColor,
+	borderRightColor?: TColor,
+	borderTopColor?: TColor,
+}
+
+type TBoxContent = {
+	renderer: any, // TODO: Type it.
+	theme: TTheme,
 }
 
 // Emulate React Native to ensure the same styles for all platforms.

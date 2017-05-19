@@ -1,7 +1,4 @@
 // @flow
-import type {OpenColor} from '../openColor'
-
-// Theme.
 
 // Because { [color: Color]?: boolean } doesn't work, we have to define props.
 export type TColorProps = {
@@ -25,7 +22,6 @@ export type TTheme = {|
 	|},
 	colors: {
 		[color: TColor]: string,
-		open: OpenColor,
 	},
 	states: {
 		active: {|
