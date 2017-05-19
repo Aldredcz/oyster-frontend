@@ -1,9 +1,11 @@
 // @flow
 import React from 'react'
 import {isEmail, isPassword} from 'libs/validation/validators'
-import {moduleManager} from 'core/store/router'
+import {moduleManager} from 'core/router'
 import {setAuthorizationData} from 'core/authorization'
 import {oysterRequestUserLogin} from 'core/api/login-signup'
+
+import Link from 'core/router/Link'
 
 export default class Login extends React.Component {
 	state = {
@@ -53,10 +55,6 @@ export default class Login extends React.Component {
 			)
 	}
 
-	goToSignup = (ev: MouseEvent) => {
-		moduleManager.setModule('signup', null, ev)
-	}
-
 	render () {
 		const {formData, processing, error} = this.state
 		const isValid = isEmail(formData.email) && isPassword(formData.password)
@@ -90,9 +88,9 @@ export default class Login extends React.Component {
 						</p>
 					)}
 					<p>
-						<a href='/signup' onClick={this.goToSignup}>
+						<Link module='signup'>
 							Go to signup
-						</a>
+						</Link>
 						{' '}|{' '}
 						<a href='/signup?invite=1e863a9f-1f0d-40e7-8de8-60462838b6d8'>
 							Go to signup (with predefined token)

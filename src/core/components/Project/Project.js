@@ -2,7 +2,7 @@
 import React from 'react'
 import {observer} from 'mobx-react'
 import injectEntity from 'core/utils/mobx/entityInjector'
-import {moduleManager} from 'core/store/router'
+import {moduleManager} from 'core/router'
 
 import {projectsStore, Project} from 'core/entities/projects'
 import type {TProject} from 'core/entities/projects'

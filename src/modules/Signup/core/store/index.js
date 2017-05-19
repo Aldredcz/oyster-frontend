@@ -2,7 +2,7 @@
 import {observable, action} from 'mobx'
 import {persistStateSingleton} from 'core/utils/mobx'
 import type {IPersistStateSingletonExtras} from 'core/utils/mobx'
-import {moduleManager} from 'core/store/router'
+import {moduleManager} from 'core/router'
 import {setAuthorizationData} from 'core/authorization'
 import {oysterRequestUserSignup} from 'core/api/login-signup'
 

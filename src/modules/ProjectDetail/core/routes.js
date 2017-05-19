@@ -1,5 +1,5 @@
 // @flow
-import projectDetailStore from './index'
+import projectDetailStore from './store/index'
 
 const routes = {
 	'/:projectUuid': {

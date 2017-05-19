@@ -2,7 +2,7 @@
 import React from 'react'
 import {Provider as MobxProvider, observer} from 'mobx-react'
 import MobxDevTools from 'mobx-react-devtools'
-import {moduleManager} from 'core/store/router'
+import {moduleManager} from 'core/router'
 
 import accountStore from 'core/store/account'
 import {getAuthorizationData} from 'core/authorization'

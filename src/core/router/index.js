@@ -1,8 +1,7 @@
 // @flow
 import {observable, computed, action, reaction} from 'mobx'
 import {Router} from 'vendor/director'
-import {isOpeningInNewWindow} from 'libs/event-helpers/mouse-event'
-import {persistStateSingleton} from 'core/utils/mobx'
+import {persistStateSingleton} from 'core/utils/mobx/index'
 
 import {getAuthorizationData} from 'core/authorization'
 import createRoutes from './routes'
@@ -70,26 +69,26 @@ class ModuleManager {
 	@observable basePath: string = ''
 	@observable nestedPath: string = ''
 
-	@action setModule (module: string, options: any, ev?: MouseEvent): ?string {
+	@action setModule (module: ?string, options: any, dryRun?: boolean): ?string {
+		module = module || this.module
+
+		if (!module) {
+			return
+		}
+
 		const moduleConfig = moduleConfigs[module]
-		if (!ev || !isOpeningInNewWindow(ev)) { // TODO: probably don't mess with `ev` here
+		if (!dryRun) {
 			if (options && moduleConfig.store) {
 				moduleConfig.store.setData && moduleConfig.store.setData(options)
 			}
 			this.module = module
 		} else {
-			const url = ModuleManager.generatePath({
+			return ModuleManager.generatePath({
 				basePath: moduleConfig.basePath,
 				nestedPath: (moduleConfig.store && moduleConfig.store.constructor.generatePath)
 					? moduleConfig.store.constructor.generatePath(options)
 					: null,
 			})
-
-			if (!ev.defaultPrevented) {
-				window.open(url)
-			} else {
-				return url
-			}
 		}
 	}
 

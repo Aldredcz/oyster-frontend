@@ -1,8 +1,8 @@
 // @flow
-import {moduleStore as projectDetailStore, ComponentLoadable as ProjectDetail} from 'modules/ProjectDetail'
-import {ComponentLoadable as Login} from 'modules/Login'
-import {ComponentLoadable as Signup} from 'modules/Signup'
-import {ComponentLoadable as Dashboard} from 'modules/Dashboard'
+import {moduleStore as projectDetailStore, ComponentLoadable as ProjectDetail} from 'modules/ProjectDetail/index'
+import {ComponentLoadable as Login} from 'modules/Login/index'
+import {ComponentLoadable as Signup} from 'modules/Signup/index'
+import {ComponentLoadable as Dashboard} from 'modules/Dashboard/index'
 
 export const moduleConfigs = {
 	login: {

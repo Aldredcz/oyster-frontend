@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import {inject, observer} from 'mobx-react'
-import {moduleManager} from 'core/store/router'
+import Link from 'core/router/Link'
 import type {TProjectDetailStore} from '../core/store'
 
 import {projectFactory} from 'core/components/Project/Project'
@@ -47,16 +47,14 @@ type TProps = {
 
 @inject('projectDetailStore') @observer
 export default class ProjectDetail extends React.Component<void, TProps, void> {
-	goToDashboard = (ev: MouseEvent) => {
-		moduleManager.setModule('dashboard', null, ev)
-	}
-
 	render () {
 		const {projectDetailStore: {projectUuid, selectedTaskUuid}} = this.props
 
 		return (
 			<div>
-				<p><a href='javascript://' onClick={this.goToDashboard}>{'<'} Back to dashboard</a></p>
+				<p>
+					<Link module='dashboard'>{'<'} Back to dashboard</Link>
+				</p>
 				{projectUuid && <Project uuid={projectUuid} />}
 				{projectUuid && selectedTaskUuid && (
 					<TaskDetail

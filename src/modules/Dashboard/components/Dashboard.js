@@ -1,23 +1,22 @@
 // @flow
 import React from 'react'
 import {observer, inject} from 'mobx-react'
-import {moduleManager} from 'core/store/router'
+import {moduleManager} from 'core/router'
 import {removeAuthorizationData} from 'core/authorization'
 import type {TAccountStore} from 'core/store/account'
 
+import Link from 'core/router/Link'
 import {projectFactory} from 'core/components/Project/Project'
 
 
 const Project = projectFactory({
 	titleRenderer: (title, self) => (
-		<a
-			href='javascript://'
-			onClick={(ev) => moduleManager.setModule('projectDetail', {
-				projectUuid: self.props.project.uuid,
-			}, ev)}
+		<Link
+			module='projectDetail'
+			params={{projectUuid: self.props.project.uuid}}
 		>
 			{title}
-		</a>
+		</Link>
 	),
 })
 
