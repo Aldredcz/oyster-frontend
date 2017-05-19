@@ -24,7 +24,7 @@ export default (params) => {
 		bail: !isDev,
 		devtool: isTest
 			? '#inline-source-maps'
-			: isDev ? '#eval-source-map' : '#source-map',
+			: isDev ? '#module-source-map' : '#source-map',
 		entry: {
 			main: [
 				...(isDev ? hotReloadEntries : []),
@@ -95,6 +95,7 @@ export default (params) => {
 					context: '.',
 					manifest: require('../dll/libs-manifest.json'),
 				}),
+				new webpack.NamedChunksPlugin(),
 			]
 
 			if (isDev) {

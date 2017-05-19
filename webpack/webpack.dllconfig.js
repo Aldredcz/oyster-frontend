@@ -13,15 +13,13 @@ module.exports = (params) => {
 
 	const config = {
 		cache: isDev,
-		devtool: isDev ? '#eval-source-map' : '#source-map',
+		devtool: isDev ? '#module-source-map' : '#source-map',
 		entry: {
 			libs: [
 				'babel-polyfill',
 				'isomorphic-fetch',
 				'react',
 				'react-dom',
-				'react-router',
-				'react-router-dom',
 				'mobx',
 				'mobx-react',
 			],

@@ -11,7 +11,7 @@ export function processGroupFromApi (groupFromApi: TGroupFromApi): TGroup {
 		name: groupFromApi.name || undefined,
 	}
 
-	groupsStore.setGroup(group.uuid, {data: group})
+	groupsStore.setEntity(group.uuid, {data: group})
 
 	return group
 }
@@ -26,4 +26,9 @@ export function oysterRequestFetchGroup (
 			// TODO: error handling
 		)
 		.then(processGroupFromApi)
+}
+
+export const GroupsAPI = {
+	fetch: oysterRequestFetchGroup,
+	update: () => Promise.reject(), // TODO:
 }

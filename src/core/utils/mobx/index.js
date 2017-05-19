@@ -2,8 +2,12 @@
 
 window.mobx = {}
 
+export interface IPersistStateSingletonExtras {
+	resetStore: () => void,
+}
+
 // eslint-disable-next-line flowtype/no-weak-types
-export function persistStateSingleton<T> (store: T & Object): T {
+export function persistStateSingleton<T: Object> (store: T): T & IPersistStateSingletonExtras {
 	let existingState
 	const StoreClass = store.constructor
 
@@ -12,10 +16,20 @@ export function persistStateSingleton<T> (store: T & Object): T {
 	}
 
 	// TODO: add localStorage rehydration option
-
 	if (existingState) {
 		store = new StoreClass(existingState)
 	}
+
+	Object.defineProperty(store, 'resetStore', {
+		value () {
+			const newStore = new StoreClass()
+			Object.assign(this, newStore)
+			Object.keys(this).forEach((key) => {
+				this[key] = newStore[key]
+			})
+		},
+		enumerable: false,
+	})
 
 	window.mobx[StoreClass.name] = store
 	return store

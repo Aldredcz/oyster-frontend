@@ -14,7 +14,7 @@ export function processUserFromApi (userFromApi: TUserFromApi): TUser {
 		accountsByIds: userFromApi.accounts ? userFromApi.accounts.map((a) => a.uuid) : null,
 	}
 
-	usersStore.setUser(user.uuid, {data: user})
+	usersStore.setEntity(user.uuid, {data: user})
 
 	return user
 }
@@ -29,4 +29,9 @@ export function oysterRequestFetchUser (
 			// TODO: error handling
 		)
 		.then(processUserFromApi)
+}
+
+export const UsersAPI = {
+	fetch: oysterRequestFetchUser,
+	update: () => Promise.reject(), // TODO:
 }

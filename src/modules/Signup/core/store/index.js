@@ -1,11 +1,12 @@
 // @flow
 import {observable, action} from 'mobx'
-import browserHistory from 'core/utils/browserHistory'
 import {persistStateSingleton} from 'core/utils/mobx'
+import type {IPersistStateSingletonExtras} from 'core/utils/mobx'
+import {moduleManager} from 'core/router'
+import {setAuthorizationData} from 'core/authorization'
+import {oysterRequestUserSignup} from 'core/api/login-signup'
 
 import type {ISignupStoreShape, TSignupFormField} from './types'
-import {oysterRequestUserSignup} from 'core/api/login-signup'
-import {setAuthorizationData} from 'core/authorization'
 
 const signupFormFields: Array<TSignupFormField> = ['name', 'surname', 'email', 'password', 'passwordConfirm']
 
@@ -34,9 +35,12 @@ export class SignupStore implements ISignupStoreShape {
 	}
 
 	@observable step = 1
-	@observable inviteToken = null
+	@observable inviteToken = ''
 	@observable formData = generateFormData()
 	@observable formMetadata = generateFormMetadata()
+	@observable ui = {
+		isInviteTokenInputVisible: false,
+	}
 
 	@action setInviteToken (token: string) {
 		this.inviteToken = token
@@ -60,23 +64,21 @@ export class SignupStore implements ISignupStoreShape {
 
 	@action submitForm () {
 		this.setNextStep()
-		if (this.inviteToken) {
-			oysterRequestUserSignup({
-				name: this.formData.name,
-				surname: this.formData.surname,
-				email: this.formData.email,
-				password: this.formData.password,
-				invite: this.inviteToken,
-			}).then(
-				(data) => {
-					setAuthorizationData(data)
-					browserHistory.push('/dashboard') // TODO: some global store?
-				},
-			)
-		}
+		return oysterRequestUserSignup({
+			name: this.formData.name,
+			surname: this.formData.surname,
+			email: this.formData.email,
+			password: this.formData.password,
+			invite: this.inviteToken,
+		}).then(
+			(data) => {
+				setAuthorizationData(data)
+				moduleManager.setModule('dashboard')
+			},
+		)
 	}
 }
 
-export type TSignupStore = SignupStore
+export type TSignupStore = SignupStore & IPersistStateSingletonExtras
 
 export default persistStateSingleton(new SignupStore())

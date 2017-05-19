@@ -5,6 +5,7 @@ import 'isomorphic-fetch'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {AppContainer} from 'react-hot-loader'
+import {router} from 'core/router'
 
 import App from './App'
 
@@ -13,6 +14,8 @@ interface IRender {
 }
 
 //useStrict(true)
+
+router.init()
 
 const renderApp: IRender = (AppComponent) => {
 	ReactDOM.render((

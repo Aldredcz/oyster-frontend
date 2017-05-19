@@ -13,11 +13,14 @@ export type TSignupFormField =
 
 export interface ISignupStoreShape {
 	step: number,
-	inviteToken: ?string,
+	inviteToken: string,
 	formData: {
 		[key: TSignupFormField]: string,
 	},
 	formMetadata: {
 		[key: TSignupFormField]: TSignupFormMetadata,
+	},
+	ui: {
+		isInviteTokenInputVisible: boolean,
 	},
 }

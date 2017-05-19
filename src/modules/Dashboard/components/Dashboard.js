@@ -1,20 +1,20 @@
 // @flow
 import React from 'react'
-import browserHistory from 'core/utils/browserHistory'
 import {observer, inject} from 'mobx-react'
-import {Link} from 'react-router-dom'
-
-import {oysterRequestFetchAccountProjects} from 'core/api/account'
+import {moduleManager} from 'core/router'
+import {removeAuthorizationData} from 'core/authorization'
 import type {TAccountStore} from 'core/store/account'
 
-import {removeAuthorizationData} from 'core/authorization'
-
+import Link from 'core/router/Link'
 import {projectFactory} from 'core/components/Project/Project'
 
 
 const Project = projectFactory({
-	titleRenderer: (title, props) => (
-		<Link to={`/project/${props.uuid}`}>
+	titleRenderer: (title, self) => (
+		<Link
+			module='projectDetail'
+			params={{projectUuid: self.props.project.uuid}}
+		>
 			{title}
 		</Link>
 	),
@@ -30,10 +30,7 @@ export default class Dashboard extends React.Component<void, TProps, void> {
 		const {accountStore} = this.props
 
 		if (!accountStore.projectsByIds) {
-			oysterRequestFetchAccountProjects().then(
-				(data) => accountStore.setProjectsByIds(data),
-				// TODO: handle error
-			)
+			accountStore.fetchProjects() // TODO: remove from view
 		}
 	}
 
@@ -41,7 +38,9 @@ export default class Dashboard extends React.Component<void, TProps, void> {
 		ev.preventDefault()
 
 		removeAuthorizationData()
-		browserHistory.push('/login?logout')
+		moduleManager.setModule('login', {
+			logout: true,
+		})
 	}
 
 	render () {

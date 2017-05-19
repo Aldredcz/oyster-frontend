@@ -1,6 +1,8 @@
 // @flow
 import {observable, action} from 'mobx'
 import {persistStateSingleton} from 'core/utils/mobx'
+import type {IPersistStateSingletonExtras} from 'core/utils/mobx'
+import {oysterRequestFetchAccountProjects} from 'core/api/account'
 
 export interface IAccountStoreShape {
 	uuid: ?string,
@@ -38,15 +40,14 @@ export class AccountStore implements IAccountStoreShape {
 		this.projectsByIds = projectsByIds
 	}
 
-	@action clear () {
-		this.uuid = null
-		this.name = null
-		this.usersByIds = null
-		this.groupsByIds = null
-		this.projectsByIds = null
+	@action fetchProjects () {
+		oysterRequestFetchAccountProjects().then(
+			(data) => this.setProjectsByIds(data),
+			// TODO: handle error
+		)
 	}
 }
 
-export type TAccountStore = AccountStore
+export type TAccountStore = AccountStore & IPersistStateSingletonExtras
 
 export default persistStateSingleton(new AccountStore())

@@ -2,7 +2,8 @@
 import React from 'react'
 import {observer} from 'mobx-react'
 import injectEntity from 'core/utils/mobx/entityInjector'
-import {Link} from 'react-router-dom'
+
+import Link from 'core/router/Link'
 
 import {tasksStore} from 'core/entities/tasks'
 import type {TTask} from 'core/entities/tasks'
@@ -52,12 +53,12 @@ type TProps = $Shape<{
 @observer
 export default class TaskPreviewBox extends React.Component<void, TProps, void> {
 	render () {
-		const {projectUuid, task} = this.props
+		const {task, projectUuid} = this.props
 		const {uuid, name, ownersByIds} = task
 
 		return (
 			<div style={{border: '1px solid black', borderRadius: 5, padding: 10, margin: 10}}>
-				<Link to={`/project/${projectUuid}/task/${uuid}`}>
+				<Link module='projectDetail' params={{projectUuid, selectedTaskUuid: uuid}}>
 					<h1 title={uuid}>{name || '[unnamed]'}</h1>
 				</Link>
 				{ownersByIds &&

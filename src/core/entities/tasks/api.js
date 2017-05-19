@@ -17,7 +17,7 @@ export function processTaskFromApi (taskFromApi: TTaskFromApi): TTask {
 		actionsSet: taskFromApi.actions ? new Set(taskFromApi.actions) : null,
 	}
 
-	tasksStore.setTask(task.uuid, {data: task})
+	tasksStore.setEntity(task.uuid, {data: task})
 
 	return task
 }
@@ -84,3 +84,19 @@ export function oysterRequestTaskDeadlineChange (uuid: string, deadline: Date): 
 		.then(({deadline}) => new Date(deadline))
 }
 
+export const TaskAPI = {
+	fetch: oysterRequestFetchTask,
+	create: oysterRequestCreateTask,
+	update: (uuid: string, field: string, value: any): Promise<any> => {
+		switch (field) {
+			case 'name':
+				return oysterRequestTaskRename(uuid, value)
+			case 'brief':
+				return oysterRequestTaskBriefChange(uuid, value)
+			case 'deadline':
+				return oysterRequestTaskDeadlineChange(uuid, value)
+			default:
+				return Promise.reject(`Cannot update field '${field}' in Task`)
+		}
+	},
+}

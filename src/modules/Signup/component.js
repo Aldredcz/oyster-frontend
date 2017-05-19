@@ -1,17 +1,17 @@
 // @flow
 import React from 'react'
 import {Provider} from 'mobx-react'
-import signupStore from './store'
+import signupStore from './core/store'
 import Signup from './components/Signup'
 
 
 export default class SignupWrapper extends React.Component<void, void, void> {
 	render () {
-		const SignupAny: any = Signup
-
+		//$FlowFixMe
+		const elem = <Signup/>
 		return (
 			<Provider signupStore={signupStore}>
-				<SignupAny />
+				{elem}
 			</Provider>
 		)
 	}
