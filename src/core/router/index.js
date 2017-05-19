@@ -3,11 +3,12 @@ import {observable, computed, action, reaction} from 'mobx'
 import {Router} from 'vendor/director'
 import {persistStateSingleton} from 'core/utils/mobx/index'
 
+import type {IRoutingStore, TModuleId} from './types'
 import {getAuthorizationData} from 'core/authorization'
 import createRoutes from './routes'
 import {moduleConfigs} from './moduleConfigs'
 
-class ModuleManager {
+class ModuleManager implements IRoutingStore {
 	static generatePath ({basePath, nestedPath}) {
 		let url = '/'
 		if (basePath) {
@@ -21,7 +22,7 @@ class ModuleManager {
 	}
 
 	constructor () {
-		// internal stuff
+		// internal stuff - mounting module and connecting with nestedPath provider
 		reaction(
 			() => this.module,
 			(module) => {
@@ -65,11 +66,11 @@ class ModuleManager {
 	}
 
 	disposeNestedPathObserver = null
-	@observable module = null
+	@observable module: ?TModuleId = null
 	@observable basePath: string = ''
 	@observable nestedPath: string = ''
 
-	@action setModule (module: ?string, options: any, dryRun?: boolean): ?string {
+	@action setModule (module: ?TModuleId, options: any, dryRun?: boolean): ?string {
 		module = module || this.module
 
 		if (!module) {
@@ -86,6 +87,7 @@ class ModuleManager {
 			return ModuleManager.generatePath({
 				basePath: moduleConfig.basePath,
 				nestedPath: (moduleConfig.store && moduleConfig.store.constructor.generatePath)
+					//$FlowFixMe -- typechecking from outside works
 					? moduleConfig.store.constructor.generatePath(options)
 					: null,
 			})

@@ -2,9 +2,10 @@
 import React from 'react'
 import {isOpeningInNewWindow} from 'libs/event-helpers/mouse-event'
 import {moduleManager} from './index'
+import type {TModuleId} from './types'
 
 type TProps = {
-	module?: string,
+	module?: TModuleId,
 	params?: Object, // eslint-disable-line flowtype/no-weak-types
 	//children: Children, // flow srsly??? You don't support children with JSX syntax????
 }

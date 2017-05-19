@@ -5,7 +5,7 @@ import {persistStateSingleton} from 'core/utils/mobx'
 type TProjectDetailStoreData = {projectUuid: ?string, selectedTaskUuid: ?string}
 
 class ProjectDetailStore {
-	static generatePath ({projectUuid, selectedTaskUuid}: TProjectDetailStoreData) {
+	static generatePath ({projectUuid, selectedTaskUuid}: TProjectDetailStoreData): string {
 		let path = ''
 
 		if (projectUuid) {
