@@ -1,9 +1,9 @@
 // @flow
 import type {IRoutingStore, TModuleId} from './types'
-import {moduleStore as projectDetailStore, ComponentLoadable as ProjectDetail} from 'modules/ProjectDetail/index'
-import {ComponentLoadable as Login} from 'modules/Login/index'
-import {ComponentLoadable as Signup} from 'modules/Signup/index'
-import {ComponentLoadable as Dashboard} from 'modules/Dashboard/index'
+import {moduleStore as projectDetailStore, ComponentLoadable as ProjectDetail} from 'modules/ProjectDetail'
+import {ComponentLoadable as Login} from 'modules/Login'
+import {moduleStore as signupStore, ComponentLoadable as Signup} from 'modules/Signup'
+import {ComponentLoadable as Dashboard} from 'modules/Dashboard'
 
 type TModuleDetailStore = {
 	hasSubroute: true,
@@ -11,7 +11,8 @@ type TModuleDetailStore = {
 } | {
 	hasSubroute?: false,
 	store?: {
-		+setData: $PropertyType<IRoutingStore, 'setData'>,
+		+setData?: $PropertyType<IRoutingStore, 'setData'>,
+		+onEnter?: $PropertyType<IRoutingStore, 'onEnter'>,
 	},
 }
 
@@ -29,6 +30,7 @@ export const moduleConfigs: {[key: TModuleId]: TModuleDetail} = {
 	signup: {
 		basePath: 'signup',
 		Component: Signup,
+		store: signupStore,
 	},
 	dashboard: {
 		basePath: 'dashboard',

@@ -51,6 +51,10 @@ class ModuleManager implements IRoutingStore {
 				} else {
 					this.setData({basePath: moduleConfig.basePath})
 				}
+
+				if (moduleConfig.store && moduleConfig.store.onEnter) {
+					moduleConfig.store.onEnter()
+				}
 			},
 		)
 

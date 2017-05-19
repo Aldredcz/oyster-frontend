@@ -15,4 +15,5 @@ export interface IRoutingStore {
 	+currentPath: string,
 	+setData: (params: Object) => void,
 	+constructor: IRoutingStoreConstructor,
+	+onEnter?: () => void,
 }

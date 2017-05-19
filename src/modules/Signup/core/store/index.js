@@ -1,5 +1,6 @@
 // @flow
 import {observable, action} from 'mobx'
+import URI from 'urijs'
 import {persistStateSingleton} from 'core/utils/mobx'
 import type {IPersistStateSingletonExtras} from 'core/utils/mobx'
 import {moduleManager} from 'core/router'
@@ -76,6 +77,26 @@ export class SignupStore implements ISignupStoreShape {
 				moduleManager.setModule('dashboard')
 			},
 		)
+	}
+
+	// ROUTING
+	@action onEnter () {
+		const query = URI.parseQuery(window.location.search)
+
+		;(this: any).resetStore()
+
+		if (!query.invite) {
+			this.ui.isInviteTokenInputVisible = true
+		} else {
+			this.ui.isInviteTokenInputVisible = false
+			this.setInviteToken(query.invite)
+		}
+
+		if (query.email) {
+			this.setFormValue('email', query.email)
+			this.setFormDisabled('email', true)
+		}
+
 	}
 }
 

@@ -1,7 +1,5 @@
 // @flow
 import React from 'react'
-import URI from 'urijs'
-import {runInAction} from 'mobx'
 import {inject, observer} from 'mobx-react'
 
 import type {TSignupStore} from '../core/store'
@@ -38,29 +36,6 @@ export default class Signup extends React.Component<void, TProps, void> {
 			type: 'password',
 			title: 'Confirm password',
 		},
-	}
-
-	componentWillMount () {
-		const {signupStore} = this.props
-		const query = URI.parseQuery(window.location.search)
-
-		// TODO: move to router
-
-		signupStore.resetStore()
-
-		if (!query.invite) {
-			signupStore.ui.isInviteTokenInputVisible = true
-		} else {
-			signupStore.ui.isInviteTokenInputVisible = false
-			signupStore.setInviteToken(query.invite)
-		}
-
-		if (query.email) {
-			runInAction('setPredefinedEmail', () => {
-				signupStore.setFormValue('email', query.email)
-				signupStore.setFormDisabled('email', true)
-			})
-		}
 	}
 
 	handleChange = (field: TSignupFormField, value: string) => {
