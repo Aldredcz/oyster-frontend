@@ -2,7 +2,7 @@
 import {observable, action} from 'mobx'
 import {persistStateSingleton} from 'core/utils/mobx'
 import type {IPersistStateSingletonExtras} from 'core/utils/mobx'
-import {oysterRequestFetchAccountProjects} from 'core/api/account'
+import {oysterRequestFetchAccountProjects, oysterRequestCreateAccountProjects} from 'core/api/account'
 
 export interface IAccountStoreShape {
 	uuid: ?string,
@@ -40,11 +40,27 @@ export class AccountStore implements IAccountStoreShape {
 		this.projectsByIds = projectsByIds
 	}
 
-	@action fetchProjects () {
-		oysterRequestFetchAccountProjects().then(
+	@action fetchProjects (): Promise<Array<string>> {
+		const response = oysterRequestFetchAccountProjects()
+
+		response.then(
 			(data) => this.setProjectsByIds(data),
 			// TODO: handle error
 		)
+
+		return response
+	}
+
+	@action createNewProject (): Promise<string> {
+		const response = oysterRequestCreateAccountProjects()
+
+		response.then(
+			(project) => {
+				this.projectsByIds && this.projectsByIds.unshift(project.uuid)
+			},
+		)
+
+		return response.then((project) => project.uuid)
 	}
 }
 

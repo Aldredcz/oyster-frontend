@@ -51,6 +51,18 @@ export function oysterRequestProjectRename (uuid: string, name: string): Promise
 		.then(({name}) => name)
 }
 
+export function oysterRequestCreateProject (): Promise<TProject> {
+	return request(`${SETTINGS.oysterApi}/account/project`, {
+		method: 'POST',
+		body: JSON.stringify({}),
+	})
+		.then(
+			(response) => response.json(),
+			// TODO: error handling
+		)
+		.then(processProjectFromApi)
+}
+
 export const ProjectAPI = {
 	fetch: oysterRequestFetchProject,
 	update: (uuid: string, field: string, value: any): Promise<any> => {
@@ -61,4 +73,5 @@ export const ProjectAPI = {
 				return Promise.reject(`Cannot update field '${field}' in Project`)
 		}
 	},
+	create: oysterRequestCreateProject,
 }

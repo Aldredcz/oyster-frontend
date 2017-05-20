@@ -35,8 +35,12 @@ export default class Dashboard extends React.Component<void, TProps, void> {
 		})
 	}
 
+	createNewProject = () => {
+		this.props.dashboardStore.createNewProject()
+	}
+
 	render () {
-		const {dashboardStore: {projects}} = this.props
+		const {dashboardStore: {projects, ui}} = this.props
 
 		return (
 			<div>
@@ -60,6 +64,13 @@ export default class Dashboard extends React.Component<void, TProps, void> {
 					)
 					: 'Loading data...'
 				}
+				<hr />
+				<h2>
+					{ui.creatingNewProject
+						? 'Creating...'
+						: <a href='javascript://' onClick={this.createNewProject}>Add new project</a>
+					}
+				</h2>
 			</div>
 		)
 	}

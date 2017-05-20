@@ -16,6 +16,7 @@ type TProps = $Shape<{
 	isLoading: boolean,
 	addNewTask: $PropertyType<Project, 'addNewTask'>,
 	updateField: $PropertyType<Project, 'updateField'>,
+	editNameOnMount: boolean,
 }>
 
 type TState = {
@@ -43,6 +44,7 @@ export const projectFactory = ({
 			tasksByIds: entity.data.tasksByIds,
 			addNewTask: entity.addNewTask.bind(entity),
 			updateField: entity.updateField.bind(entity),
+			editNameOnMount: !entity.data.name,
 		}),
 	})
 	@observer
@@ -56,6 +58,13 @@ export const projectFactory = ({
 		}
 
 		nameEl: ?HTMLInputElement = null
+
+		componentDidMount () {
+			const {editNameOnMount, project: {actionsSet}} = this.props
+			if (editNameOnMount && actionsSet && actionsSet.has('rename')) {
+				this.editField('name')
+			}
+		}
 
 		createNewTask () {
 			const {project: {uuid: projectUuid}, addNewTask} = this.props

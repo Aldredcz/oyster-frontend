@@ -7,7 +7,7 @@ import {processUserFromApi} from 'core/entities/users'
 import type {TUserFromApi} from 'core/entities/users'
 import {processGroupFromApi} from 'core/entities/groups'
 import type {TGroupFromApi} from 'core/entities/groups'
-import {processProjectFromApi} from 'core/entities/projects'
+import {processProjectFromApi, oysterRequestCreateProject} from 'core/entities/projects'
 import type {TProjectFromApi} from 'core/entities/projects'
 
 
@@ -46,3 +46,5 @@ export function oysterRequestFetchAccountProjects (): Promise<Array<string>> {
 			return projectsFromApi.map((p) => processProjectFromApi(p).uuid)
 		})
 }
+
+export const oysterRequestCreateAccountProjects = oysterRequestCreateProject
