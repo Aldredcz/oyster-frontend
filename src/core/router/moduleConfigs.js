@@ -3,7 +3,7 @@ import type {IRoutingStore, TModuleId} from './types'
 import {moduleStore as projectDetailStore, ComponentLoadable as ProjectDetail} from 'modules/ProjectDetail'
 import {ComponentLoadable as Login} from 'modules/Login'
 import {moduleStore as signupStore, ComponentLoadable as Signup} from 'modules/Signup'
-import {ComponentLoadable as Dashboard} from 'modules/Dashboard'
+import {moduleStore as dashboardStore, ComponentLoadable as Dashboard} from 'modules/Dashboard'
 
 type TModuleDetailStore = {
 	hasSubroute: true,
@@ -36,6 +36,7 @@ export const moduleConfigs: {[key: TModuleId]: TModuleDetail} = {
 		basePath: 'dashboard',
 		Component: Dashboard,
 		isAuthRequired: true,
+		store: dashboardStore,
 	},
 	projectDetail: {
 		basePath: 'project',

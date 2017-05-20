@@ -3,7 +3,7 @@ import React from 'react'
 import {observer, inject} from 'mobx-react'
 import {moduleManager} from 'core/router'
 import {removeAuthorizationData} from 'core/authorization'
-import type {TAccountStore} from 'core/store/account'
+import type {TDashboardStore} from '../core/store'
 
 import Link from 'core/router/Link'
 import {projectFactory} from 'core/components/Project/Project'
@@ -21,19 +21,11 @@ const Project = projectFactory({
 })
 
 type TProps = {
-	accountStore: TAccountStore,
+	dashboardStore: TDashboardStore,
 }
 
-@inject('accountStore') @observer
+@inject('dashboardStore') @observer
 export default class Dashboard extends React.Component<void, TProps, void> {
-	componentWillMount () {
-		const {accountStore} = this.props
-
-		if (!accountStore.projectsByIds) {
-			accountStore.fetchProjects() // TODO: remove from view
-		}
-	}
-
 	logout = (ev: MouseEvent) => {
 		ev.preventDefault()
 
@@ -44,7 +36,7 @@ export default class Dashboard extends React.Component<void, TProps, void> {
 	}
 
 	render () {
-		const {accountStore: {projectsByIds}} = this.props
+		const {dashboardStore: {projects}} = this.props
 
 		return (
 			<div>
@@ -57,12 +49,12 @@ export default class Dashboard extends React.Component<void, TProps, void> {
 						Logout!
 					</a>
 				</p>
-				{projectsByIds
+				{projects
 					? (
 						<div>
-							{projectsByIds.length === 0 && 'No projects!'}
-							{projectsByIds.map((projectId) => (
-								<Project key={projectId} uuid={projectId} />
+							{projects.length === 0 && 'No projects!'}
+							{projects.map((project) => (
+								<Project key={project.data.uuid} uuid={project.data.uuid} />
 							))}
 						</div>
 					)
