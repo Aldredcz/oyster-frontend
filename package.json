@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"author": "Aldredcz <devel@aldred.cz>",
 	"scripts": {
-		"prestart": "yarn install",
+		"prestart": "yarn install || npm install",
 		"start": "gulp server",
 		"eslint:check": "eslint src",
 		"flow:check": "flow check --strip-root --color=never",

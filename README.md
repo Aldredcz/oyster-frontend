@@ -2,7 +2,7 @@
 ## Prerequisites:
 ```
 node >=6.10
-npm >=3.10 || yarn >=0.22
+yarn >=0.22 || npm >=3.10
 ```
 
 
