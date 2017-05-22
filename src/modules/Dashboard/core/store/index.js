@@ -3,7 +3,7 @@ import {observable, computed, action} from 'mobx'
 import {persistStateSingleton} from 'core/utils/mobx'
 import type {IPersistStateSingletonExtras} from 'core/utils/mobx'
 import accountStore from 'core/store/account'
-import {projectsStore, Project} from 'core/entities/projects'
+import {projectsStore, ProjectEntity} from 'core/entities/projects'
 import {moduleManager} from 'core/router'
 
 class DashboardStore {
@@ -23,7 +23,7 @@ class DashboardStore {
 		accountStore.fetchProjects()
 	}
 
-	@action createNewProject (): Promise<Project> {
+	@action createNewProject (): Promise<ProjectEntity> {
 		this.ui.creatingNewProject = true
 
 		const response = accountStore.createNewProject()

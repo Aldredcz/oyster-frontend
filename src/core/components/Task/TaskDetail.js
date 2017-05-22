@@ -5,14 +5,14 @@ import injectEntity from 'core/utils/mobx/entityInjector'
 
 import {tasksStore} from 'core/entities/tasks'
 import type {TTask, TTaskField} from 'core/entities/tasks'
-import type {Task} from 'core/entities/tasks/store'
+import type {TaskEntity} from 'core/entities/tasks/store'
 
 
 type TProps = $Shape<{
 	uuid?: string,
 	projectUuid: string,
 	task: TTask,
-	updateField: $PropertyType<Task, 'updateField'>,
+	updateField: $PropertyType<TaskEntity, 'updateField'>,
 	editNameOnMount: boolean,
 }>
 

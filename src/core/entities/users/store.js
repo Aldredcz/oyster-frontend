@@ -7,16 +7,16 @@ import type {IEntityStore} from 'core/store/utils/createEntityStoreClass'
 
 import {persistStateSingleton} from 'core/utils/mobx'
 
-export class User extends createUpdatableEntityClass({
+export class UserEntity extends createUpdatableEntityClass({
 	entityState: initialState,
 	update: UsersAPI.update,
 }) {}
 
 class UsersStore extends createEntityStoreClass({
-	EntityClass: User,
+	EntityClass: UserEntity,
 	fetch: UsersAPI.fetch,
 }) {}
 
-const usersStore: IEntityStore<User> = persistStateSingleton(new UsersStore())
+const usersStore: IEntityStore<UserEntity> = persistStateSingleton(new UsersStore())
 
 export default usersStore

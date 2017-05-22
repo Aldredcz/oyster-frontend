@@ -13,16 +13,16 @@ const UpdatableProject = createUpdatableEntityClass({
 	update: ProjectAPI.update,
 })
 
-export class Project extends UpdatableProject {
+export class ProjectEntity extends UpdatableProject {
 	@action addNewTask (uuid: string) {
 		this.data.tasksByIds && this.data.tasksByIds.push(uuid)
 	}
 }
 
 class ProjectsStore extends createEntityStoreClass({
-	EntityClass: Project,
+	EntityClass: ProjectEntity,
 	fetch: ProjectAPI.fetch,
 }) {}
 
-const projectsStore: IEntityStore<Project> = persistStateSingleton(new ProjectsStore())
+const projectsStore: IEntityStore<ProjectEntity> = persistStateSingleton(new ProjectsStore())
 export default projectsStore

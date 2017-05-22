@@ -17,7 +17,7 @@ import AccountWrapper from 'core/components/wrappers/AccountWrapper'
 class StandardLayout extends React.Component<void, *, void> {
 	render () {
 		return (
-			<div className='standard-layout' style={{width: 800, margin: '0 auto'}}>
+			<div className='standard-layout' style={{width: '90%', margin: '0 auto'}}>
 				{this.props.children}
 			</div>
 		)

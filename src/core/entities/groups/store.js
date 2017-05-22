@@ -8,16 +8,16 @@ import type {IEntityStore} from 'core/store/utils/createEntityStoreClass'
 import {persistStateSingleton} from 'core/utils/mobx'
 
 
-export class Group extends createUpdatableEntityClass({
+export class GroupEntity extends createUpdatableEntityClass({
 	entityState: initialState,
 	update: GroupsAPI.update,
 }) {}
 
 class GroupsStore extends createEntityStoreClass({
-	EntityClass: Group,
+	EntityClass: GroupEntity,
 	fetch: GroupsAPI.fetch,
 }) {}
 
-const groupsStore: IEntityStore<Group> = persistStateSingleton(new GroupsStore())
+const groupsStore: IEntityStore<GroupEntity> = persistStateSingleton(new GroupsStore())
 
 export default groupsStore

@@ -4,7 +4,7 @@ import {observer} from 'mobx-react'
 import injectEntity from 'core/utils/mobx/entityInjector'
 import {moduleManager} from 'core/router'
 
-import {projectsStore, Project} from 'core/entities/projects'
+import {projectsStore, ProjectEntity} from 'core/entities/projects'
 import type {TProject} from 'core/entities/projects'
 import {oysterRequestCreateTask} from 'core/entities/tasks'
 
@@ -14,8 +14,8 @@ type TProps = $Shape<{
 	uuid: string,
 	project: TProject,
 	isLoading: boolean,
-	addNewTask: $PropertyType<Project, 'addNewTask'>,
-	updateField: $PropertyType<Project, 'updateField'>,
+	addNewTask: $PropertyType<ProjectEntity, 'addNewTask'>,
+	updateField: $PropertyType<ProjectEntity, 'updateField'>,
 	editNameOnMount: boolean,
 }>
 
