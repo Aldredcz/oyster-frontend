@@ -18,7 +18,7 @@ export class TaskEntity extends createUpdatableEntityClass({
 		const newValue = [...originalOwnersByIds, userUuid]
 
 		this.data.ownersByIds = newValue
-		TaskAPI.update(this.data.uuid, 'assign', userUuid)
+		TaskAPI.assignContributor(this.data.uuid, userUuid)
 			.then(
 				(ownersByIds) => {
 					this.data.ownersByIds = ownersByIds

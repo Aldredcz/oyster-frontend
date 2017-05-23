@@ -109,10 +109,9 @@ export const TaskAPI = {
 				return oysterRequestTaskBriefChange(uuid, value)
 			case 'deadline':
 				return oysterRequestTaskDeadlineChange(uuid, value)
-			case 'assign':
-				return oysterRequestTaskAssignContributor(uuid, value)
 			default:
 				return Promise.reject(`Cannot update field '${field}' in Task`)
 		}
 	},
+	assignContributor: oysterRequestTaskAssignContributor,
 }
