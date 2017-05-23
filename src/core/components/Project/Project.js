@@ -4,18 +4,20 @@ import {observer} from 'mobx-react'
 import injectEntity from 'core/utils/mobx/entityInjector'
 import {moduleManager} from 'core/router'
 
-import {projectsStore, ProjectEntity} from 'core/entities/projects'
-import type {TProject} from 'core/entities/projects'
+import {projectsStore} from 'core/entities/projects'
+import type {TProject, TProjectEntity} from 'core/entities/projects'
 import {oysterRequestCreateTask} from 'core/entities/tasks'
 
 import TaskPreviewBox from 'core/components/Task/TaskPreviewBox'
+import UserSelect from 'core/components/ui/UserSelect'
 
 type TProps = $Shape<{
 	uuid: string,
 	project: TProject,
 	isLoading: boolean,
-	addNewTask: $PropertyType<ProjectEntity, 'addNewTask'>,
-	updateField: $PropertyType<ProjectEntity, 'updateField'>,
+	addNewTask: $PropertyType<TProjectEntity, 'addNewTask'>,
+	updateField: $PropertyType<TProjectEntity, 'updateField'>,
+	assignProjectManager: $PropertyType<TProjectEntity, 'assignProjectManager'>,
 	editNameOnMount: boolean,
 }>
 
@@ -30,9 +32,13 @@ type TState = {
 type TStateField = 'name'
 
 export const projectFactory = ({
-	titleRenderer = (title, self) => title,
+	titleRenderer = (elem, self) => elem,
+	projectManagerSelectRenderer = (elem, self) => elem,
+	tasksRenderer = (elem, self) => elem,
 }: {
-	titleRenderer: (title: React$Element<any>, self: *) => React$Element<any>,
+	titleRenderer?: (elem: React$Element<any>, self: *) => ?React$Element<any>,
+	projectManagerSelectRenderer?: (elem: React$Element<any>, self: *) => ?React$Element<any>,
+	tasksRenderer?: (elem: React$Element<any>, self: *) => ?React$Element<any>,
 } = {}) => {
 
 	@injectEntity({
@@ -44,6 +50,7 @@ export const projectFactory = ({
 			tasksByIds: entity.data.tasksByIds,
 			addNewTask: entity.addNewTask.bind(entity),
 			updateField: entity.updateField.bind(entity),
+			assignProjectManager: entity.assignProjectManager.bind(entity),
 			editNameOnMount: !entity.data.name,
 		}),
 	})
@@ -120,38 +127,80 @@ export const projectFactory = ({
 			})
 		}
 
-		render () {
-			const {isLoading, uuid, project: {name, tasksByIds}} = this.props
+		renderTitle () {
+			const {isLoading, uuid, project: {name}} = this.props
+
+			return isLoading
+				? <h1>{uuid} <small>loading...</small></h1>
+				: <h1 title={uuid}>{name || '[unnamed project]'}</h1>
+		}
+
+		renderProjectManagerSelect () {
+			const {project: {actionsSet, ownersByIds}} = this.props
 
 			return (
 				<div>
-					{titleRenderer(
-						isLoading
-							? <h1>{uuid} <small>loading...</small></h1>
-							: <h1 title={uuid}>{name || '[unnamed project]'}</h1>,
-						this,
+					Project managers:
+					{ownersByIds && ownersByIds.map((userUuid) => (
+						<UserSelect
+							key={userUuid}
+							selectedUserUuid={userUuid}
+							editable={false}
+						/>
+					))}
+					{actionsSet && actionsSet.has('assign') && (
+						<UserSelect
+							selectedUserUuid={null}
+							editable={true}
+							onChange={(userUuid) => userUuid && this.props.assignProjectManager(userUuid)}
+						/>
 					)}
-					<div className='tasks' style={{width: '100%', float: 'left'}}>
-						{tasksByIds && (
-							tasksByIds.map((taskId) => (
-								<div key={taskId} style={{float: 'left'}}>
-									<TaskPreviewBox projectUuid={uuid} uuid={taskId} />
-								</div>
-							))
-						)}
-						<div style={{float: 'left', cursor: 'pointer'}}>
-							{!this.state.creatingNewTask
-								? (
-									<h2 onClick={() => this.createNewTask()}>
-										<a href='javascript://'>New task!</a>
-									</h2>
-								)
-								: (
-									<h2>Creating...</h2>
-								)
-							}
-						</div>
+				</div>
+			)
+		}
+
+		renderTasks () {
+			const {uuid, project: {tasksByIds}} = this.props
+
+			return (
+				<div className='tasks' style={{width: '100%', float: 'left'}}>
+					{tasksByIds && (
+						tasksByIds.map((taskId) => (
+							<div key={taskId} style={{float: 'left'}}>
+								<TaskPreviewBox projectUuid={uuid} uuid={taskId} />
+							</div>
+						))
+					)}
+					<div style={{float: 'left', cursor: 'pointer'}}>
+						{!this.state.creatingNewTask
+							? (
+								<h2 onClick={() => this.createNewTask()}>
+									<a href='javascript://'>New task!</a>
+								</h2>
+							)
+							: (
+								<h2>Creating...</h2>
+							)
+						}
 					</div>
+				</div>
+			)
+		}
+
+		render () {
+			return (
+				<div>
+					{titleRenderer
+						? titleRenderer(this.renderTitle(), this)
+						: this.renderTitle()}
+					{projectManagerSelectRenderer
+						? projectManagerSelectRenderer(this.renderProjectManagerSelect(), this)
+						: this.renderProjectManagerSelect()
+					}
+					{tasksRenderer
+						? tasksRenderer(this.renderTasks(), this)
+						: this.renderTasks()
+					}
 					<div style={{display: 'table', clear: 'both'}} />
 				</div>
 			)

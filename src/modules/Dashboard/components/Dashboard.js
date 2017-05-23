@@ -18,6 +18,7 @@ const Project = projectFactory({
 			{title}
 		</Link>
 	),
+	projectManagerSelectRenderer: () => null,
 })
 
 type TProps = {

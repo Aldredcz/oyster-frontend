@@ -4,9 +4,12 @@ import {observer, inject} from 'mobx-react'
 import type {TUserEntity, TUsersStore} from 'core/entities/users/store'
 
 type TProps = $Shape<{
+	// component API
 	selectedUserUuid: ?string,
 	editable: boolean,
 	onChange: (userUuid: string) => any,
+
+	// injected
 	usersStore: TUsersStore,
 }>
 

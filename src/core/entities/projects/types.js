@@ -5,6 +5,7 @@ import type {TAccountFromApi} from 'core/entities/accounts'
 
 export type TProjectACLAction =
 	| 'rename'
+	| 'assign'
 
 export type TProjectCommon = {
 	uuid: string,

@@ -63,6 +63,21 @@ export function oysterRequestCreateProject (): Promise<TProject> {
 		.then(processProjectFromApi)
 }
 
+export function oysterRequestProjectAssignManager (uuid: string, userUuid: string): Promise<Array<string>> {
+	return request(`${SETTINGS.oysterApi}/project/${uuid}/assign`, {
+		method: 'PUT',
+		body: JSON.stringify({
+			owner: userUuid,
+		}),
+	})
+		.then(
+			(response) => response.json(),
+			// TODO: error handling
+		)
+		.then(({owners}) => owners.map((owner) => owner.uuid))
+}
+
+
 export const ProjectAPI = {
 	fetch: oysterRequestFetchProject,
 	update: (uuid: string, field: string, value: any): Promise<any> => {
@@ -74,4 +89,5 @@ export const ProjectAPI = {
 		}
 	},
 	create: oysterRequestCreateProject,
+	assignProjectManager: oysterRequestProjectAssignManager,
 }
