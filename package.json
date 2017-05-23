@@ -7,7 +7,7 @@
 		"start": "gulp server",
 		"eslint:check": "eslint src",
 		"flow:check": "flow check --strip-root --color=never",
-		"flow:server": "flow --strip-root",
+		"flow:qcheck": "flow --strip-root",
 		"flow-typed:install": "flow-typed install",
 		"jest:check": "cross-env BABEL_ENV=test jest",
 		"test": "npm run eslint:check && npm run flow:check && npm run jest:check",
