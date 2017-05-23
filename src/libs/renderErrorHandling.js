@@ -1,8 +1,6 @@
 // @noflow
 /* eslint-disable no-undef */
-import React from 'react'
-
-export default () => {
+export default (React) => {
 	const statelessComponentsMap = new Map() // original -> monkeypatched stateless functional components cache
 	let errorPlaceholder = <noscript/>
 
