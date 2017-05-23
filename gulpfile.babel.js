@@ -19,7 +19,7 @@ const args = yargs
 	.alias('d', 'deployConfig') // devel / staging / production
 	.default({
 		production: false,
-		deployConfig: 'devel',
+		deployConfig: 'staging',
 		port: PROJECT_CONSTANTS.EXPRESS_SERVER_PORT,
 	})
 	.argv
