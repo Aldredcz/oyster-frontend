@@ -7,6 +7,8 @@ import ReactDOM from 'react-dom'
 import {AppContainer} from 'react-hot-loader'
 import {router} from 'core/router'
 
+import handleRenderErrors from 'libs/renderErrorHandling'
+
 import App from './App'
 
 interface IRender {
