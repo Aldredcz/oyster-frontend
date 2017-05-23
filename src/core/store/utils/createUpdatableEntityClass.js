@@ -27,7 +27,7 @@ export default function createUpdatableEntityClass<T: Object> ({
 	idFieldName?: $Keys<T>,
 }): Class<IUpdatableEntity<T>> {
 	class UpdatableEntity implements IUpdatableEntity<T> {
-		@observable data = entityState
+		@observable data: T = entityState
 		@observable isLoading = false
 
 		@action setLoading (value: boolean): * {

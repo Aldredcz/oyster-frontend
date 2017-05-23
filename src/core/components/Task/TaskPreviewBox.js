@@ -69,7 +69,6 @@ export default class TaskPreviewBox extends React.Component<void, TProps, void> 
 				}
 				{deadline && <span>{formatDate(deadline, 'DD. MM. YYYY')}</span>}
 			</div>
-
 		)
 	}
 }

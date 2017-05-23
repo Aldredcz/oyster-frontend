@@ -84,6 +84,20 @@ export function oysterRequestTaskDeadlineChange (uuid: string, deadline: Date): 
 		.then(({deadline}) => new Date(deadline))
 }
 
+export function oysterRequestTaskAssignContributor (uuid: string, userUuid: string): Promise<Array<string>> {
+	return request(`${SETTINGS.oysterApi}/task/${uuid}/assign`, {
+		method: 'PUT',
+		body: JSON.stringify({
+			owner: userUuid,
+		}),
+	})
+		.then(
+			(response) => response.json(),
+			// TODO: error handling
+		)
+		.then(({owners}) => owners.map((owner) => owner.uuid))
+}
+
 export const TaskAPI = {
 	fetch: oysterRequestFetchTask,
 	create: oysterRequestCreateTask,
@@ -95,6 +109,8 @@ export const TaskAPI = {
 				return oysterRequestTaskBriefChange(uuid, value)
 			case 'deadline':
 				return oysterRequestTaskDeadlineChange(uuid, value)
+			case 'assign':
+				return oysterRequestTaskAssignContributor(uuid, value)
 			default:
 				return Promise.reject(`Cannot update field '${field}' in Task`)
 		}

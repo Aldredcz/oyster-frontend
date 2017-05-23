@@ -5,6 +5,7 @@ type TTaskACLAction =
 	| 'rename'
 	| 'deadline'
 	| 'brief'
+	| 'assign'
 
 export type TTaskCommon = {
 	uuid: string,

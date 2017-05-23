@@ -9,6 +9,7 @@ import {visualTheme} from 'core/config/themes/theme'
 
 import {getRenderer, getMountNode} from 'core/config/fela'
 import accountStore from 'core/store/account'
+import {usersStore} from 'core/entities/users'
 import {getAuthorizationData} from 'core/authorization'
 
 import AccountWrapper from 'core/components/wrappers/AccountWrapper'
@@ -45,6 +46,7 @@ function addMobxProvider (elem: React$Element<any>): React$Element<any> {
 	return (
 		<MobxProvider
 			accountStore={accountStore}
+			usersStore={usersStore}
 			moduleManager={moduleManager}
 		>
 			<div>

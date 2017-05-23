@@ -5,16 +5,18 @@ import injectEntity from 'core/utils/mobx/entityInjector'
 
 import {tasksStore} from 'core/entities/tasks'
 import type {TTask, TTaskField} from 'core/entities/tasks'
-import type {TaskEntity} from 'core/entities/tasks/store'
+import type {TTaskEntity} from 'core/entities/tasks/store'
 
 import Datetime from 'core/components/ui/Datetime'
+import UserSelect from 'core/components/ui/UserSelect'
 
 
 type TProps = $Shape<{
 	uuid?: string,
 	projectUuid: string,
 	task: TTask,
-	updateField: $PropertyType<TaskEntity, 'updateField'>,
+	updateField: $PropertyType<TTaskEntity, 'updateField'>,
+	assignContributor: $PropertyType<TTaskEntity, 'assignContributor'>,
 	editNameOnMount: boolean,
 }>
 
@@ -38,6 +40,7 @@ type TStateField = TTaskField & $Keys<TState>
 	mapEntityToProps: (entity) => ({
 		task: entity.data,
 		updateField: entity.updateField.bind(entity),
+		assignContributor: entity.assignContributor.bind(entity),
 		editNameOnMount: !entity.data.name,
 	}),
 })
@@ -98,7 +101,7 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 
 	render () {
 		const state = this.state
-		const {uuid, name, brief, deadline, actionsSet} = this.props.task
+		const {uuid, name, brief, deadline, actionsSet, ownersByIds} = this.props.task
 
 		return (
 			<div style={{border: '1px solid red'}}>
@@ -155,6 +158,23 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 						time={false}
 						minDate={new Date()}
 					/>
+				</div>
+				<div>
+					Contributors:
+					{ownersByIds && ownersByIds.map((userUuid) => (
+						<UserSelect
+							key={userUuid}
+							selectedUserUuid={userUuid}
+							editable={false}
+						/>
+					))}
+					{actionsSet && actionsSet.has('assign') && (
+						<UserSelect
+							selectedUserUuid={null}
+							editable={true}
+							onChange={(userUuid) => userUuid && this.props.assignContributor(userUuid)}
+						/>
+					)}
 				</div>
 			</div>
 		)
