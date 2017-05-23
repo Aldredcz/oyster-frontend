@@ -1,6 +1,7 @@
 import webpack from 'webpack'
 import fs from 'fs'
 import path from 'path'
+import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer'
 
 import {
 	PATH_BUILD_DIR,
@@ -96,6 +97,10 @@ export default (params) => {
 					manifest: require('../dll/libs-manifest.json'),
 				}),
 				new webpack.NamedChunksPlugin(),
+				new BundleAnalyzerPlugin({
+					analyzerMode: 'static',
+					openAnalyzer: false,
+				}),
 			]
 
 			if (isDev) {
