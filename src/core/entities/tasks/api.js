@@ -1,5 +1,5 @@
 // @flow
-import {format} from 'date-fns'
+import format from 'date-fns/format'
 import request from 'core/utils/request'
 import SETTINGS from 'core/SETTINGS'
 

@@ -7,6 +7,8 @@ import {tasksStore} from 'core/entities/tasks'
 import type {TTask, TTaskField} from 'core/entities/tasks'
 import type {TaskEntity} from 'core/entities/tasks/store'
 
+import Datetime from 'core/components/ui/Datetime'
+
 
 type TProps = $Shape<{
 	uuid?: string,
@@ -24,10 +26,6 @@ type TState = {
 	brief: {
 		isEditing: boolean,
 		value: ?$PropertyType<TTask, 'brief'>,
-	},
-	deadline: {
-		isEditing: boolean,
-		value: ?$PropertyType<TTask, 'deadline'>,
 	},
 }
 
@@ -51,10 +49,6 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 			value: null,
 		},
 		brief: {
-			isEditing: false,
-			value: null,
-		},
-		deadline: {
 			isEditing: false,
 			value: null,
 		},
@@ -104,7 +98,7 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 
 	render () {
 		const state = this.state
-		const {uuid, name, brief, actionsSet} = this.props.task
+		const {uuid, name, brief, deadline, actionsSet} = this.props.task
 
 		return (
 			<div style={{border: '1px solid red'}}>
@@ -151,6 +145,16 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 							/>
 						)
 					}
+				</div>
+				<div>
+					Deadline:
+					<Datetime
+						value={deadline}
+						editable={Boolean(actionsSet && actionsSet.has('deadline'))}
+						onChange={(value) => this.props.updateField('deadline', value)}
+						time={false}
+						minDate={new Date()}
+					/>
 				</div>
 			</div>
 		)
