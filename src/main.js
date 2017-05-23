@@ -16,7 +16,7 @@ interface IRender {
 }
 
 //useStrict(true)
-
+handleRenderErrors()
 router.init()
 
 const renderApp: IRender = (AppComponent) => {
