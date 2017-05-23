@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import {Provider as MobxProvider, observer} from 'mobx-react'
-import MobxDevTools from 'mobx-react-devtools'
+import MobxDevTools from 'core/utils/mobx/DevTools'
 import {moduleManager} from 'core/router'
 import {Provider as FelaProvider, ThemeProvider} from 'react-fela'
 import {visualTheme} from 'core/config/themes/theme'
@@ -51,7 +51,7 @@ function addMobxProvider (elem: React$Element<any>): React$Element<any> {
 		>
 			<div>
 				{elem}
-				{MobxDevTools}
+				{__DEV__ && MobxDevTools}
 			</div>
 		</MobxProvider>
 	)
