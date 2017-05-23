@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import {observer} from 'mobx-react'
+import formatDate from 'date-fns/format'
 import injectEntity from 'core/utils/mobx/entityInjector'
 
 import Link from 'core/router/Link'
@@ -54,7 +55,7 @@ type TProps = $Shape<{
 export default class TaskPreviewBox extends React.Component<void, TProps, void> {
 	render () {
 		const {task, projectUuid} = this.props
-		const {uuid, name, ownersByIds} = task
+		const {uuid, name, deadline, ownersByIds} = task
 
 		return (
 			<div style={{border: '1px solid black', borderRadius: 5, padding: 10, margin: 10}}>
@@ -66,6 +67,7 @@ export default class TaskPreviewBox extends React.Component<void, TProps, void> 
 						<OwnerIco key={ownerId} uuid={ownerId} />
 					))
 				}
+				{deadline && <span>{formatDate(deadline, 'DD. MM. YYYY')}</span>}
 			</div>
 
 		)
