@@ -28,7 +28,7 @@ const Project = projectFactory({
 			)
 		}
 
-		if (project.actionsSet && project.actionsSet.has('rename')) {
+		if (project.permissions && project.permissions.has('rename')) {
 			edit = <small><a href='javascript://' onClick={() => self.editField('name')}>edit name</a></small>
 		}
 

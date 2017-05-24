@@ -5,11 +5,10 @@ import SETTINGS from 'core/SETTINGS'
 import groupsStore from './store'
 import type {TGroup, TGroupFromApi, TGroupField} from './types'
 
-export function processGroupFromApi (groupFromApi: TGroupFromApi): TGroup {
-	const group: TGroup = {
-		uuid: groupFromApi.uuid,
-		name: groupFromApi.name || undefined,
-	}
+export function processGroupFromApi (groupFromApi: TGroupFromApi): $Shape<TGroup> {
+	const group: $Shape<TGroup> = {}
+	groupFromApi.uuid && (group.uuid = groupFromApi.uuid)
+	groupFromApi.name && (group.name = groupFromApi.name)
 
 	groupsStore.setEntity(group.uuid, {data: group})
 

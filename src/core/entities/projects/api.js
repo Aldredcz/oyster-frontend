@@ -7,19 +7,18 @@ import type {TProject, TProjectFromApi, TProjectField} from './types'
 
 import {processTaskFromApi} from 'core/entities/tasks'
 
-export function processProjectFromApi (projectFromApi: TProjectFromApi): TProject {
-	const project: TProject = {
-		uuid: projectFromApi.uuid,
-		name: projectFromApi.name || null,
-		deadline: projectFromApi.deadline || null,
-		archived: projectFromApi.archived || null,
-		tasksByIds: projectFromApi.tasks && projectFromApi.tasks.map(
-			(taskFromApi) => processTaskFromApi(taskFromApi).uuid,
-		),
-		accountsByIds: projectFromApi.accounts && projectFromApi.accounts.map((a) => a.uuid),
-		ownersByIds: projectFromApi.owners && projectFromApi.owners.map((u) => u.uuid),
-		actionsSet: projectFromApi.actions ? new Set(projectFromApi.actions) : null,
-	}
+export function processProjectFromApi (projectFromApi: TProjectFromApi): $Shape<TProject> {
+	const project: $Shape<TProject> = {}
+	projectFromApi.uuid && (project.uuid = projectFromApi.uuid)
+	projectFromApi.name && (project.name = projectFromApi.name)
+	projectFromApi.deadline && (project.deadline = projectFromApi.deadline)
+	projectFromApi.archived && (project.archived = projectFromApi.archived)
+	projectFromApi.tasks && (project.tasksByIds = projectFromApi.tasks.map(
+		(taskFromApi) => processTaskFromApi(taskFromApi).uuid,
+	))
+	projectFromApi.accounts && (project.accountsByIds = projectFromApi.accounts.map((a) => a.uuid))
+	projectFromApi.owners && (project.ownersByIds = projectFromApi.owners.map((a) => a.uuid))
+	projectFromApi.actions && (project.permissions = new Set(projectFromApi.actions))
 
 	projectsStore.setEntity(project.uuid, {data: project})
 

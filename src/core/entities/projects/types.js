@@ -3,7 +3,7 @@ import type {TTaskFromApi} from 'core/entities/tasks'
 import type {TUserFromApi} from 'core/entities/users'
 import type {TAccountFromApi} from 'core/entities/accounts'
 
-export type TProjectACLAction =
+export type TProjectPermission =
 	| 'rename'
 	| 'assign'
 
@@ -18,14 +18,14 @@ export type TProject = TProjectCommon & {
 	accountsByIds: ?Array<string>,
 	tasksByIds: ?Array<string>,
 	ownersByIds: ?Array<string>,
-	actionsSet: ?Set<TProjectACLAction>,
+	permissions: ?Set<TProjectPermission>,
 }
 
 export type TProjectFromApi = $Shape<TProjectCommon & {
 	accounts: ?Array<TUserFromApi>,
 	tasks: ?Array<TTaskFromApi>,
 	owners: ?Array<TAccountFromApi>,
-	actions: ?Array<TProjectACLAction>,
+	actions: ?Array<TProjectPermission>,
 }>
 
 export type TProjectField = $Keys<TProject>
@@ -38,5 +38,5 @@ export const initialState: TProject = {
 	accountsByIds: null,
 	tasksByIds: null,
 	ownersByIds: null,
-	actionsSet: null,
+	permissions: null,
 }

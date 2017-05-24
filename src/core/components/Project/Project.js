@@ -67,8 +67,8 @@ export const projectFactory = ({
 		nameEl: ?HTMLInputElement = null
 
 		componentDidMount () {
-			const {editNameOnMount, project: {actionsSet}} = this.props
-			if (editNameOnMount && actionsSet && actionsSet.has('rename')) {
+			const {editNameOnMount, project: {permissions}} = this.props
+			if (editNameOnMount && permissions && permissions.has('rename')) {
 				this.editField('name')
 			}
 		}
@@ -136,7 +136,7 @@ export const projectFactory = ({
 		}
 
 		renderProjectManagerSelect () {
-			const {project: {actionsSet, ownersByIds}} = this.props
+			const {project: {permissions, ownersByIds}} = this.props
 
 			return (
 				<div>
@@ -148,7 +148,7 @@ export const projectFactory = ({
 							editable={false}
 						/>
 					))}
-					{actionsSet && actionsSet.has('assign') && (
+					{permissions && permissions.has('assign') && (
 						<UserSelect
 							selectedUserUuid={null}
 							editable={true}

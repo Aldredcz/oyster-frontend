@@ -1,7 +1,7 @@
 // @flow
 import type {TUserFromApi} from 'core/entities/users'
 
-type TTaskACLAction =
+type TTaskPermission =
 	| 'rename'
 	| 'deadline'
 	| 'brief'
@@ -17,14 +17,14 @@ export type TTask = TTaskCommon & {
 	deadline: ?Date,
 	completedAt: ?Date,
 	ownersByIds: ?Array<string>,
-	actionsSet: ?Set<TTaskACLAction>,
+	permissions: ?Set<TTaskPermission>,
 }
 
 export type TTaskFromApi = $Shape<TTaskCommon & {
 	deadline: ?string,
 	completed_at: ?string,
 	owners: ?Array<TUserFromApi>,
-	actions: ?Array<TTaskACLAction>,
+	actions: ?Array<TTaskPermission>,
 }>
 
 export type TTaskField = $Keys<TTask>
@@ -36,5 +36,5 @@ export const initialState: TTask = {
 	deadline: null,
 	completedAt: null,
 	ownersByIds: null,
-	actionsSet: null,
+	permissions: null,
 }

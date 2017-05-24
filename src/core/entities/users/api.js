@@ -5,14 +5,13 @@ import SETTINGS from 'core/SETTINGS'
 import usersStore from './store'
 import type {TUser, TUserFromApi, TUserField} from './types'
 
-export function processUserFromApi (userFromApi: TUserFromApi): TUser {
-	const user: TUser = {
-		uuid: userFromApi.uuid,
-		name: userFromApi.name || null,
-		surname: userFromApi.surname || null,
-		email: userFromApi.email || null,
-		accountsByIds: userFromApi.accounts ? userFromApi.accounts.map((a) => a.uuid) : null,
-	}
+export function processUserFromApi (userFromApi: TUserFromApi): $Shape<TUser> {
+	const user: $Shape<TUser> = {}
+	userFromApi.uuid && (user.uuid = userFromApi.uuid)
+	userFromApi.name && (user.name = userFromApi.name)
+	userFromApi.surname && (user.surname = userFromApi.surname)
+	userFromApi.email && (user.email = userFromApi.email)
+	userFromApi.accounts && (user.accountsByIds = userFromApi.accounts.map((a) => a.uuid))
 
 	usersStore.setEntity(user.uuid, {data: user})
 

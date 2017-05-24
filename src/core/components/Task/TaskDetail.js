@@ -61,8 +61,8 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 	briefEl: ?HTMLTextAreaElement = null
 
 	componentDidMount () {
-		const {editNameOnMount, task: {actionsSet}} = this.props
-		if (editNameOnMount && actionsSet && actionsSet.has('rename')) {
+		const {editNameOnMount, task: {permissions}} = this.props
+		if (editNameOnMount && permissions && permissions.has('rename')) {
 			this.editField('name')
 		}
 	}
@@ -101,7 +101,7 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 
 	render () {
 		const state = this.state
-		const {uuid, name, brief, deadline, actionsSet, ownersByIds} = this.props.task
+		const {uuid, name, brief, deadline, permissions, ownersByIds} = this.props.task
 
 		return (
 			<div style={{border: '1px solid red'}}>
@@ -110,7 +110,7 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 						? (
 							<div>
 								Name: <h1 title={uuid}> {name}</h1>
-								{actionsSet && actionsSet.has('rename') && (
+								{permissions && permissions.has('rename') && (
 									<a href='javascript://' onClick={() => this.editField('name')}>edit</a>
 								)}
 							</div>
@@ -133,7 +133,7 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 								Brief: {brief && brief.split('\n').map((paragraph, i) => (
 									<p key={String(i)}>{paragraph}</p>
 								))}
-								{actionsSet && actionsSet.has('brief') && (
+								{permissions && permissions.has('brief') && (
 									<a href='javascript://' onClick={() => this.editField('brief')}>edit</a>
 								)}
 							</div>
@@ -153,7 +153,7 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 					Deadline:
 					<Datetime
 						value={deadline}
-						editable={Boolean(actionsSet && actionsSet.has('deadline'))}
+						editable={Boolean(permissions && permissions.has('deadline'))}
 						onChange={(value) => this.props.updateField('deadline', value)}
 						time={false}
 						minDate={new Date()}
@@ -168,7 +168,7 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 							editable={false}
 						/>
 					))}
-					{actionsSet && actionsSet.has('assign') && (
+					{permissions && permissions.has('assign') && (
 						<UserSelect
 							selectedUserUuid={null}
 							editable={true}

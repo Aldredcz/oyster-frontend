@@ -45,6 +45,13 @@ export default function createUpdatableEntityClass<T: IUpdatableEntity<*>> ({
 				entity = this.initEntity(id)
 			}
 
+			// deep-merge data first
+			if (entityState.data) {
+				Object.assign(entity.data, entityState.data)
+				delete entityState.data
+			}
+
+			// then merge the rest
 			Object.assign(entity, entityState)
 
 			return this

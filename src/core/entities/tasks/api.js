@@ -6,16 +6,15 @@ import SETTINGS from 'core/SETTINGS'
 import tasksStore from './store'
 import type {TTask, TTaskFromApi, TTaskField} from './types'
 
-export function processTaskFromApi (taskFromApi: TTaskFromApi): TTask {
-	const task: TTask = {
-		uuid: taskFromApi.uuid,
-		name: taskFromApi.name || null,
-		brief: taskFromApi.brief || null,
-		deadline: taskFromApi.deadline ? new Date(taskFromApi.deadline) : null,
-		completedAt: taskFromApi.completed_at ? new Date(taskFromApi.completed_at) : null,
-		ownersByIds: taskFromApi.owners && taskFromApi.owners.map((u) => u.uuid),
-		actionsSet: taskFromApi.actions ? new Set(taskFromApi.actions) : null,
-	}
+export function processTaskFromApi (taskFromApi: TTaskFromApi): $Shape<TTask> {
+	const task: $Shape<TTask> = {}
+	taskFromApi.uuid && (task.uuid = taskFromApi.uuid)
+	taskFromApi.name && (task.name = taskFromApi.name)
+	taskFromApi.brief && (task.brief = taskFromApi.brief)
+	taskFromApi.deadline && (task.deadline = new Date(taskFromApi.deadline))
+	taskFromApi.completed_at && (task.completedAt = new Date(taskFromApi.completed_at))
+	taskFromApi.owners && (task.ownersByIds = taskFromApi.owners.map((u) => u.uuid))
+	taskFromApi.actions && (task.permissions = new Set(taskFromApi.actions))
 
 	tasksStore.setEntity(task.uuid, {data: task})
 
