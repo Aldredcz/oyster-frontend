@@ -127,12 +127,7 @@
 		"flowtype/type-id-match": [
 			2,
 			"^T([A-Z][a-zA-Z0-9]*)$"
-		],
-		"flowtype/no-weak-types": [2, {
-			"any": false,
-			"Object": true,
-			"Function": true
-		}]
+		]
 	},
 	"env": {
 		"es6": true,

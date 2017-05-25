@@ -1,10 +1,8 @@
 // @flow
 import {observable, action} from 'mobx'
 import URI from 'urijs'
-import {persistStateSingleton} from 'core/utils/mobx'
-import type {IPersistStateSingletonExtras} from 'core/utils/mobx'
+import {generateSingleton} from 'core/utils/mobx'
 import {moduleManager} from 'core/router'
-import {setAuthorizationData} from 'core/authorization'
 import {oysterRequestUserSignup} from 'core/api/login-signup'
 
 import type {ISignupStoreShape, TSignupFormField} from './types'
@@ -30,11 +28,7 @@ function generateFormMetadata (): $PropertyType<ISignupStoreShape, 'formMetadata
 	return result
 }
 
-export class SignupStore implements ISignupStoreShape {
-	constructor (props: ?ISignupStoreShape) {
-		Object.assign(this, props)
-	}
-
+class SignupStore implements ISignupStoreShape {
 	@observable step = 1
 	@observable inviteToken = ''
 	@observable formData = generateFormData()
@@ -72,9 +66,8 @@ export class SignupStore implements ISignupStoreShape {
 			password: this.formData.password,
 			invite: this.inviteToken,
 		}).then(
-			(data) => {
-				setAuthorizationData(data)
-				moduleManager.setModule('dashboard')
+			(userData) => {
+				moduleManager.login(userData.uuid, userData.token)
 			},
 		)
 	}
@@ -83,7 +76,7 @@ export class SignupStore implements ISignupStoreShape {
 	@action onEnter () {
 		const query = URI.parseQuery(window.location.search)
 
-		;(this: any).resetStore()
+		this.resetStore()
 
 		if (!query.invite) {
 			this.ui.isInviteTokenInputVisible = true
@@ -98,8 +91,18 @@ export class SignupStore implements ISignupStoreShape {
 		}
 
 	}
+
+	@action resetStore () {
+		this.step = 1
+		this.inviteToken = ''
+		this.formData = generateFormData()
+		this.formMetadata = generateFormMetadata()
+		this.ui = {
+			isInviteTokenInputVisible: false,
+		}
+	}
 }
 
-export type TSignupStore = SignupStore & IPersistStateSingletonExtras
+export type TSignupStore = SignupStore
 
-export default persistStateSingleton(new SignupStore())
+export default generateSingleton(SignupStore)

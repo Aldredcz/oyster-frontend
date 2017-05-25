@@ -2,7 +2,6 @@
 import React from 'react'
 import {observer, inject} from 'mobx-react'
 import {moduleManager} from 'core/router'
-import {removeAuthorizationData} from 'core/authorization'
 import type {TDashboardStore} from '../core/store'
 
 import Link from 'core/router/Link'
@@ -30,10 +29,7 @@ export default class Dashboard extends React.Component<void, TProps, void> {
 	logout = (ev: MouseEvent) => {
 		ev.preventDefault()
 
-		removeAuthorizationData()
-		moduleManager.setModule('login', {
-			logout: true,
-		})
+		moduleManager.logout()
 	}
 
 	createNewProject = () => {

@@ -7,7 +7,7 @@ import type {IUpdatableEntity} from 'core/store/utils/createUpdatableEntityClass
 import createEntityStoreClass from 'core/store/utils/createEntityStoreClass'
 import type {IEntityStore} from 'core/store/utils/createEntityStoreClass'
 
-import {persistStateSingleton} from 'core/utils/mobx'
+import {generateSingleton} from 'core/utils/mobx'
 
 export class TaskEntity extends createUpdatableEntityClass({
 	entityState: initialState,
@@ -38,6 +38,6 @@ class TasksStore extends createEntityStoreClass({
 	fetch: TaskAPI.fetch,
 }) {}
 
-const tasksStore: IEntityStore<TTaskEntity> = persistStateSingleton(new TasksStore())
+const tasksStore: IEntityStore<TTaskEntity> = generateSingleton(TasksStore)
 
 export default tasksStore

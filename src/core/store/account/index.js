@@ -1,7 +1,6 @@
 // @flow
 import {observable, action} from 'mobx'
-import {persistStateSingleton} from 'core/utils/mobx'
-import type {IPersistStateSingletonExtras} from 'core/utils/mobx'
+import {generateSingleton} from 'core/utils/mobx'
 import {oysterRequestFetchAccountProjects, oysterRequestCreateAccountProjects} from 'core/api/account'
 
 export interface IAccountStoreShape {
@@ -12,11 +11,7 @@ export interface IAccountStoreShape {
 	projectsByIds: ?Array<string>,
 }
 
-export class AccountStore implements IAccountStoreShape {
-	constructor (props: ?IAccountStoreShape) {
-		Object.assign(this, props)
-	}
-
+class AccountStore implements IAccountStoreShape {
 	@observable uuid = null
 	@observable name = null
 	@observable usersByIds = null
@@ -64,6 +59,6 @@ export class AccountStore implements IAccountStoreShape {
 	}
 }
 
-export type TAccountStore = AccountStore & IPersistStateSingletonExtras
+export type TAccountStore = AccountStore
 
-export default persistStateSingleton(new AccountStore())
+export default generateSingleton(AccountStore)

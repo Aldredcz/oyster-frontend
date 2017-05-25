@@ -24,10 +24,6 @@ export default function createUpdatableEntityClass<T: IUpdatableEntity<*>> ({
 	fetch: (id: string) => Promise<$PropertyType<T, 'data'>>,
 }): Class<IEntityStore<T>> {
 	class EntityStore {
-		constructor (props: any) {
-			Object.assign(this, props)
-		}
-
 		@observable entities: Map<string, T> = new Map()
 
 		@action initEntity (id) {

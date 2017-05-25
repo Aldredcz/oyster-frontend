@@ -1,7 +1,6 @@
 // @flow
 import {observable, computed, action} from 'mobx'
-import {persistStateSingleton} from 'core/utils/mobx'
-import type {IPersistStateSingletonExtras} from 'core/utils/mobx'
+import {generateSingleton} from 'core/utils/mobx'
 import accountStore from 'core/store/account'
 import {projectsStore} from 'core/entities/projects'
 import type {TProjectEntity} from 'core/entities/projects'
@@ -46,6 +45,6 @@ class DashboardStore {
 	}
 }
 
-export type TDashboardStore = DashboardStore & IPersistStateSingletonExtras
+export type TDashboardStore = DashboardStore
 
-export default persistStateSingleton(new DashboardStore())
+export default generateSingleton(DashboardStore)

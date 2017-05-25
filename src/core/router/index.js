@@ -1,12 +1,12 @@
 // @flow
 import {observable, computed, action, reaction} from 'mobx'
 import {Router} from 'vendor/director'
-import {persistStateSingleton} from 'core/utils/mobx/index'
+import {generateSingleton} from 'core/utils/mobx/index'
 
 import type {IRoutingStore, TModuleId} from './types'
-import {getAuthorizationData} from 'core/authorization'
 import createRoutes from './routes'
 import {moduleConfigs} from './moduleConfigs'
+import userStore from './user'
 
 class ModuleManager implements IRoutingStore {
 	static generatePath ({basePath, nestedPath}) {
@@ -74,7 +74,7 @@ class ModuleManager implements IRoutingStore {
 	@observable basePath: string = ''
 	@observable nestedPath: string = ''
 
-	@action setModule (module: ?TModuleId, options: any, dryRun?: boolean): ?string {
+	@action setModule (module: ?TModuleId, params: any, dryRun?: boolean): ?string {
 		module = module || this.module
 
 		if (!module) {
@@ -83,8 +83,17 @@ class ModuleManager implements IRoutingStore {
 
 		const moduleConfig = moduleConfigs[module]
 		if (!dryRun) {
-			if (options && moduleConfig.store) {
-				moduleConfig.store.setData && moduleConfig.store.setData(options)
+			// redirect to 'login' if not logged in
+			if (moduleConfig.isAuthRequired && !this.isLoggedIn) {
+				return this.setModule('login', {
+					noauth: true,
+					originalModule: module,
+					originalParams: params,
+				})
+			}
+
+			if (params && moduleConfig.store) {
+				moduleConfig.store.setData && moduleConfig.store.setData(params)
 			}
 			this.module = module
 		} else {
@@ -92,7 +101,7 @@ class ModuleManager implements IRoutingStore {
 				basePath: moduleConfig.basePath,
 				nestedPath: (moduleConfig.store && moduleConfig.store.constructor.generatePath)
 					//$FlowFixMe -- typechecking from outside works
-					? moduleConfig.store.constructor.generatePath(options)
+					? moduleConfig.store.constructor.generatePath(params)
 					: null,
 			})
 		}
@@ -122,16 +131,39 @@ class ModuleManager implements IRoutingStore {
 			nestedPath: this.nestedPath,
 		})
 	}
+
+	// AUTH
+	userStore = userStore
+
+	@action login (uuid: string, token: string, destination: ?{module: TModuleId, params?: any}) {
+		this.userStore.setUser(uuid, token)
+		if (!destination) {
+			this.setModule('dashboard')
+		} else {
+			this.setModule(destination.module, destination.params)
+		}
+	}
+
+	@action logout () {
+		this.userStore.removeUser()
+		this.setModule('login', {
+			logout: true,
+		})
+	}
+
+	@computed get isLoggedIn (): boolean {
+		return Boolean(this.userStore.uuid)
+	}
 }
 
-export const moduleManager: ModuleManager = persistStateSingleton(new ModuleManager())
+export const moduleManager: ModuleManager = generateSingleton(ModuleManager)
 export const router = new Router(createRoutes(moduleManager)).configure({
 	html5history: true,
 	recurse: 'backward',
 })
 
 router.on('/$', () => {
-	if (getAuthorizationData().uuid) {
+	if (moduleManager.isLoggedIn) {
 		router.replaceRoute('/dashboard')
 	} else {
 		router.replaceRoute('/login')

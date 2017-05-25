@@ -6,14 +6,13 @@ import {moduleManager} from 'core/router'
 import {Provider as FelaProvider, ThemeProvider} from 'react-fela'
 import {visualTheme} from 'core/config/themes/theme'
 
-
 import {getRenderer, getMountNode} from 'core/config/fela'
 import accountStore from 'core/store/account'
 import {usersStore} from 'core/entities/users'
-import {getAuthorizationData} from 'core/authorization'
 
 import AccountWrapper from 'core/components/wrappers/AccountWrapper'
 
+import Notifications from 'modules/Notifications/component'
 
 class StandardLayout extends React.Component<void, *, void> {
 	render () {
@@ -28,6 +27,11 @@ class StandardLayout extends React.Component<void, *, void> {
 function addStandardLayout (elem: React$Element<any>): React$Element<any> {
 	return (
 		<StandardLayout>
+			<div className='topbar' style={{position: 'absolute', top: 0, right: 0}}>
+				<div style={{border: '2px solid black', padding: 5}}>
+					<Notifications />
+				</div>
+			</div>
 			{elem}
 		</StandardLayout>
 	)
@@ -75,17 +79,7 @@ function addThemeProvider (elem: React$Element<any>): React$Element<any> {
 @observer
 export default class App extends React.Component<void, void, void> {
 	render () {
-		const isLogged = Boolean(getAuthorizationData().token)
 		const {Component, isAuthRequired} = moduleManager
-
-		if (isAuthRequired && !isLogged) {
-			setTimeout(() => {
-				moduleManager.setModule('login') // TODO: remove from view
-
-			}, 0)
-
-			return <noscript />
-		}
 
 		let elem = Component ? <Component /> : <span/>
 

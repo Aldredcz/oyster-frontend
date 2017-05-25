@@ -7,7 +7,7 @@ import type {IUpdatableEntity} from 'core/store/utils/createUpdatableEntityClass
 import createEntityStoreClass from 'core/store/utils/createEntityStoreClass'
 import type {IEntityStore} from 'core/store/utils/createEntityStoreClass'
 
-import {persistStateSingleton} from 'core/utils/mobx'
+import {generateSingleton} from 'core/utils/mobx'
 
 const UpdatableProject = createUpdatableEntityClass({
 	entityState: initialState,
@@ -44,5 +44,5 @@ class ProjectsStore extends createEntityStoreClass({
 	fetch: ProjectAPI.fetch,
 }) {}
 
-const projectsStore: IEntityStore<TProjectEntity> = persistStateSingleton(new ProjectsStore())
+const projectsStore: IEntityStore<TProjectEntity> = generateSingleton(ProjectsStore)
 export default projectsStore

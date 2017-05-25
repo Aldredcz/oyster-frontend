@@ -6,7 +6,7 @@ import SETTINGS from 'core/SETTINGS'
 import tasksStore from './store'
 import type {TTask, TTaskFromApi, TTaskField} from './types'
 
-export function processTaskFromApi (taskFromApi: TTaskFromApi): $Shape<TTask> {
+export function processTaskFromApi (taskFromApi: TTaskFromApi, updateStore: boolean = true): $Shape<TTask> {
 	const task: $Shape<TTask> = {}
 	taskFromApi.uuid && (task.uuid = taskFromApi.uuid)
 	taskFromApi.name && (task.name = taskFromApi.name)
@@ -16,7 +16,9 @@ export function processTaskFromApi (taskFromApi: TTaskFromApi): $Shape<TTask> {
 	taskFromApi.owners && (task.ownersByIds = taskFromApi.owners.map((u) => u.uuid))
 	taskFromApi.actions && (task.permissions = new Set(taskFromApi.actions))
 
-	tasksStore.setEntity(task.uuid, {data: task})
+	if (updateStore) {
+		tasksStore.setEntity(task.uuid, {data: task})
+	}
 
 	return task
 }

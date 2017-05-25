@@ -1,6 +1,6 @@
 // @flow
 import {observable, action, computed} from 'mobx'
-import {persistStateSingleton} from 'core/utils/mobx'
+import {generateSingleton} from 'core/utils/mobx'
 
 type TProjectDetailStoreData = {projectUuid: ?string, selectedTaskUuid: ?string}
 
@@ -39,6 +39,6 @@ class ProjectDetailStore {
 
 export type TProjectDetailStore = ProjectDetailStore
 
-const projectDetailStore: TProjectDetailStore = persistStateSingleton(new ProjectDetailStore())
+const projectDetailStore: TProjectDetailStore = generateSingleton(ProjectDetailStore)
 
 export default projectDetailStore

@@ -7,7 +7,7 @@ import type {IUpdatableEntity} from 'core/store/utils/createUpdatableEntityClass
 import createEntityStoreClass from 'core/store/utils/createEntityStoreClass'
 import type {IEntityStore} from 'core/store/utils/createEntityStoreClass'
 
-import {persistStateSingleton} from 'core/utils/mobx'
+import {generateSingleton} from 'core/utils/mobx'
 
 export class UserEntity extends createUpdatableEntityClass({
 	entityState: initialState,
@@ -27,6 +27,6 @@ class UsersStore extends createEntityStoreClass({
 
 export type TUsersStore = IEntityStore<TUserEntity> & UsersStore
 
-const usersStore: TUsersStore = persistStateSingleton(new UsersStore())
+const usersStore: TUsersStore = generateSingleton(UsersStore)
 
 export default usersStore

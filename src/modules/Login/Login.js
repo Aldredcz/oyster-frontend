@@ -2,7 +2,6 @@
 import React from 'react'
 import {isEmail, isPassword} from 'libs/validation/validators'
 import {moduleManager} from 'core/router'
-import {setAuthorizationData} from 'core/authorization'
 import {oysterRequestUserLogin} from 'core/api/login-signup'
 
 import Link from 'core/router/Link'
@@ -38,8 +37,7 @@ export default class Login extends React.Component {
 		oysterRequestUserLogin(this.state.formData)
 			.then(
 				(userData) => {
-					setAuthorizationData(userData)
-					moduleManager.setModule('dashboard')
+					moduleManager.login(userData.uuid, userData.token)
 				},
 				async ({response}) => {
 					const responseJson = await response.json()
