@@ -6,6 +6,8 @@ type TTaskPermission =
 	| 'deadline'
 	| 'brief'
 	| 'assign'
+	| 'complete'
+	| 'approve'
 
 export type TTaskCommon = {
 	uuid: string,
@@ -16,13 +18,15 @@ export type TTaskCommon = {
 export type TTask = TTaskCommon & {
 	deadline: ?Date,
 	completedAt: ?Date,
+	approvedAt: ?Date,
 	ownersByIds: ?Array<string>,
-	permissions: ?Set<TTaskPermission>,
+	permissions: Set<TTaskPermission>,
 }
 
 export type TTaskFromApi = $Shape<TTaskCommon & {
 	deadline: ?string,
 	completed_at: ?string,
+	approved_at: ?string,
 	owners: ?Array<TUserFromApi>,
 	actions: ?Array<TTaskPermission>,
 }>
@@ -35,6 +39,7 @@ export const initialState: TTask = {
 	brief: null,
 	deadline: null,
 	completedAt: null,
+	approvedAt: null,
 	ownersByIds: null,
-	permissions: null,
+	permissions: new Set(),
 }

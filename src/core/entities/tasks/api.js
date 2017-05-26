@@ -13,8 +13,9 @@ export function processTaskFromApi (taskFromApi: TTaskFromApi, updateStore: bool
 	taskFromApi.brief && (task.brief = taskFromApi.brief)
 	taskFromApi.deadline && (task.deadline = new Date(taskFromApi.deadline))
 	taskFromApi.completed_at && (task.completedAt = new Date(taskFromApi.completed_at))
+	taskFromApi.approved_at && (task.approvedAt = new Date(taskFromApi.approved_at))
 	taskFromApi.owners && (task.ownersByIds = taskFromApi.owners.map((u) => u.uuid))
-	taskFromApi.actions && (task.permissions = new Set(taskFromApi.actions))
+	task.permissions = new Set(taskFromApi.actions || [])
 
 	if (updateStore) {
 		tasksStore.setEntity(task.uuid, {data: task})
@@ -85,6 +86,30 @@ export function oysterRequestTaskDeadlineChange (uuid: string, deadline: Date): 
 		.then(({deadline}) => new Date(deadline))
 }
 
+export function oysterRequestTaskComplete (uuid: string): Promise<Date> {
+	return request(`${SETTINGS.oysterApi}/task/${uuid}/complete`, {
+		method: 'PUT',
+		body: JSON.stringify({}),
+	})
+		.then(
+			(response) => response.json(),
+			// TODO: error handling
+		)
+		.then((data) => new Date(data.completed_at))
+}
+
+export function oysterRequestTaskApprove (uuid: string): Promise<Date> {
+	return request(`${SETTINGS.oysterApi}/task/${uuid}/approve`, {
+		method: 'PUT',
+		body: JSON.stringify({}),
+	})
+		.then(
+			(response) => response.json(),
+			// TODO: error handling
+		)
+		.then((data) => new Date(data.approved_at))
+}
+
 export function oysterRequestTaskAssignContributor (uuid: string, userUuid: string): Promise<Array<string>> {
 	return request(`${SETTINGS.oysterApi}/task/${uuid}/assign`, {
 		method: 'PUT',
@@ -110,6 +135,10 @@ export const TaskAPI = {
 				return oysterRequestTaskBriefChange(uuid, value)
 			case 'deadline':
 				return oysterRequestTaskDeadlineChange(uuid, value)
+			case 'completedAt':
+				return oysterRequestTaskComplete(uuid)
+			case 'approvedAt':
+				return oysterRequestTaskApprove(uuid)
 			default:
 				return Promise.reject(`Cannot update field '${field}' in Task`)
 		}
