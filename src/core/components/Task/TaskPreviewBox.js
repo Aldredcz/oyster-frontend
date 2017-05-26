@@ -74,11 +74,13 @@ export default class TaskPreviewBox extends React.Component<void, TProps, void> 
 
 		const statusActions = []
 
-		if ((status === 'new' || status === 'after_deadline') && permissions.has('complete')) {
-			statusActions.push('complete')
-		}
-		if (status === 'completed' && permissions.has('approve')) {
-			statusActions.push('approve')
+		if (permissions) {
+			if ((status === 'new' || status === 'after_deadline') && permissions.has('complete')) {
+				statusActions.push('complete')
+			}
+			if (status === 'completed' && permissions.has('approve')) {
+				statusActions.push('approve')
+			}
 		}
 
 		return (

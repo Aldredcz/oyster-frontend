@@ -20,7 +20,7 @@ export type TTask = TTaskCommon & {
 	completedAt: ?Date,
 	approvedAt: ?Date,
 	ownersByIds: ?Array<string>,
-	permissions: Set<TTaskPermission>,
+	permissions: ?Set<TTaskPermission>,
 }
 
 export type TTaskFromApi = $Shape<TTaskCommon & {
@@ -41,5 +41,5 @@ export const initialState: TTask = {
 	completedAt: null,
 	approvedAt: null,
 	ownersByIds: null,
-	permissions: new Set(),
+	permissions: null,
 }
