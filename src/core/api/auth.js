@@ -36,3 +36,9 @@ export function oysterRequestUserLogin (params: TLoginParams): Promise<TLoginRes
 	}).then((response) => response.json())
 }
 
+export function oysterRequestUserLogout (): Promise<any> {
+	return request(`${SETTINGS.oysterApi}/user/logout`, {
+		method: 'POST',
+		body: JSON.stringify({}),
+	})
+}

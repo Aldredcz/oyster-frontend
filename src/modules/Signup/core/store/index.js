@@ -3,7 +3,7 @@ import {observable, action} from 'mobx'
 import URI from 'urijs'
 import {generateSingleton} from 'core/utils/mobx'
 import {moduleManager} from 'core/router'
-import {oysterRequestUserSignup} from 'core/api/login-signup'
+import {oysterRequestUserSignup} from 'core/api/auth'
 
 import type {ISignupStoreShape, TSignupFormField} from './types'
 
@@ -67,7 +67,7 @@ class SignupStore implements ISignupStoreShape {
 			invite: this.inviteToken,
 		}).then(
 			(userData) => {
-				moduleManager.login(userData.uuid, userData.token)
+				moduleManager.handleLogin(userData.uuid, userData.token)
 			},
 		)
 	}

@@ -4,6 +4,7 @@ import {observer, inject} from 'mobx-react'
 import {moduleManager} from 'core/router'
 import type {TDashboardStore} from '../core/store'
 
+import {oysterRequestUserLogout} from 'core/api/auth'
 import Link from 'core/router/Link'
 import {projectFactory} from 'core/components/Project/Project'
 
@@ -29,7 +30,8 @@ export default class Dashboard extends React.Component<void, TProps, void> {
 	logout = (ev: MouseEvent) => {
 		ev.preventDefault()
 
-		moduleManager.logout()
+		oysterRequestUserLogout()
+		moduleManager.handleLogout()
 	}
 
 	createNewProject = () => {

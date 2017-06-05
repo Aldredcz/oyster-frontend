@@ -135,7 +135,7 @@ class ModuleManager implements IRoutingStore {
 	// AUTH
 	userStore = userStore
 
-	@action login (uuid: string, token: string, destination: ?{module: TModuleId, params?: any}) {
+	@action handleLogin (uuid: string, token: string, destination: ?{module: TModuleId, params?: any}) {
 		this.userStore.setUser(uuid, token)
 		if (!destination) {
 			this.setModule('dashboard')
@@ -144,7 +144,7 @@ class ModuleManager implements IRoutingStore {
 		}
 	}
 
-	@action logout () {
+	@action handleLogout () {
 		this.userStore.removeUser()
 		this.setModule('login', {
 			logout: true,

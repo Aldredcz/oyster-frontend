@@ -2,7 +2,7 @@
 import React from 'react'
 import {isEmail, isPassword} from 'libs/validation/validators'
 import {moduleManager} from 'core/router'
-import {oysterRequestUserLogin} from 'core/api/login-signup'
+import {oysterRequestUserLogin} from 'core/api/auth'
 
 import Link from 'core/router/Link'
 
@@ -37,7 +37,7 @@ export default class Login extends React.Component {
 		oysterRequestUserLogin(this.state.formData)
 			.then(
 				(userData) => {
-					moduleManager.login(userData.uuid, userData.token)
+					moduleManager.handleLogin(userData.uuid, userData.token)
 				},
 				async ({response}) => {
 					const responseJson = await response.json()
