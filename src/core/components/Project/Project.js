@@ -160,7 +160,7 @@ export const projectFactory = ({
 		}
 
 		renderTasks () {
-			const {uuid, project: {tasksByIds}} = this.props
+			const {uuid, project: {tasksByIds, permissions}} = this.props
 
 			return (
 				<div className='tasks' style={{width: '100%', float: 'left'}}>
@@ -171,18 +171,20 @@ export const projectFactory = ({
 							</div>
 						))
 					)}
-					<div style={{float: 'left', cursor: 'pointer'}}>
-						{!this.state.creatingNewTask
-							? (
-								<h2 onClick={() => this.createNewTask()}>
-									<a href='javascript://'>New task!</a>
-								</h2>
-							)
-							: (
-								<h2>Creating...</h2>
-							)
-						}
-					</div>
+					{permissions && permissions.has('task') && (
+						<div style={{float: 'left', cursor: 'pointer'}}>
+							{!this.state.creatingNewTask
+								? (
+									<h2 onClick={() => this.createNewTask()}>
+										<a href='javascript://'>New task!</a>
+									</h2>
+								)
+								: (
+									<h2>Creating...</h2>
+								)
+							}
+						</div>
+					)}
 				</div>
 			)
 		}

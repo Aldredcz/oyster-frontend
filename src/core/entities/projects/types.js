@@ -6,6 +6,7 @@ import type {TAccountFromApi} from 'core/entities/accounts'
 export type TProjectPermission =
 	| 'rename'
 	| 'assign'
+	| 'task'
 
 export type TProjectCommon = {
 	uuid: string,
