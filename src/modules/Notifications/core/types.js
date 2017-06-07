@@ -1,14 +1,21 @@
 // @flow
 import type {TUserFromApi} from 'core/entities/users'
 import type {TProjectFromApi, TProject} from 'core/entities/projects'
+import type {TTaskFromApi, TTask} from 'core/entities/tasks'
 
 export type TNotificationPermission =
 	| 'complete'
 
+export type TNotificationType =
+	| 'rename'
+	| 'deadline'
+	| 'brief'
+	| 'assign'
+	| 'approve'
 
 export type TNotificationCommon = {
 	uuid: string,
-	name: string,
+	name: TNotificationType,
 }
 
 export type TNotification = TNotificationCommon & {
@@ -19,6 +26,7 @@ export type TNotification = TNotificationCommon & {
 	permissions: ?Set<TNotificationPermission>,
 	objects: {
 		project?: TProject,
+		task?: TTask,
 	},
 }
 
@@ -30,5 +38,6 @@ export type TNotificationFromApi = $Shape<TNotificationCommon & {
 	actions: ?Array<TNotificationPermission>,
 	objects: ?{
 		project?: TProjectFromApi,
+		task?: TTaskFromApi,
 	},
 }>

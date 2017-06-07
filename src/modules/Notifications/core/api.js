@@ -3,6 +3,7 @@ import request from 'core/utils/request'
 import SETTINGS from 'core/SETTINGS'
 import {processUserFromApi} from 'core/entities/users'
 import {processProjectFromApi} from 'core/entities/projects'
+import {processTaskFromApi} from 'core/entities/tasks'
 import type {TNotification, TNotificationFromApi} from './types'
 
 function processNotificationFromApi (notificationFromApi: TNotificationFromApi): $Shape<TNotification> {
@@ -24,6 +25,9 @@ function processNotificationFromApi (notificationFromApi: TNotificationFromApi):
 	if (notificationFromApi.objects) {
 		if (notificationFromApi.objects.project) {
 			notification.objects.project = processProjectFromApi(notificationFromApi.objects.project, false)
+		}
+		if (notificationFromApi.objects.task) {
+			notification.objects.task = processTaskFromApi(notificationFromApi.objects.task, false)
 		}
 	}
 
