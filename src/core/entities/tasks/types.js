@@ -1,5 +1,6 @@
 // @flow
 import type {TUserFromApi} from 'core/entities/users'
+import type {TProjectFromApi} from 'core/entities/projects'
 
 type TTaskPermission =
 	| 'rename'
@@ -20,6 +21,7 @@ export type TTask = TTaskCommon & {
 	completedAt: ?Date,
 	approvedAt: ?Date,
 	ownersByIds: ?Array<string>,
+	projectsByIds: ?Array<string>,
 	permissions: ?Set<TTaskPermission>,
 }
 
@@ -28,6 +30,7 @@ export type TTaskFromApi = $Shape<TTaskCommon & {
 	completed_at: ?string,
 	approved_at: ?string,
 	owners: ?Array<TUserFromApi>,
+	projects: ?Array<TProjectFromApi>,
 	actions: ?Array<TTaskPermission>,
 }>
 
@@ -41,5 +44,6 @@ export const initialState: TTask = {
 	completedAt: null,
 	approvedAt: null,
 	ownersByIds: null,
+	projectsByIds: null,
 	permissions: null,
 }

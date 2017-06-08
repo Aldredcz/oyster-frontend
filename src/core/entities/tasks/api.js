@@ -15,6 +15,7 @@ export function processTaskFromApi (taskFromApi: TTaskFromApi, updateStore: bool
 	taskFromApi.completed_at && (task.completedAt = new Date(taskFromApi.completed_at))
 	taskFromApi.approved_at && (task.approvedAt = new Date(taskFromApi.approved_at))
 	taskFromApi.owners && (task.ownersByIds = taskFromApi.owners.map((u) => u.uuid))
+	taskFromApi.projects && (task.projectsByIds = taskFromApi.projects.map((u) => u.uuid))
 	taskFromApi.actions && (task.permissions = new Set(taskFromApi.actions))
 
 	if (updateStore) {

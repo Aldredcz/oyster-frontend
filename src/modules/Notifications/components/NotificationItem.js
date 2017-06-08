@@ -56,6 +56,7 @@ const TaskNotification = ({task, onClick, type, authors}: *) => {
 	let message
 	const authorHtml = formatAuthors(authors)
 	const taskHtml = <strong>{task.name}</strong>
+	const projectUuid = task.projectsByIds && task.projectsByIds[0]
 
 	switch (type) {
 		case 'deadline':
@@ -82,10 +83,18 @@ const TaskNotification = ({task, onClick, type, authors}: *) => {
 				: <span>Task {taskHtml} has been updated.</span>
 	}
 
+	if (!projectUuid) {
+		return (
+			<div>
+				{message}
+			</div>
+		)
+	}
+
 	return (
 		<Link
 			module='projectDetail'
-			params={{projectUuid: 'TODO', selectedTaskUuid: task.uuid}}
+			params={{projectUuid, selectedTaskUuid: task.uuid}}
 			onClick={onClick}
 		>
 			<div>
