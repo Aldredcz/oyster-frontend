@@ -1,5 +1,6 @@
 // @flow
 import React from 'react'
+import {observer} from 'mobx-react'
 import formatDate from 'date-fns/format'
 import type {TNotification} from '../core/types'
 import Link from 'core/router/Link'
@@ -104,6 +105,7 @@ const TaskNotification = ({task, onClick, type, authors}: *) => {
 	)
 }
 
+@observer
 export default class NotificationItem extends React.Component<void, TProps, void> {
 	render () {
 		const {notification, onClick} = this.props

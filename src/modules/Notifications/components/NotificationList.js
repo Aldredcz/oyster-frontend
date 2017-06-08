@@ -1,5 +1,6 @@
 // @flow
 import React from 'react'
+import {observer} from 'mobx-react'
 import {isOpeningInNewWindow} from 'libs/event-helpers/mouse-event'
 import type {TNotification} from '../core/types'
 
@@ -13,6 +14,7 @@ type TProps = {
 	showCompleteAll: boolean,
 }
 
+@observer
 export default class NotificationList extends React.Component<void, TProps, void> {
 	render () {
 		const {notifications, completeNotification, completeAllNotifications, showCompleteAll, onHide} = this.props

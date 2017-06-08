@@ -13,7 +13,7 @@ function processNotificationFromApi (notificationFromApi: TNotificationFromApi):
 	notificationFromApi.created_at
 		? (notification.createdAt = new Date(notificationFromApi.created_at))
 		: (notification.createdAt = new Date()) // falback to current time
-	notificationFromApi.completed_at && (notification.completedAt = new Date(notificationFromApi.completed_at))
+	notification.completedAt = notificationFromApi.completed_at ? new Date(notificationFromApi.completed_at) : null // gotta have this one defined in entity, in order to have it observed
 	notificationFromApi.authors && (notification.authorsByIds = notificationFromApi.authors.map(
 		(userFromApi) => processUserFromApi(userFromApi).uuid,
 	))
