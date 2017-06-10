@@ -146,9 +146,10 @@ class ModuleManager implements IRoutingStore {
 
 	@action handleLogout () {
 		this.userStore.removeUser()
-		this.setModule('login', {
+		window.location = '/login' // quick solution for resetting all stores
+		/*this.setModule('login', {
 			logout: true,
-		})
+		})*/
 	}
 
 	@computed get isLoggedIn (): boolean {

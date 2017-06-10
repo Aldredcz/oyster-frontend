@@ -4,6 +4,7 @@ import {observer, inject} from 'mobx-react'
 import {moduleManager} from 'core/router'
 import type {TDashboardStore} from '../core/store'
 
+import Box from 'libs/box'
 import {oysterRequestUserLogout} from 'core/api/auth'
 import Link from 'core/router/Link'
 import {projectFactory} from 'core/components/Project/Project'
@@ -42,7 +43,7 @@ export default class Dashboard extends React.Component<void, TProps, void> {
 		const {dashboardStore: {projects, ui}} = this.props
 
 		return (
-			<div>
+			<Box>
 				<h1>Dashboard</h1>
 				<p>
 					<a
@@ -70,7 +71,7 @@ export default class Dashboard extends React.Component<void, TProps, void> {
 						: <a href='javascript://' onClick={this.createNewProject}>Add new project</a>
 					}
 				</h2>
-			</div>
+			</Box>
 		)
 	}
 }

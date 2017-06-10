@@ -1,24 +1,30 @@
 // @flow
 
-// Because { [color: Color]?: boolean } doesn't work, we have to define props.
-export type TColorProps = {
-	// Don't hesitate to add your own.
-	primary?: boolean,
-	success?: boolean,
-	warning?: boolean,
-	danger?: boolean,
-	black?: boolean,
-	white?: boolean,
-	gray?: boolean,
-}
+export type TColor =
+	| 'white'
+	| 'neutralLight'
+	| 'neutral'
+	| 'neutralDark'
+	| 'red'
+	| 'yellow'
+	| 'green'
+	| 'greenDark'
+	| 'blue'
+	| 'blueDark'
 
-export type TColor = $Keys<TColorProps>
+
+export type TTextSize = '30' | '17' | '13' | '9' | '8'
 
 export type TTheme = {|
 	typography: {|
-		fontSize: (number) => number,
-		lineHeight: number,
-		rhythm: (number) => number,
+		sizes: {
+			[key: TTextSize]: {|
+				fontSize: number | string,
+				lineHeight: number | string,
+				letterSpacing: number,
+			|},
+		},
+		fontFamily: string,
 	|},
 	colors: {
 		[color: TColor]: string,
@@ -52,7 +58,6 @@ export type TTheme = {|
 			| 700
 			| 800
 			| 900,
-		fontFamily: string,
 	|},
 	block: {|
 		marginBottom: number,
@@ -62,7 +67,6 @@ export type TTheme = {|
 		borderRadius: number,
 	|},
 	heading: {|
-		fontFamily: string,
 		marginBottom: number,
 	|},
 	paragraph: {|

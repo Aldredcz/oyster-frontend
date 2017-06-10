@@ -4,7 +4,42 @@ import {isEmail, isPassword} from 'libs/validation/validators'
 import {moduleManager} from 'core/router'
 import {oysterRequestUserLogin} from 'core/api/auth'
 
-import Link from 'core/router/Link'
+import Box from 'libs/box'
+import Logo from 'core/components/ui/Logo'
+import Text from 'core/components/ui/Text'
+import Form from 'core/components/ui/Form'
+import TextInput from 'core/components/ui/TextInput'
+import Button from 'core/components/ui/Button'
+
+const Layout = (props) => (
+	<Box flex>{props.children}</Box>
+)
+
+const BgPattern = () => (
+	<Box
+		width='50%'
+		height='100vh'
+		style={() => ({
+			background: 'url("/assets/images/backgrounds/O_pattern_1.png") repeat',
+		})}
+	/>
+)
+
+const ContentCol = (props) => (
+	<Box width='50%' style={() => ({position: 'relative'})}>{props.children}</Box>
+)
+
+const Content = (props) => (
+	<Box
+		width='80%'
+		style={() => ({
+			position: 'absolute',
+			top: '50%',
+			left: '50%',
+			transform: 'translate(-50%, -50%)',
+		})}
+	>{props.children}</Box>
+)
 
 export default class Login extends React.Component {
 	state = {
@@ -58,48 +93,65 @@ export default class Login extends React.Component {
 		const isValid = isEmail(formData.email) && isPassword(formData.password)
 
 		return (
-			<div>
-				<h1>Login</h1>
-				<form onSubmit={this.handleSubmit}>
-					<input
-						type='text'
-						placeholder='Your e-mail'
-						name='email'
-						value={formData.email}
-						onChange={this.handleChange}
+			<Layout>
+				<BgPattern />
+				<ContentCol>
+					<Logo
+						height={2.5}
+						style={() => ({position: 'absolute', top: 20, left: 20})}
 					/>
-					<input
-						type='password'
-						placeholder='Password'
-						name='password'
-						value={formData.password}
-						onChange={this.handleChange}
-					/>
-					<input
-						type='submit'
-						value='Log me in!'
-						disabled={processing || !isValid}
-					/>
-					{error && (
-						<p style={{color: 'red'}}>
-							{error}
-						</p>
-					)}
-					<p>
-						<Link module='signup'>
-							Go to signup
-						</Link>
-						{' '}|{' '}
-						<a href='/signup?invite=1e863a9f-1f0d-40e7-8de8-60462838b6d8'>
-							Go to signup (with predefined token)
-						</a>
-						{' '}|{' '}
-						<a href='/signup?invite=1e863a9f-1f0d-40e7-8de8-60462838b6d8&email=tester@getoyster.com'>
-							Go to signup (with predefined token and email)
-						</a>
-					</p>
-				</form>
-			</div>
+					<Content>
+						<Text
+							block
+							size='30'
+							marginBottom={5}
+							color='neutral'
+						>
+							Welcome back!<br/>
+							Please login below.
+						</Text>
+						<Form onSubmit={this.handleSubmit}>
+							<Text size='9' bold color='blue'>
+								Email
+							</Text>
+							<TextInput
+								block
+								size='17'
+								marginBottom={2}
+								name='email'
+								value={formData.email}
+								onChange={this.handleChange}
+							/>
+							<Text size='9' bold color='blue'>
+								Password
+							</Text>
+							<TextInput
+								block
+								size='17'
+								marginBottom={5}
+								password={true}
+								name='password'
+								value={formData.password}
+								onChange={this.handleChange}
+							/>
+							<Button
+								submit
+								block
+								size='13'
+								width='50%'
+								disabled={processing || !isValid}
+							>
+								Sign me in!
+							</Button>
+							{error && (
+								<p style={{color: 'red'}}>
+									{error}
+								</p>
+							)}
+						</Form>
+					</Content>
+				</ContentCol>
+			</Layout>
 		)
 	}
 }

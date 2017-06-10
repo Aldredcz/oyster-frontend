@@ -10,19 +10,16 @@ import {getRenderer, getMountNode} from 'core/config/fela'
 import accountStore from 'core/store/account'
 import {usersStore} from 'core/entities/users'
 
+import Box from 'libs/box'
 import AccountWrapper from 'core/components/wrappers/AccountWrapper'
 
 import Notifications from 'modules/Notifications/component'
 
-class StandardLayout extends React.Component<void, *, void> {
-	render () {
-		return (
-			<div className='standard-layout' style={{width: '90%', margin: '0 auto'}}>
-				{this.props.children}
-			</div>
-		)
-	}
-}
+const StandardLayout = ({children}: any) => (
+	<Box width='90%' marginHorizontal='auto' marginVertical={0}>
+		{children}
+	</Box>
+)
 
 function addStandardLayout (elem: React$Element<any>): React$Element<any> {
 	return (
@@ -87,19 +84,13 @@ export default class App extends React.Component<void, void, void> {
 			elem = addAccountWrapper(addStandardLayout(elem))
 		}
 
-		let App = (
-			<div className='wrapper'>
-				{elem}
-			</div>
-		)
-
-		App = [
+		const App = [
 			addMobxProvider,
 			addFelaProvider,
 			addThemeProvider,
 		].reduceRight(
 			(finalApp, providerFn) => providerFn(finalApp),
-			App,
+			elem,
 		)
 
 		return App

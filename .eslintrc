@@ -112,7 +112,7 @@
 		"react/prop-types": 0,
 		"react/self-closing-comp": 2,
 		"react/prefer-es6-class": 2,
-		"react/forbid-component-props": [2, {"forbid": ["className", "style"]}],
+		"react/forbid-component-props": [2, {"forbid": ["className"]}],
 		"react/no-array-index-key": 2,
 
 		// Import plugin

@@ -59,21 +59,17 @@ export default (params) => {
 					},
 				},
 				{
-					test: /\.styl$/,
+					test: /\.svg$/,
 					use: [
 						{
-							loader: 'style-loader',
+							loader: 'babel-loader',
 							options: {
-								sourceMap: true,
+								presets: ['es2015'],
 							},
 						},
 						{
-							loader: 'css-loader',
-							options: {
-								sourceMap: true,
-							},
+							loader: 'react-svg-loader',
 						},
-						'stylus-loader',
 					],
 				},
 			],

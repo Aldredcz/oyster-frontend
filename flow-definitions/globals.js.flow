@@ -30,3 +30,8 @@ declare var localStorage: Storage
 // webpack
 declare var __webpack_modules__: any // eslint-disable-line
 declare var __webpack_require__: Function  // eslint-disable-line
+
+
+declare module SVGImport {
+	declare var exports: React$Component<any, any, any>
+}

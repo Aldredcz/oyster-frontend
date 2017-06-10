@@ -2,7 +2,6 @@
 import type {TColor, TTheme} from 'core/config/themes/types'
 import PropTypes from 'prop-types'
 import React from 'react'
-import withTheme from './withTheme'
 
 	/*
 	Box is the basic UI primitive for all universal themed UI components.
@@ -29,10 +28,10 @@ import withTheme from './withTheme'
 // If a number, then it's multiplied by theme typography rhythm.
 type TMaybeRhythm = number | string
 
-export type TBoxProps = {
-	as?: string | ((props: Object) => React.Element<*>), // eslint-disable-line flowtype/no-weak-types
-	isReactNative?: boolean,
-	style?: Object,  // eslint-disable-line flowtype/no-weak-types
+export type TProps = {
+	as?: string | ((props: Object) => React.Element<*>),
+	style?: (theme: TTheme, style: Object) => Object,
+	getRef?: (el: HTMLElement) => any,
 
 	margin?: TMaybeRhythm,
 	marginHorizontal?: TMaybeRhythm,
@@ -60,6 +59,8 @@ export type TBoxProps = {
 	right?: TMaybeRhythm,
 	top?: TMaybeRhythm,
 	width?: TMaybeRhythm,
+	display?: 'block' | 'inline' | 'inline-block' | 'flex' | 'none',
+	block?: boolean,
 
 	// Flexbox. Only what's compatible with React Native.
 	// github.com/facebook/react-native/blob/master/Libraries/StyleSheet/LayoutPropTypes.js
@@ -105,17 +106,7 @@ type TBoxContent = {
 	theme: TTheme,
 }
 
-// Emulate React Native to ensure the same styles for all platforms.
-// https://facebook.github.io/yoga
-// https://github.com/Microsoft/reactxp
-// https://github.com/necolas/react-native-web
-const reactNativeEmulationForBrowsers = {
-	display: 'flex',
-	flexDirection: 'column',
-	position: 'relative',
-}
-
-const reduce = (props: TBoxProps, getValue) =>
+const reduceObject = (props: TProps, getValue) =>
 	Object.keys(props).reduce((style, prop) => {
 		const value = props[prop]
 		if (value === undefined) {
@@ -127,18 +118,15 @@ const reduce = (props: TBoxProps, getValue) =>
 		}
 	}, {})
 
-const maybeRhythm = (rhythm, props) =>
-	reduce(props, (value) => (typeof value === 'number' ? rhythm(value) : value))
+const maybeRhythm = (props) =>
+	reduceObject(props, (value) => (typeof value === 'number' ? `${value}rem` : value)) // TODO
 
-const justValue = (props) => reduce(props, (value) => value)
+const justValue = (props) => reduceObject(props, (value) => value)
 
-// https://facebook.github.io/react-native/releases/0.44/docs/layout-props.html#flex
-// https://github.com/necolas/react-native-web expandStyle-test.js
 const restrictedFlex = (
 	flex,
 	flexBasis = 'auto',
 	flexShrink = 1,
-	isReactNative,
 ) => {
 	if (flex === undefined) {
 		return null
@@ -146,12 +134,12 @@ const restrictedFlex = (
 	if (flex < 1) {
 		throw new Error('Not implemented yet')
 	}
-	return isReactNative ? {flex} : {flexBasis, flexGrow: flex, flexShrink}
+	return {display: 'flex', flexBasis, flexGrow: flex, flexShrink}
 }
 
 // Color any type, because Flow can't infere props for some reason.
 const themeColor = (colors: any, props) =>
-	reduce(props, (value) => colors[value])
+	reduceObject(props, (value) => colors[value])
 
 // Try to ensure vertical and horizontal rhythm.
 const tryToEnsureRhythmViaPaddingCompensation = (style) =>
@@ -171,11 +159,11 @@ const tryToEnsureRhythmViaPaddingCompensation = (style) =>
 		return {...style, [paddingProp]: compensatedPaddingX}
 	}, style)
 
-const Box = (props: TBoxProps, {renderer, theme}: TBoxContent) => {
+const Box = (props: TProps, {renderer, theme}: TBoxContent) => {
 	const {
 		as,
-		isReactNative,
 		style,
+		getRef,
 
 		margin,
 		marginHorizontal = margin,
@@ -203,6 +191,8 @@ const Box = (props: TBoxProps, {renderer, theme}: TBoxContent) => {
 		right,
 		top,
 		width,
+		display,
+		block,
 
 		alignItems,
 		alignSelf,
@@ -242,8 +232,7 @@ const Box = (props: TBoxProps, {renderer, theme}: TBoxContent) => {
 	} = props
 
 	const boxStyle = {
-		...(isReactNative ? null : reactNativeEmulationForBrowsers),
-		...maybeRhythm(theme.typography.rhythm, {
+		...maybeRhythm({
 			marginBottom,
 			marginLeft,
 			marginRight,
@@ -266,6 +255,7 @@ const Box = (props: TBoxProps, {renderer, theme}: TBoxContent) => {
 			width,
 		}),
 		...justValue({
+			display,
 			alignItems,
 			alignSelf,
 			flexBasis,
@@ -288,7 +278,7 @@ const Box = (props: TBoxProps, {renderer, theme}: TBoxContent) => {
 			borderTopLeftRadius,
 			borderTopRightRadius,
 		}),
-		...restrictedFlex(flex, flexBasis, flexShrink, isReactNative),
+		...restrictedFlex(flex, flexBasis, flexShrink),
 		...themeColor(theme.colors, {
 			backgroundColor,
 			borderBottomColor,
@@ -296,17 +286,34 @@ const Box = (props: TBoxProps, {renderer, theme}: TBoxContent) => {
 			borderRightColor,
 			borderTopColor,
 		}),
-		...style,
 	}
+
+	block && (boxStyle.display = 'block')
 
 	const rhythmBoxStyle = tryToEnsureRhythmViaPaddingCompensation(boxStyle)
 
-	const className = renderer.renderRule(() => rhythmBoxStyle)
-	return React.createElement(as || 'div', {...restProps, className})
+	const className = renderer.renderRule(() => ({
+		...rhythmBoxStyle,
+		...(style && style(theme, boxStyle)),
+	}))
+	return React.createElement(as || 'div', {
+		...restProps,
+		className,
+		ref: getRef,
+	})
 }
 
 Box.contextTypes = {
 	renderer: PropTypes.object,
+}
+
+export type TThemeContext = {theme: TTheme}
+
+export const withTheme = (Component: ReactClass<mixed>) => {
+	Component.contextTypes = {
+		...Component.contextTypes,
+		theme: PropTypes.object,
+	}
 }
 
 withTheme(Box)
