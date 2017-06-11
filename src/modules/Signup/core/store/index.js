@@ -7,7 +7,7 @@ import {oysterRequestUserSignup} from 'core/api/auth'
 
 import type {ISignupStoreShape, TSignupFormField} from './types'
 
-const signupFormFields: Array<TSignupFormField> = ['name', 'surname', 'email', 'password', 'passwordConfirm']
+const signupFormFields: Array<TSignupFormField> = ['name', 'surname', 'email', 'password', 'passwordConfirm', 'inviteToken']
 
 function generateFormData (): $PropertyType<ISignupStoreShape, 'formData'> {
 	const result: $PropertyType<ISignupStoreShape, 'formData'> = {}
@@ -35,6 +35,7 @@ class SignupStore implements ISignupStoreShape {
 	@observable formMetadata = generateFormMetadata()
 	@observable ui = {
 		isInviteTokenInputVisible: false,
+		pendingRequest: false,
 	}
 
 	@action setInviteToken (token: string) {
@@ -58,7 +59,6 @@ class SignupStore implements ISignupStoreShape {
 	}
 
 	@action submitForm () {
-		this.setNextStep()
 		return oysterRequestUserSignup({
 			name: this.formData.name,
 			surname: this.formData.surname,
@@ -89,7 +89,10 @@ class SignupStore implements ISignupStoreShape {
 			this.setFormValue('email', query.email)
 			this.setFormDisabled('email', true)
 		}
+	}
 
+	@action setPendingRequest (value: boolean) {
+		this.ui.pendingRequest = value
 	}
 
 	@action resetStore () {
@@ -99,6 +102,7 @@ class SignupStore implements ISignupStoreShape {
 		this.formMetadata = generateFormMetadata()
 		this.ui = {
 			isInviteTokenInputVisible: false,
+			pendingRequest: false,
 		}
 	}
 }

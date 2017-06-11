@@ -8,10 +8,11 @@ import type {TBoxProps} from 'libs/box'
 import Box from 'libs/box'
 
 
-type TProps = TBoxProps & {
+export type TProps = TBoxProps & {
 	size?: TTextSize,
 	color?: TColor,
-	password?: boolean,
+	borderColor?: TColor,
+	type?: 'text' | 'password' | 'email',
 }
 
 type TContext = {
@@ -24,9 +25,11 @@ const TextInput = (
 		style,
 		size = '9',
 		color = 'neutralDark',
-		password,
+		type = 'text',
 		block,
 		paddingVertical,
+		paddingHorizontal,
+		borderColor,
 		...restProps
 	}: TProps,
 	{
@@ -47,13 +50,14 @@ const TextInput = (
 	return (
 		<Box
 			as={as || 'input'}
-			type={password ? 'password' : 'text'}
+			type={type}
 			paddingVertical={paddingVertical || 1}
+			paddingHorizontal={paddingHorizontal || '5px'}
 			block={block}
 			{...restProps}
 			style={(theme, boxStyle) => ({
 				border: 'none',
-				borderBottom: `1px solid ${theme.colors.neutral}`,
+				borderBottom: `1px solid ${borderColor || theme.colors.neutral}`,
 				...textStyle,
 				...(style && style(theme, {...boxStyle, ...textStyle})),
 			})}

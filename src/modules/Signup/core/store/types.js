@@ -10,6 +10,7 @@ export type TSignupFormField =
 	| 'email'
 	| 'password'
 	| 'passwordConfirm'
+	| 'inviteToken'
 
 export interface ISignupStoreShape {
 	step: number,
@@ -22,5 +23,6 @@ export interface ISignupStoreShape {
 	},
 	ui: {
 		isInviteTokenInputVisible: boolean,
+		pendingRequest: boolean,
 	},
 }

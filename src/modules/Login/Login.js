@@ -129,7 +129,7 @@ export default class Login extends React.Component {
 								block
 								size='17'
 								marginBottom={5}
-								password={true}
+								type='password'
 								name='password'
 								value={formData.password}
 								onChange={this.handleChange}

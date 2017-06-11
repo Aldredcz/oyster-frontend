@@ -8,6 +8,52 @@ import type {TSignupFormField} from '../core/store/types'
 import {validateField, validatePasswords} from '../core/validation'
 
 import SignupFormField from './SignupFormField'
+import Box from 'libs/box'
+import Logo from 'core/components/ui/Logo'
+import Text from 'core/components/ui/Text'
+import Form from 'core/components/ui/Form'
+import Button from 'core/components/ui/Button'
+
+const Layout = (props) => (
+	<Box flex>{props.children}</Box>
+)
+
+const BgPattern = (props) => (
+	<Box
+		width={props.expanded ? '100%' : '50%'}
+		height='100vh'
+		style={() => ({
+			background: 'url("/assets/images/backgrounds/O_pattern_1.png") repeat',
+			transition: 'width 1s',
+		})}
+	/>
+)
+
+const ContentCol = (props) => (
+	<Box
+		width={props.hidden ? '0%' : '50%'}
+		style={() => ({
+			position: 'relative',
+			overflow: 'hidden',
+			transition: 'width 1s',
+		})}
+	>
+		{props.children}
+	</Box>
+)
+
+const Content = (props) => (
+	<Box
+		width='80%'
+		style={() => ({
+			position: 'absolute',
+			top: '50%',
+			left: '50%',
+			transform: 'translate(-50%, -50%)',
+		})}
+	>{props.children}</Box>
+)
+
 
 type TProps = {
 	+signupStore: TSignupStore,
@@ -15,14 +61,16 @@ type TProps = {
 
 @inject('signupStore', 'accountStore') @observer
 export default class Signup extends React.Component<void, TProps, void> {
-	static fieldsConfig: {[key: TSignupFormField]: {type: string, title: string}} = {
+	static fieldsConfig: {[key: TSignupFormField]: {type: *, title: string, width?: string}} = {
 		name: {
 			type: 'text',
 			title: 'Name',
+			width: '50%',
 		},
 		surname: {
 			type: 'text',
 			title: 'Surname',
+			width: '50%',
 		},
 		email: {
 			type: 'email',
@@ -35,6 +83,10 @@ export default class Signup extends React.Component<void, TProps, void> {
 		passwordConfirm: {
 			type: 'password',
 			title: 'Confirm password',
+		},
+		inviteToken: {
+			type: 'text',
+			title: 'Invite token',
 		},
 	}
 
@@ -54,10 +106,12 @@ export default class Signup extends React.Component<void, TProps, void> {
 
 	handleFormSubmit = (ev: Event) => {
 		ev.preventDefault()
+		this.props.signupStore.setPendingRequest(true)
 
 		this.props.signupStore.submitForm()
 			.catch(() => {
-				alert('Signup was unsuccessful :( You have probably entered wrong token. TODO')
+				alert('Signup was unsuccessful :( Please try again or contact our support TODO:')
+				this.props.signupStore.setPendingRequest(false)
 			})
 	}
 
@@ -70,46 +124,58 @@ export default class Signup extends React.Component<void, TProps, void> {
 		) && (ui.isInviteTokenInputVisible ? inviteToken : true)
 
 		return (
-			<form onSubmit={this.nextStep} noValidate>
-				<h1>Hi! I'm Oyster. What's your name?</h1>
+			<Form onSubmit={this.nextStep} noValidate marginHorizontal='-10px'>
+				<Text
+					block
+					size='30'
+					marginBottom={5}
+					color='neutral'
+				>
+					Hi! I'm Oyster.<br />
+					What's your name?
+				</Text>
 				{fields.map((fieldId) => (
 					<SignupFormField
 						key={fieldId}
 						type={Signup.fieldsConfig[fieldId].type}
-						placeholder={Signup.fieldsConfig[fieldId].title}
+						title={Signup.fieldsConfig[fieldId].title}
 						value={formData[fieldId]}
 						onChange={(value) => this.handleChange(fieldId, value)}
 						onBlur={() => this.handleBlur(fieldId)}
 						disabled={Boolean(formMetadata[fieldId].disabled)}
 						isDirty={formMetadata[fieldId].dirty}
 						validation={validateField(fieldId, formData[fieldId])}
+						width={Signup.fieldsConfig[fieldId].width}
 					/>
 				))}
 				{ui.isInviteTokenInputVisible && (
 					<div>
-						<input
-							type='text'
-							placeholder='Invite token'
+						<SignupFormField
+							type={Signup.fieldsConfig.inviteToken.type}
+							title={Signup.fieldsConfig.inviteToken.title}
 							value={inviteToken || ''}
-							onChange={(ev: KeyboardEvent) => {
-								if (ev.target instanceof HTMLInputElement) {
-									signupStore.setInviteToken(ev.target.value)
-								}
-							}}
+							onChange={(value) => signupStore.setInviteToken(value)}
+							onBlur={() => this.handleBlur('inviteToken')}
+							isDirty={formMetadata.inviteToken.dirty}
+							validation={validateField('inviteToken', inviteToken)}
 						/>
 					</div>
 				)}
-				<input
-					type='submit'
-					value='Next'
+				<Button
+					submit
+					block
+					size='13'
+					width='50%'
 					disabled={!isWholeStepValid}
-				/>
-			</form>
+				>
+					Next
+				</Button>
+			</Form>
 		)
 	}
 
 	renderStep2 () {
-		const {signupStore: {formData, formMetadata}} = this.props
+		const {signupStore: {formData, formMetadata, ui}} = this.props
 		const fields: Array<TSignupFormField> = ['password', 'passwordConfirm']
 		const passwordsMatchValidation = validatePasswords(formData)
 		const isWholeStepValid = !passwordsMatchValidation && fields.every(
@@ -117,13 +183,21 @@ export default class Signup extends React.Component<void, TProps, void> {
 		)
 
 		return (
-			<form onSubmit={this.handleFormSubmit} noValidate>
-				<h1>Nice to meet you, {formData.name}! What's your password?</h1>
+			<Form onSubmit={this.handleFormSubmit} noValidate marginHorizontal='-10px'>
+				<Text
+					block
+					size='30'
+					marginBottom={5}
+					color='neutral'
+				>
+					Nice to meet you, {formData.name}!<br />
+					What's your password?
+				</Text>
 				{fields.map((fieldId) => (
 					<SignupFormField
 						key={fieldId}
 						type={Signup.fieldsConfig[fieldId].type}
-						placeholder={Signup.fieldsConfig[fieldId].title}
+						title={Signup.fieldsConfig[fieldId].title}
 						value={formData[fieldId]}
 						onChange={(value) => this.handleChange(fieldId, value)}
 						onBlur={() => this.handleBlur(fieldId)}
@@ -132,34 +206,44 @@ export default class Signup extends React.Component<void, TProps, void> {
 						validation={validateField(fieldId, formData[fieldId])}
 					/>
 				))}
-				{passwordsMatchValidation && formMetadata.password.dirty && formMetadata.passwordConfirm.dirty && (
-					<p style={{color: 'red'}}>{passwordsMatchValidation}</p>
-				)}
-				<input
-					type='submit'
-					value='Get started'
-					disabled={!isWholeStepValid}
-				/>
-			</form>
-		)
-	}
-
-	renderStep3 () { // eslint-disable-line class-methods-use-this
-		return (
-			<h1>Processing...</h1>
+				<Text
+					block
+					size='13'
+					color='red'
+					marginVertical={2}
+				>
+					{formMetadata.password.dirty && formMetadata.passwordConfirm.dirty && passwordsMatchValidation || '\u00a0'}
+				</Text>
+				<Button
+					submit
+					block
+					size='13'
+					width='50%'
+					disabled={!isWholeStepValid || ui.pendingRequest}
+				>
+					Get started!
+				</Button>
+			</Form>
 		)
 	}
 
 	render () {
-		const {signupStore: {step}} = this.props
+		const {signupStore: {step, ui}} = this.props
 
 		return (
-			<div data-comment='layout and shit'>
-				<div data-comment='logo'/>
-				{step === 1 && this.renderStep1()}
-				{step === 2 && this.renderStep2()}
-				{step === 3 && this.renderStep3()}
-			</div>
+			<Layout>
+				<ContentCol hidden={ui.pendingRequest}>
+					<Logo
+						height={2.5}
+						style={() => ({position: 'absolute', top: 20, left: 20})}
+					/>
+					<Content>
+						{step === 1 && this.renderStep1()}
+						{step === 2 && this.renderStep2()}
+					</Content>
+				</ContentCol>
+				<BgPattern expanded={ui.pendingRequest} />
+			</Layout>
 		)
 	}
 }
