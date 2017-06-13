@@ -23,7 +23,7 @@ export type TNotification = TNotificationCommon & {
 	completedAt: ?Date,
 	authorsByIds: ?Array<string>,
 	ownersByIds: ?Array<string>,
-	permissions: ?Set<TNotificationPermission>,
+	permissions: ?Map<TNotificationPermission, boolean>, // TODO: change to Set when mobx supports it
 	objects: {
 		project?: TProject,
 		task?: TTask,

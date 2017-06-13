@@ -2,6 +2,7 @@
 import {action} from 'mobx'
 import {TaskAPI} from './api'
 import {initialState} from './types'
+import type {TTaskPermission} from './types'
 import createUpdatableEntityClass from 'core/store/utils/createUpdatableEntityClass'
 import type {IUpdatableEntity} from 'core/store/utils/createUpdatableEntityClass'
 import createEntityStoreClass from 'core/store/utils/createEntityStoreClass'
@@ -28,6 +29,33 @@ export class TaskEntity extends createUpdatableEntityClass({
 					this.data.ownersByIds = originalOwnersByIds
 				},
 			)
+	}
+
+	@action changeTaskStatus (action: TTaskPermission) {
+		let promise
+		switch (action) {
+			case 'complete':
+				promise = this.updateField('completedAt', new Date())
+				break
+			case 'approve':
+				promise = this.updateField('approvedAt', new Date())
+				break
+			case 'reopen':
+			case 'reject':
+				this.data.completedAt = null
+				this.data.approvedAt = null
+				promise = TaskAPI[action](this.data.uuid)
+					.catch(() => { /* TODO: */ })
+				break
+		}
+		this.data.permissions && this.data.permissions.clear()
+
+		// refetch to update permissions
+		// will be replaced by websockets
+		promise && promise
+			.then(() => {
+				TaskAPI.fetch(this.data.uuid)
+			})
 	}
 }
 

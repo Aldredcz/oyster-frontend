@@ -16,7 +16,7 @@ export function processTaskFromApi (taskFromApi: TTaskFromApi, updateStore: bool
 	taskFromApi.approved_at && (task.approvedAt = new Date(taskFromApi.approved_at))
 	taskFromApi.owners && (task.ownersByIds = taskFromApi.owners.map((u) => u.uuid))
 	taskFromApi.projects && (task.projectsByIds = taskFromApi.projects.map((u) => u.uuid))
-	taskFromApi.actions && (task.permissions = new Set(taskFromApi.actions))
+	taskFromApi.actions && (task.permissions = new Map(taskFromApi.actions.map((action) => [action, true])))
 
 	if (updateStore) {
 		tasksStore.setEntity(task.uuid, {data: task})
@@ -99,6 +99,20 @@ export function oysterRequestTaskComplete (uuid: string): Promise<Date> {
 		.then((data) => new Date(data.completed_at))
 }
 
+export function oysterRequestTaskReopen (uuid: string): Promise<any> {
+	return request(`${SETTINGS.oysterApi}/task/${uuid}/reopen`, {
+		method: 'PUT',
+		body: JSON.stringify({}),
+	})
+}
+
+export function oysterRequestTaskReject (uuid: string): Promise<any> {
+	return request(`${SETTINGS.oysterApi}/task/${uuid}/reject`, {
+		method: 'PUT',
+		body: JSON.stringify({}),
+	})
+}
+
 export function oysterRequestTaskApprove (uuid: string): Promise<Date> {
 	return request(`${SETTINGS.oysterApi}/task/${uuid}/approve`, {
 		method: 'PUT',
@@ -144,5 +158,7 @@ export const TaskAPI = {
 				return Promise.reject(`Cannot update field '${field}' in Task`)
 		}
 	},
+	reopen: oysterRequestTaskReopen,
+	reject: oysterRequestTaskReject,
 	assignContributor: oysterRequestTaskAssignContributor,
 }

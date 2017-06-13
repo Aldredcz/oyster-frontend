@@ -18,7 +18,7 @@ export function processProjectFromApi (projectFromApi: TProjectFromApi, updateSt
 	))
 	projectFromApi.accounts && (project.accountsByIds = projectFromApi.accounts.map((a) => a.uuid))
 	projectFromApi.owners && (project.ownersByIds = projectFromApi.owners.map((a) => a.uuid))
-	projectFromApi.actions && (project.permissions = new Set(projectFromApi.actions))
+	projectFromApi.actions && (project.permissions = new Map(projectFromApi.actions.map((action) => [action, true])))
 
 	if (updateStore) {
 		projectsStore.setEntity(project.uuid, {data: project})

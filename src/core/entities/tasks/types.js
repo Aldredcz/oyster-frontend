@@ -2,13 +2,15 @@
 import type {TUserFromApi} from 'core/entities/users'
 import type {TProjectFromApi} from 'core/entities/projects'
 
-type TTaskPermission =
+export type TTaskPermission =
 	| 'rename'
 	| 'deadline'
 	| 'brief'
 	| 'assign'
 	| 'complete'
 	| 'approve'
+	| 'reopen'
+	| 'reject'
 
 export type TTaskCommon = {
 	uuid: string,
@@ -22,7 +24,7 @@ export type TTask = TTaskCommon & {
 	approvedAt: ?Date,
 	ownersByIds: ?Array<string>,
 	projectsByIds: ?Array<string>,
-	permissions: ?Set<TTaskPermission>,
+	permissions: ?Map<TTaskPermission, boolean>, // TODO: change to Set when mobx supports it
 }
 
 export type TTaskFromApi = $Shape<TTaskCommon & {

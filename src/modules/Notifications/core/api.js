@@ -20,7 +20,7 @@ function processNotificationFromApi (notificationFromApi: TNotificationFromApi):
 	notificationFromApi.owners && (notification.ownersByIds = notificationFromApi.owners.map(
 		(userFromApi) => processUserFromApi(userFromApi).uuid,
 	))
-	notificationFromApi.actions && (notification.permissions = new Set(notificationFromApi.actions))
+	notificationFromApi.actions && (notification.permissions = new Map(notificationFromApi.actions.map((action) => [action, true])))
 	notification.objects = {}
 	if (notificationFromApi.objects) {
 		if (notificationFromApi.objects.project) {

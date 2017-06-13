@@ -19,7 +19,7 @@ export type TProject = TProjectCommon & {
 	accountsByIds: ?Array<string>,
 	tasksByIds: ?Array<string>,
 	ownersByIds: ?Array<string>,
-	permissions: ?Set<TProjectPermission>,
+	permissions: ?Map<TProjectPermission, boolean>, // TODO: change to Set when mobx supports it
 }
 
 export type TProjectFromApi = $Shape<TProjectCommon & {

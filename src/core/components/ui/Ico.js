@@ -6,8 +6,9 @@ import type {TBoxProps} from 'libs/box'
 
 import Box from 'libs/box'
 
-import LogoSvg from 'assets/images/logo.svg'
 
+// INTERNAL
+import LogoSvg from 'assets/images/logo.svg'
 // import AddSvg from 'assets/images/icons/O_icon_add.svg'
 // import AddBigSvg from 'assets/images/icons/O_icon_add_big.svg'
 // import AddProjectSvg from 'assets/images/icons/O_icon_add_project.svg'
@@ -18,6 +19,7 @@ import LogoSvg from 'assets/images/logo.svg'
 // import BoxSvg from 'assets/images/icons/O_icon_box.svg'
 // import CalendarSvg from 'assets/images/icons/O_icon_calendar.svg'
 // import ClockSvg from 'assets/images/icons/O_icon_clock.svg'
+import ClockFullSvg from 'assets/images/icons/O_icon_clock-full.svg'
 // import DeleteSvg from 'assets/images/icons/O_icon_delete.svg'
 // import DriveSvg from 'assets/images/icons/O_icon_drive.svg'
 // import DropboxSvg from 'assets/images/icons/O_icon_dropbox.svg'
@@ -37,18 +39,26 @@ import ProjectsSvg from 'assets/images/icons/O_icon_projects.svg'
 // import SettingsSvg from 'assets/images/icons/O_icon_settings.svg'
 // import SmileSvg from 'assets/images/icons/O_icon_smile.svg'
 // import TabletSvg from 'assets/images/icons/O_icon_tablet.svg'
-// import Task1Svg from 'assets/images/icons/O_icon_task1.svg'
-// import Task2Svg from 'assets/images/icons/O_icon_task2.svg'
-// import Task3Svg from 'assets/images/icons/O_icon_task3.svg'
+import OkSvg from 'assets/images/icons/O_icon_ok.svg'
+import OkFullSvg from 'assets/images/icons/O_icon_ok-full.svg'
+
+// FA
+import UndoSvg from 'font-awesome-svg-png/black/svg/undo.svg'
 
 const icoMap = {
 	logo: LogoSvg,
 	projects: ProjectsSvg,
 	notification: NotificationSvg,
+	clockFull: ClockFullSvg,
+	ok: OkSvg,
+	okFull: OkFullSvg,
+	undo: UndoSvg,
 }
 
+export type TIcoType = $Keys<typeof icoMap>
+
 export type TProps = TBoxProps & {
-	type: $Keys<typeof icoMap>,
+	type: TIcoType,
 	width?: number | string,
 	height?: number | string,
 	color?: TColor,
@@ -75,19 +85,20 @@ export default class Ico extends React.Component<void, TProps, void> {
 
 		const {theme} = this.context
 
-		let defaultHeight
+		let defaultSize
 		if (!width && !height) {
-			defaultHeight = '1em'
+			defaultSize = '1em'
 		}
+		const colorResolved = theme.colors[color || 'neutralDark']
 
 		const Svg = icoMap[type]
 		return (
 			<Box
 				{...restProps}
 				as={Svg}
-				width={width}
-				height={height || defaultHeight}
-				fill={color ? theme.colors[color] : undefined}
+				width={width || defaultSize}
+				height={height || defaultSize}
+				fill={colorResolved}
 			/>
 		)
 	}

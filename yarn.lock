@@ -151,6 +151,13 @@ argparse@^1.0.7:
   dependencies:
     sprintf-js "~1.0.2"
 
+"argparse@~ 0.1.11":
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/argparse/-/argparse-0.1.16.tgz#cfd01e0fbba3d6caed049fbd758d40f65196f57c"
+  dependencies:
+    underscore "~1.7.0"
+    underscore.string "~2.4.0"
+
 arr-diff@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/arr-diff/-/arr-diff-2.0.0.tgz#8f3b827f955a8bd669697e4a4256ac3ceae356cf"
@@ -1099,6 +1106,10 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
+bluebird@^2.9.13:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.11.0.tgz#534b9033c022c9579c56ba3b3e5a5caafbb650e1"
+
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.6"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.6.tgz#53344adb14617a13f6e8dd2ce28905d1c0ba3215"
@@ -1407,6 +1418,12 @@ co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
 
+coa@~0.4.0:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/coa/-/coa-0.4.1.tgz#baf6f49c7ad9f20c597af39b3fc1e5090fe8838b"
+  dependencies:
+    q "~0.9.6"
+
 coa@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/coa/-/coa-1.0.2.tgz#2ba9fec3b4aa43d7a49d7e6c3561e92061b6bcec"
@@ -1430,6 +1447,10 @@ color-name@^1.1.1:
 colors@^1.1.2, colors@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/colors/-/colors-1.1.2.tgz#168a4701756b6a7f51a12ce0c97bfa28c084ed63"
+
+colors@~0.6.0:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/colors/-/colors-0.6.2.tgz#2423fe6678ac0c5dae8852e5d0e5be08c997abcc"
 
 combined-stream@^1.0.5, combined-stream@~1.0.5:
   version "1.0.5"
@@ -2179,6 +2200,10 @@ esprima@^3.1.1:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-3.1.3.tgz#fdca51cee6133895e3c88d535ce49dbff62a4633"
 
+"esprima@~ 1.0.2":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/esprima/-/esprima-1.0.4.tgz#9f557e08fc3b4d26ece9dd34f8fbf476b62585ad"
+
 esquery@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/esquery/-/esquery-1.0.0.tgz#cfba8b57d7fba93f17298a8a006a04cda13d80fa"
@@ -2350,6 +2375,10 @@ express@^4.13.3, express@^4.15.2:
 extend@^3.0.0, extend@~3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.1.tgz#a755ea7bc1adfcc5a31ce7e762dbaadc5e636444"
+
+extend@~1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/extend/-/extend-1.2.1.tgz#a0f5fd6cfc83a5fe49ef698d60ec8a624dd4576c"
 
 extglob@^0.3.1:
   version "0.3.2"
@@ -2595,6 +2624,24 @@ flow-typed@^2.0.0:
     unzip "^0.1.11"
     which "^1.2.11"
     yargs "^4.2.0"
+
+font-awesome-svg-png@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/font-awesome-svg-png/-/font-awesome-svg-png-1.2.2.tgz#7bbc5c2a724e973697965cc86e816d2170e3496e"
+  dependencies:
+    bluebird "^2.9.13"
+    extend "~1.2.1"
+    font-awesome "^4.7.0"
+    graceful-fs "~2.0.1"
+    lodash.indexby "^3.0.0"
+    mkdirp "^0.5.0"
+    optimist "~0.6.0"
+    svgo "0.4.4"
+    xml2js "^0.4.5"
+
+font-awesome@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
 
 for-in@^1.0.1:
   version "1.0.2"
@@ -2885,6 +2932,10 @@ graceful-fs@^4.1.2, graceful-fs@^4.1.6:
 graceful-fs@~1.2.0:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-1.2.3.tgz#15a4806a57547cb2d2dbf27f42e89a8c3451b364"
+
+graceful-fs@~2.0.1:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-2.0.3.tgz#7cd2cdb228a4a3f36e95efa6cc142de7d1a136d0"
 
 "graceful-readlink@>= 1.0.0":
   version "1.0.1"
@@ -3736,6 +3787,13 @@ js-yaml@^3.5.1, js-yaml@^3.7.0:
     argparse "^1.0.7"
     esprima "^3.1.1"
 
+js-yaml@~2.1.0:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-2.1.3.tgz#0ffb5617be55525878063d7a16aee7fdd282e84c"
+  dependencies:
+    argparse "~ 0.1.11"
+    esprima "~ 1.0.2"
+
 js-yaml@~3.7.0:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.7.0.tgz#5c967ddd837a9bfdca5f2de84253abe8a1c03b80"
@@ -3939,9 +3997,32 @@ locate-path@^2.0.0:
     p-locate "^2.0.0"
     path-exists "^3.0.0"
 
+lodash._basecallback@^3.0.0:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/lodash._basecallback/-/lodash._basecallback-3.3.1.tgz#b7b2bb43dc2160424a21ccf26c57e443772a8e27"
+  dependencies:
+    lodash._baseisequal "^3.0.0"
+    lodash._bindcallback "^3.0.0"
+    lodash.isarray "^3.0.0"
+    lodash.pairs "^3.0.0"
+
 lodash._basecopy@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/lodash._basecopy/-/lodash._basecopy-3.0.1.tgz#8da0e6a876cf344c0ad8a54882111dd3c5c7ca36"
+
+lodash._baseeach@^3.0.0:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/lodash._baseeach/-/lodash._baseeach-3.0.4.tgz#cf8706572ca144e8d9d75227c990da982f932af3"
+  dependencies:
+    lodash.keys "^3.0.0"
+
+lodash._baseisequal@^3.0.0:
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/lodash._baseisequal/-/lodash._baseisequal-3.0.7.tgz#d8025f76339d29342767dcc887ce5cb95a5b51f1"
+  dependencies:
+    lodash.isarray "^3.0.0"
+    lodash.istypedarray "^3.0.0"
+    lodash.keys "^3.0.0"
 
 lodash._basetostring@^3.0.0:
   version "3.0.1"
@@ -3950,6 +4031,18 @@ lodash._basetostring@^3.0.0:
 lodash._basevalues@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/lodash._basevalues/-/lodash._basevalues-3.0.0.tgz#5b775762802bde3d3297503e26300820fdf661b7"
+
+lodash._bindcallback@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/lodash._bindcallback/-/lodash._bindcallback-3.0.1.tgz#e531c27644cf8b57a99e17ed95b35c748789392e"
+
+lodash._createaggregator@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/lodash._createaggregator/-/lodash._createaggregator-3.0.0.tgz#d66cbf39949b050d87df53461f0d059dfb08dc9f"
+  dependencies:
+    lodash._basecallback "^3.0.0"
+    lodash._baseeach "^3.0.0"
+    lodash.isarray "^3.0.0"
 
 lodash._getnative@^3.0.0:
   version "3.9.1"
@@ -3997,6 +4090,13 @@ lodash.escape@^3.0.0:
   dependencies:
     lodash._root "^3.0.0"
 
+lodash.indexby@^3.0.0:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.indexby/-/lodash.indexby-3.1.1.tgz#f2caab0ff279837858147730d863cdd80c1c042e"
+  dependencies:
+    lodash._createaggregator "^3.0.0"
+    lodash.keys "^3.0.0"
+
 lodash.isarguments@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/lodash.isarguments/-/lodash.isarguments-3.1.0.tgz#2f573d85c6a24289ff00663b491c1d338ff3458a"
@@ -4017,6 +4117,10 @@ lodash.isstring@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/lodash.isstring/-/lodash.isstring-4.0.1.tgz#d527dfb5456eca7cc9bb95d5daeaf88ba54a5451"
 
+lodash.istypedarray@^3.0.0:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/lodash.istypedarray/-/lodash.istypedarray-3.0.6.tgz#c9a477498607501d8e8494d283b87c39281cef62"
+
 lodash.keys@^3.0.0:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/lodash.keys/-/lodash.keys-3.1.2.tgz#4dbc0472b156be50a0b286855d1bd0b0c656098a"
@@ -4028,6 +4132,12 @@ lodash.keys@^3.0.0:
 lodash.mapvalues@^4.4.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.mapvalues/-/lodash.mapvalues-4.6.0.tgz#1bafa5005de9dd6f4f26668c30ca37230cc9689c"
+
+lodash.pairs@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/lodash.pairs/-/lodash.pairs-3.0.1.tgz#bbe08d5786eeeaa09a15c91ebf0dcb7d2be326a9"
+  dependencies:
+    lodash.keys "^3.0.0"
 
 lodash.pick@^4.2.1:
   version "4.4.0"
@@ -4514,7 +4624,7 @@ opn@4.0.2:
     object-assign "^4.0.1"
     pinkie-promise "^2.0.0"
 
-optimist@^0.6.1:
+optimist@^0.6.1, optimist@~0.6.0:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/optimist/-/optimist-0.6.1.tgz#da3ea74686fa21a19a111c326e90eb15a0196686"
   dependencies:
@@ -4894,6 +5004,10 @@ q@^1.1.2:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.0.tgz#dd01bac9d06d30e6f219aecb8253ee9ebdc308f1"
 
+q@~0.9.6:
+  version "0.9.7"
+  resolved "https://registry.yarnpkg.com/q/-/q-0.9.7.tgz#4de2e6cb3b29088c9e4cbc03bf9d42fb96ce2f75"
+
 qs@2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-2.4.2.tgz#f7ce788e5777df0b5010da7f7c4e73ba32470f5a"
@@ -4979,10 +5093,6 @@ react-fela@^4.3.5:
   resolved "https://registry.yarnpkg.com/react-fela/-/react-fela-4.3.5.tgz#f7d3bed97bcc45915d269ff5238e2bfadd9c02f2"
   dependencies:
     prop-types "^15.5.8"
-
-react-fontawesome@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/react-fontawesome/-/react-fontawesome-1.1.0.tgz#e4a74d6e5e89b9bff6a483b8f87e13d9b7c52b6b"
 
 react-hot-loader@3.0.0-beta.6:
   version "3.0.0-beta.6"
@@ -5355,9 +5465,13 @@ sax@0.5.x:
   version "0.5.8"
   resolved "https://registry.yarnpkg.com/sax/-/sax-0.5.8.tgz#d472db228eb331c2506b0e8c15524adb939d12c1"
 
-sax@^1.2.1, sax@~1.2.1:
+sax@>=0.6.0, sax@^1.2.1, sax@~1.2.1:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.2.tgz#fd8631a23bc7826bef5d871bdb87378c95647828"
+
+sax@~0.6.0:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/sax/-/sax-0.6.1.tgz#563b19c7c1de892e09bfc4f2fc30e3c27f0952b9"
 
 sc-channel@1.0.x:
   version "1.0.6"
@@ -5822,6 +5936,16 @@ supports-color@^3.1.0, supports-color@^3.1.1, supports-color@^3.1.2:
   dependencies:
     has-flag "^1.0.0"
 
+svgo@0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/svgo/-/svgo-0.4.4.tgz#71931b8b18bfaac02daf5d2b4db14e4c9222d900"
+  dependencies:
+    coa "~0.4.0"
+    colors "~0.6.0"
+    js-yaml "~2.1.0"
+    sax "~0.6.0"
+    whet.extend ""
+
 svgo@^0.7.2:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/svgo/-/svgo-0.7.2.tgz#9f5772413952135c6fefbf40afe6a4faa88b4bb5"
@@ -6037,6 +6161,14 @@ uncontrollable@^4.0.1:
   resolved "https://registry.yarnpkg.com/uncontrollable/-/uncontrollable-4.1.0.tgz#e0358291252e1865222d90939b19f2f49f81c1a9"
   dependencies:
     invariant "^2.1.0"
+
+underscore.string@~2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/underscore.string/-/underscore.string-2.4.0.tgz#8cdd8fbac4e2d2ea1e7e2e8097c42f442280f85b"
+
+underscore@~1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.7.0.tgz#6bbaf0877500d36be34ecaa584e0db9fef035209"
 
 unique-stream@^1.0.0:
   version "1.0.0"
@@ -6334,7 +6466,7 @@ when@~3.6.x:
   version "3.6.4"
   resolved "https://registry.yarnpkg.com/when/-/when-3.6.4.tgz#473b517ec159e2b85005497a13983f095412e34e"
 
-whet.extend@~0.9.9:
+whet.extend@, whet.extend@~0.9.9:
   version "0.9.9"
   resolved "https://registry.yarnpkg.com/whet.extend/-/whet.extend-0.9.9.tgz#f877d5bf648c97e5aa542fadc16d6a259b9c11a1"
 
@@ -6418,6 +6550,19 @@ ws@^2.3.1:
 xml-name-validator@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-2.0.1.tgz#4d8b8f1eccd3419aa362061becef515e1e559635"
+
+xml2js@^0.4.5:
+  version "0.4.17"
+  resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.4.17.tgz#17be93eaae3f3b779359c795b419705a8817e868"
+  dependencies:
+    sax ">=0.6.0"
+    xmlbuilder "^4.1.0"
+
+xmlbuilder@^4.1.0:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-4.2.1.tgz#aa58a3041a066f90eaa16c2f5389ff19f3f461a5"
+  dependencies:
+    lodash "^4.0.0"
 
 "xtend@>=4.0.0 <4.1.0-0", xtend@^4.0.0:
   version "4.0.1"
