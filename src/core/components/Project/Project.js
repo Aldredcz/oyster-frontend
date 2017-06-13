@@ -13,6 +13,7 @@ import UserSelect from 'core/components/ui/UserSelect'
 
 import Box from 'libs/box'
 import Text from 'core/components/ui/Text'
+import Ico from 'core/components/ui/Ico'
 
 type TProps = $Shape<{
 	uuid: string,
@@ -33,6 +34,56 @@ type TState = {
 }
 
 type TStateField = 'name'
+
+const AddTaskButton = ({isCreating, onClick}) => (
+	<Box
+		width={12} height={12}
+		borderWidth={1}
+		borderColor='neutral'
+		borderRadius={5}
+		flexShrink={0}
+		style={() => ({
+			position: 'relative',
+			cursor: 'pointer',
+		})}
+		onClick={onClick}
+	>
+		<Box
+			style={() => ({
+				position: 'absolute',
+				top: '50%',
+				left: '50%',
+				transform: 'translate(-50%, -50%)',
+			})}
+		>
+			<Ico
+				color='neutral'
+				type={isCreating ? 'spinner' : 'plus'}
+				spin={isCreating}
+				width={2}
+				style={() => ({
+					position: 'absolute',
+					left: '50%',
+					transform: 'translateX(-50%)',
+				})}
+			/>
+			<Text
+				block
+				bold
+				width='100%'
+				size='9'
+				marginTop={2.25}
+				color='neutral'
+				align='center'
+			>
+				{!isCreating
+					? 'Add task'
+					: 'Creating...'
+				}
+			</Text>
+		</Box>
+	</Box>
+)
 
 const Title = (props) => (
 	<Text
@@ -89,6 +140,10 @@ export const projectFactory = ({
 
 		createNewTask () {
 			const {project: {uuid: projectUuid}, addNewTask} = this.props
+
+			if (this.state.creatingNewTask) {
+				return
+			}
 
 			this.setState({
 				creatingNewTask: true,
@@ -191,18 +246,10 @@ export const projectFactory = ({
 						))
 					)}
 					{permissions && permissions.has('task') && (
-						<div style={{float: 'left', cursor: 'pointer'}}>
-							{!this.state.creatingNewTask
-								? (
-									<h2 onClick={() => this.createNewTask()}>
-										<a href='javascript://'>New task!</a>
-									</h2>
-								)
-								: (
-									<h2>Creating...</h2>
-								)
-							}
-						</div>
+						<AddTaskButton
+							isCreating={this.state.creatingNewTask}
+							onClick={() => this.createNewTask()}
+						/>
 					)}
 				</Box>
 			)

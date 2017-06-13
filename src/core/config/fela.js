@@ -11,6 +11,7 @@ const staticStyles = `
 	html {
 		-ms-text-size-adjust: 100%;
 		-webkit-text-size-adjust: 100%;
+		font-size: 16px;
 	}
 	body {
 		margin: 0;

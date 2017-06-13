@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import PropTypes from 'prop-types'
+import {getRenderer} from 'core/config/fela'
 import type {TColor, TTheme} from 'core/config/themes/types'
 import type {TBoxProps} from 'libs/box'
 
@@ -9,10 +10,9 @@ import Box from 'libs/box'
 
 // INTERNAL
 import LogoSvg from 'assets/images/logo.svg'
-// import AddSvg from 'assets/images/icons/O_icon_add.svg'
+import AddSvg from 'assets/images/icons/O_icon_add.svg'
 // import AddBigSvg from 'assets/images/icons/O_icon_add_big.svg'
 // import AddProjectSvg from 'assets/images/icons/O_icon_add_project.svg'
-// import Add_smallSvg from 'assets/images/icons/O_icon_add_small.svg'
 // import ArchiveSvg from 'assets/images/icons/O_icon_archive.svg'
 // import Arrow_LSvg from 'assets/images/icons/O_icon_arrow_L.svg'
 // import Arrow_RSvg from 'assets/images/icons/O_icon_arrow_R.svg'
@@ -44,6 +44,7 @@ import OkFullSvg from 'assets/images/icons/O_icon_ok-full.svg'
 
 // FA
 import UndoSvg from 'font-awesome-svg-png/black/svg/undo.svg'
+import SpinnerSvg from 'font-awesome-svg-png/black/svg/spinner.svg'
 
 const icoMap = {
 	logo: LogoSvg,
@@ -53,6 +54,8 @@ const icoMap = {
 	ok: OkSvg,
 	okFull: OkFullSvg,
 	undo: UndoSvg,
+	plus: AddSvg,
+	spinner: SpinnerSvg,
 }
 
 export type TIcoType = $Keys<typeof icoMap>
@@ -62,6 +65,7 @@ export type TProps = TBoxProps & {
 	width?: number | string,
 	height?: number | string,
 	color?: TColor,
+	spin?: boolean,
 }
 
 type TContext = {
@@ -69,6 +73,14 @@ type TContext = {
 }
 
 const defaultIcoSize = '1em'
+const spinKeyframe = getRenderer().renderKeyframe(() => ({
+	from: {
+		transform: 'rotate(0deg)',
+	},
+	to: {
+		transform: 'rotate(359deg)',
+	},
+}))
 
 export default class Ico extends React.Component<void, TProps, void> {
 	static contextTypes = {
@@ -82,6 +94,8 @@ export default class Ico extends React.Component<void, TProps, void> {
 			width,
 			height,
 			color,
+			spin,
+			style,
 			...restProps
 		} = this.props
 
@@ -97,6 +111,10 @@ export default class Ico extends React.Component<void, TProps, void> {
 				width={width || height || defaultIcoSize}
 				height={height || width || defaultIcoSize}
 				fill={colorResolved}
+				style={(theme, boxProps) => ({
+					...(spin ? {animation: `${spinKeyframe} 2s infinite linear`} : {}),
+					...(style ? style(theme, boxProps) : {}),
+				})}
 			/>
 		)
 	}
