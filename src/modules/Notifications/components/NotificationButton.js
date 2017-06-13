@@ -5,6 +5,9 @@ import {inject, observer} from 'mobx-react'
 import type {TNotificationsStore} from '../core/store'
 
 import NotificationList from './NotificationList'
+import Box from 'libs/box'
+import Ico from 'core/components/ui/Ico'
+
 
 type TProps = {
 	notificationsStore: TNotificationsStore,
@@ -52,17 +55,35 @@ export default class NotificationButton extends React.Component<void, TProps, TS
 		const {isExpanded} = this.state
 
 		return (
-			<div style={{position: 'relative'}}>
-				<div
-					style={{cursor: 'pointer'}}
+			<Box>
+				<Box
+					display='inline-block'
+					position='relative'
+					style={() => ({cursor: 'pointer'})}
 					onClick={this.showList}
 				>
-					Notifications
+					<Ico
+						type='notification'
+						height={1}
+						color='neutralDark'
+					/>
 					{unreadNotificationsCount
-						? <span><br/>{'('}{unreadNotificationsCount} new)</span>
+						? (
+							<Box
+								width='8px'
+								height='8px'
+								backgroundColor='red'
+								borderRadius={8}
+								style={() => ({
+									position: 'absolute',
+									bottom: '2px',
+									right: '-1px',
+								})}
+							/>
+						)
 						: ''
 					}
-				</div>
+				</Box>
 				{isExpanded && (
 					<NotificationList
 						ref={(reactEl) => {
@@ -79,7 +100,7 @@ export default class NotificationButton extends React.Component<void, TProps, TS
 						showCompleteAll={Boolean(unreadNotificationsCount)}
 					/>
 				)}
-			</div>
+			</Box>
 		)
 	}
 }

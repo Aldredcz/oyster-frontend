@@ -5,6 +5,9 @@ import {isOpeningInNewWindow} from 'libs/event-helpers/mouse-event'
 import type {TNotification} from '../core/types'
 
 import NotificationItem from './NotificationItem'
+import Box from 'libs/box'
+import Text from 'core/components/ui/Text'
+import Button from 'core/components/ui/Button'
 
 type TProps = {
 	notifications: Array<TNotification>,
@@ -20,35 +23,48 @@ export default class NotificationList extends React.Component<void, TProps, void
 		const {notifications, completeNotification, completeAllNotifications, showCompleteAll, onHide} = this.props
 
 		return (
-			<div
-				style={{
-					position: 'absolute',
-					top: 'calc(100% + 7px)',
-					right: -5,
-					width: 200,
-					border: '2px dotted black',
-					padding: 5,
-				}}
+			<Box
+				position='fixed'
+				width={15}
+				backgroundColor='neutralLight'
+				borderRadius={5}
+				style={() => ({
+					top: '40px',
+					right: '10px',
+				})}
 			>
-				{!notifications.length
-					? 'No notifications'
-					: notifications.map((notification) => (
-						<NotificationItem
-							key={notification.uuid}
-							notification={notification}
-							onClick={(ev) => {
-								completeNotification(notification.uuid)
-								if (!isOpeningInNewWindow(ev)) {
-									onHide()
-								}
-							}}
-						/>
-					))
-				}
+				<Text
+					block
+					size='9'
+					color={notifications.length ? 'neutral' : 'neutralDark'}
+					paddingHorizontal={0.6} paddingVertical={0.3}
+				>
+					{notifications.length
+						? 'Notifications'
+						: 'No notifications'
+					}
+				</Text>
+				{notifications.map((notification) => (
+					<NotificationItem
+						key={notification.uuid}
+						notification={notification}
+						onClick={(ev) => {
+							completeNotification(notification.uuid)
+							if (!isOpeningInNewWindow(ev)) {
+								onHide()
+							}
+						}}
+					/>
+				))}
 				{showCompleteAll && (
-					<button onClick={completeAllNotifications}>Mark all as read</button>
+					<Button
+						onClick={completeAllNotifications}
+						block
+						marginVertical={0.6}
+						marginHorizontal='auto'
+					>Mark all as read</Button>
 				)}
-			</div>
+			</Box>
 		)
 	}
 }

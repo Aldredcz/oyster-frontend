@@ -1,6 +1,7 @@
 // @flow
 
 export type TColor =
+	| 'inherit'
 	| 'white'
 	| 'neutralLight'
 	| 'neutral'

@@ -4,7 +4,10 @@ import {isOpeningInNewWindow} from 'libs/event-helpers/mouse-event'
 import {moduleManager} from './index'
 import type {TModuleId} from './types'
 
-type TProps = {
+import Text from 'core/components/ui/Text'
+import type {TProps as TTextProps} from 'core/components/ui/Text'
+
+type TProps = TTextProps & {
 	module?: TModuleId,
 	params?: Object, // eslint-disable-line flowtype/no-weak-types
 	onClick?: (ev: MouseEvent) => any,
@@ -23,22 +26,25 @@ export default class Link extends React.Component<void, TProps, void> {
 
 	render () {
 		//$FlowFixMe -- check TProps comment :(
-		const {params, module, onClick, children} = this.props
+		const {params, module, onClick, children, ...restProps} = this.props
 
 		const url = moduleManager.setModule(module, params, true)
 
 		return (
-			<a
+			<Text
+				as='a'
 				href={url || 'javascript://'}
+				decoration='none'
 				onClick={(ev: MouseEvent) => {
 					onClick && onClick(ev)
 					if (!ev.defaultPrevented) {
 						this.goToModule(ev)
 					}
 				}}
+				{...restProps}
 			>
 				{children}
-			</a>
+			</Text>
 		)
 	}
 }

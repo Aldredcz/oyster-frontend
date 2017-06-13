@@ -26,12 +26,12 @@ import LogoSvg from 'assets/images/logo.svg'
 // import HelpSvg from 'assets/images/icons/O_icon_help.svg'
 // import LogoutSvg from 'assets/images/icons/O_icon_logout.svg'
 // import NotebookSvg from 'assets/images/icons/O_icon_notebook.svg'
-// import NotificationSvg from 'assets/images/icons/O_icon_notification.svg'
+import NotificationSvg from 'assets/images/icons/O_icon_notification.svg'
 // import OnedriveSvg from 'assets/images/icons/O_icon_onedrive.svg'
 // import PersonalsetingsSvg from 'assets/images/icons/O_icon_personalsetings.svg'
 // import PhoneSvg from 'assets/images/icons/O_icon_phone.svg'
 // import PrioritiesSvg from 'assets/images/icons/O_icon_priorities.svg'
-// import ProjectsSvg from 'assets/images/icons/O_icon_projects.svg'
+import ProjectsSvg from 'assets/images/icons/O_icon_projects.svg'
 // import RemoveSvg from 'assets/images/icons/O_icon_remove.svg'
 // import SearchSvg from 'assets/images/icons/O_icon_search.svg'
 // import SettingsSvg from 'assets/images/icons/O_icon_settings.svg'
@@ -43,6 +43,8 @@ import LogoSvg from 'assets/images/logo.svg'
 
 const icoMap = {
 	logo: LogoSvg,
+	projects: ProjectsSvg,
+	notification: NotificationSvg,
 }
 
 export type TProps = TBoxProps & {

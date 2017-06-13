@@ -32,6 +32,7 @@ export type TProps = {
 	as?: string | ((props: Object) => React.Element<*>),
 	style?: (theme: TTheme, style: Object) => Object,
 	getRef?: (el: HTMLElement) => any,
+	asBoxBasedComponent?: boolean,
 
 	margin?: TMaybeRhythm,
 	marginHorizontal?: TMaybeRhythm,
@@ -77,7 +78,7 @@ export type TProps = {
 	backgroundColor?: TColor,
 	opacity?: number,
 	overflow?: 'visible' | 'hidden' | 'scroll',
-	position?: 'absolute' | 'relative',
+	position?: 'absolute' | 'relative' | 'fixed' | 'static' | 'sticky',
 	zIndex?: number,
 
 	borderStyle?: 'solid' | 'dotted' | 'dashed',
@@ -139,7 +140,7 @@ const restrictedFlex = (
 
 // Color any type, because Flow can't infere props for some reason.
 const themeColor = (colors: any, props) =>
-	reduceObject(props, (value) => colors[value])
+	reduceObject(props, (value: any) => (value in colors) ? colors[value] : value)
 
 // Try to ensure vertical and horizontal rhythm.
 const tryToEnsureRhythmViaPaddingCompensation = (style) =>
@@ -164,6 +165,7 @@ const Box = (props: TProps, {renderer, theme}: TBoxContent) => {
 		as,
 		style,
 		getRef,
+		asBoxBasedComponent,
 
 		margin,
 		marginHorizontal = margin,
@@ -208,7 +210,6 @@ const Box = (props: TProps, {renderer, theme}: TBoxContent) => {
 		overflow,
 		position,
 		zIndex,
-		borderStyle,
 
 		borderWidth,
 		borderBottomWidth = borderWidth,
@@ -222,14 +223,31 @@ const Box = (props: TProps, {renderer, theme}: TBoxContent) => {
 		borderTopLeftRadius = borderRadius,
 		borderTopRightRadius = borderRadius,
 
-		borderColor,
+		borderColor = (borderBottomWidth || borderLeftWidth || borderRightWidth || borderTopWidth)
+			? 'neutral'
+			: undefined,
+
 		borderBottomColor = borderColor,
 		borderLeftColor = borderColor,
 		borderRightColor = borderColor,
 		borderTopColor = borderColor,
 
+		borderStyle = (borderBottomWidth || borderLeftWidth || borderRightWidth || borderTopWidth)
+			? 'solid'
+			: undefined,
+
 		...restProps
 	} = props
+
+	if (typeof as === 'function' && asBoxBasedComponent) {
+		const newProps = {...props}
+		delete newProps.as
+		delete newProps.asBoxBasedComponent
+
+		return React.createElement(as, {
+			...newProps,
+		})
+	}
 
 	const boxStyle = {
 		...maybeRhythm({
@@ -303,6 +321,7 @@ const Box = (props: TProps, {renderer, theme}: TBoxContent) => {
 	})
 }
 
+Box.displayName = 'Box'
 Box.contextTypes = {
 	renderer: PropTypes.object,
 }

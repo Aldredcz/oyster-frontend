@@ -11,6 +11,9 @@ import {oysterRequestCreateTask} from 'core/entities/tasks'
 import TaskPreviewBox from 'core/components/Task/TaskPreviewBox'
 import UserSelect from 'core/components/ui/UserSelect'
 
+import Box from 'libs/box'
+import Text from 'core/components/ui/Text'
+
 type TProps = $Shape<{
 	uuid: string,
 	project: TProject,
@@ -30,6 +33,17 @@ type TState = {
 }
 
 type TStateField = 'name'
+
+const Title = (props) => (
+	<Text
+		size='13'
+		bold
+		block
+		marginLeft={5}
+		marginVertical={1}
+		{...props}
+	/>
+)
 
 export const projectFactory = ({
 	titleRenderer = (elem, self) => elem,
@@ -131,8 +145,8 @@ export const projectFactory = ({
 			const {isLoading, uuid, project: {name}} = this.props
 
 			return isLoading
-				? <h1>{uuid} <small>loading...</small></h1>
-				: <h1 title={uuid}>{name || '[unnamed project]'}</h1>
+				? <Title>{uuid}</Title>
+				: <Title title={uuid}>{name || '[unnamed project]'}</Title>
 		}
 
 		renderProjectManagerSelect () {
@@ -163,12 +177,17 @@ export const projectFactory = ({
 			const {uuid, project: {tasksByIds, permissions}} = this.props
 
 			return (
-				<div className='tasks' style={{width: '100%', float: 'left'}}>
+				<Box flex width='100%' paddingLeft={5}>
 					{tasksByIds && (
 						tasksByIds.map((taskId) => (
-							<div key={taskId} style={{float: 'left'}}>
+							<Box
+								key={taskId}
+								width={12} height={12}
+								flexShrink={0}
+								marginRight={1}
+							>
 								<TaskPreviewBox projectUuid={uuid} uuid={taskId} />
-							</div>
+							</Box>
 						))
 					)}
 					{permissions && permissions.has('task') && (
@@ -185,13 +204,13 @@ export const projectFactory = ({
 							}
 						</div>
 					)}
-				</div>
+				</Box>
 			)
 		}
 
 		render () {
 			return (
-				<div>
+				<Box marginVertical={1}>
 					{titleRenderer
 						? titleRenderer(this.renderTitle(), this)
 						: this.renderTitle()}
@@ -203,8 +222,7 @@ export const projectFactory = ({
 						? tasksRenderer(this.renderTasks(), this)
 						: this.renderTasks()
 					}
-					<div style={{display: 'table', clear: 'both'}} />
-				</div>
+					</Box>
 			)
 		}
 	}

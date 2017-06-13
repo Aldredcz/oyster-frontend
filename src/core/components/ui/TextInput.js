@@ -1,70 +1,49 @@
 // @flow
 import React from 'react'
 import PropTypes from 'prop-types'
-import type {TColor, TTextSize, TTheme} from 'core/config/themes/types'
-import type {TBoxProps} from 'libs/box'
 
-// TODO: based on Text
-import Box from 'libs/box'
+import Text from 'core/components/ui/Text'
+import type {TProps as TTextProps} from 'core/components/ui/Text'
 
 
-export type TProps = TBoxProps & {
-	size?: TTextSize,
-	color?: TColor,
-	borderColor?: TColor,
+export type TProps = TTextProps & {
 	type?: 'text' | 'password' | 'email',
-}
-
-type TContext = {
-	theme: TTheme,
 }
 
 const TextInput = (
 	{
 		as,
-		style,
-		size = '9',
-		color = 'neutralDark',
 		type = 'text',
 		block,
+		width,
 		paddingVertical,
 		paddingHorizontal,
 		borderColor,
 		...restProps
 	}: TProps,
-	{
-		theme,
-	}: TContext,
 ): ?React.Element<any> => {
-	const {fontSize, lineHeight, letterSpacing} = theme.typography.sizes[size]
-	const textStyle: Object = {
-		fontSize,
-		lineHeight,
-		letterSpacing,
-		color: theme.colors[color],
-		fontFamily: theme.typography.fontFamily,
+	if (!width && block) {
+		width = '100%'
 	}
 
-	block && (textStyle.width = '100%')
-
 	return (
-		<Box
+		<Text
 			as={as || 'input'}
 			type={type}
 			paddingVertical={paddingVertical || 1}
 			paddingHorizontal={paddingHorizontal || '5px'}
 			block={block}
+			width={width}
 			{...restProps}
 			style={(theme, boxStyle) => ({
 				border: 'none',
 				borderBottom: `1px solid ${borderColor || theme.colors.neutral}`,
-				...textStyle,
-				...(style && style(theme, {...boxStyle, ...textStyle})),
 			})}
 		/>
 	)
 }
 
+TextInput.displayName = 'TextInput'
 TextInput.contextTypes = {
 	theme: PropTypes.object,
 }

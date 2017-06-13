@@ -1,23 +1,25 @@
 // @flow
 import React from 'react'
 import {observer, inject} from 'mobx-react'
-import {moduleManager} from 'core/router'
 import type {TDashboardStore} from '../core/store'
 
 import Box from 'libs/box'
-import {oysterRequestUserLogout} from 'core/api/auth'
 import Link from 'core/router/Link'
 import {projectFactory} from 'core/components/Project/Project'
 
 
 const Project = projectFactory({
-	titleRenderer: (title, self) => (
-		<Link
-			module='projectDetail'
-			params={{projectUuid: self.props.project.uuid}}
-		>
-			{title}
-		</Link>
+	titleRenderer: (title, self) =>	(
+		<Box>
+			{React.cloneElement(title, {
+				module: 'projectDetail',
+				params: {projectUuid: self.props.project.uuid},
+				as: Link,
+				asBoxBasedComponent: true,
+				block: false,
+				display: 'inline-block',
+			})}
+		</Box>
 	),
 	projectManagerSelectRenderer: () => null,
 })
@@ -28,13 +30,6 @@ type TProps = {
 
 @inject('dashboardStore') @observer
 export default class Dashboard extends React.Component<void, TProps, void> {
-	logout = (ev: MouseEvent) => {
-		ev.preventDefault()
-
-		oysterRequestUserLogout()
-		moduleManager.handleLogout()
-	}
-
 	createNewProject = () => {
 		this.props.dashboardStore.createNewProject()
 	}
@@ -44,21 +39,14 @@ export default class Dashboard extends React.Component<void, TProps, void> {
 
 		return (
 			<Box>
-				<h1>Dashboard</h1>
-				<p>
-					<a
-						href='javascript://'
-						onClick={this.logout}
-					>
-						Logout!
-					</a>
-				</p>
 				{projects
 					? (
 						<div>
 							{projects.length === 0 && 'No projects!'}
-							{projects.map((project) => (
-								<Project key={project.data.uuid} uuid={project.data.uuid} />
+							{projects.map((project, i) => (
+								<Box key={project.data.uuid} marginTop={i !== 0 ? 2.5 : 0}>
+									<Project uuid={project.data.uuid} />
+								</Box>
 							))}
 						</div>
 					)

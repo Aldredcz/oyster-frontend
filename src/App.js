@@ -11,24 +11,80 @@ import accountStore from 'core/store/account'
 import {usersStore} from 'core/entities/users'
 
 import Box from 'libs/box'
+import Logo from 'core/components/ui/Logo'
+import Text from 'core/components/ui/Text'
+import Ico from 'core/components/ui/Ico'
 import AccountWrapper from 'core/components/wrappers/AccountWrapper'
 
-import Notifications from 'modules/Notifications/component'
+import NotificationsButton from 'modules/Notifications/component'
+
+const Menu = () => (
+	<Box
+		backgroundColor='blue'
+		height='100vh'
+		position='fixed'
+		width='130px'
+	>
+		<Logo
+			color='blueDark'
+			width='100%'
+			padding='10px'
+			marginBottom='20px'
+		/>
+		<Box padding='10px' backgroundColor='blueDark'>
+			<Ico height='20px' type='projects' color='white'  />
+			<Text
+				bold
+				size='9'
+				align='center'
+				width='75px'
+				display='inline-block'
+				color='white'
+				style={() => ({
+					position: 'relative',
+					top: '-4px',
+				})}
+			>
+				projects
+			</Text>
+		</Box>
+	</Box>
+)
 
 const StandardLayout = ({children}: any) => (
-	<Box width='90%' marginHorizontal='auto' marginVertical={0}>
-		{children}
+	<Box>
+		<Menu />
+		<Box width='calc(100% - 130px)' marginLeft='130px'>
+			<Box
+				width='calc(100% - 130px)'
+				paddingHorizontal='15px'
+				paddingVertical='8px'
+				position='fixed'
+				height='36px'
+				backgroundColor='neutralLight'
+			>
+				<Box
+					style={() => ({
+						float: 'right',
+					})}
+				>
+					<NotificationsButton />
+				</Box>
+			</Box>
+			<Box
+				marginTop='0px'
+				padding='15px'
+				paddingTop='51px'
+			>
+				{children}
+			</Box>
+		</Box>
 	</Box>
 )
 
 function addStandardLayout (elem: React$Element<any>): React$Element<any> {
 	return (
 		<StandardLayout>
-			<div className='topbar' style={{position: 'absolute', top: 0, right: 0}}>
-				<div style={{border: '2px solid black', padding: 5}}>
-					<Notifications />
-				</div>
-			</div>
 			{elem}
 		</StandardLayout>
 	)
@@ -81,7 +137,7 @@ export default class App extends React.Component<void, void, void> {
 		let elem = Component ? <Component /> : <span/>
 
 		if (isAuthRequired) {
-			elem = addAccountWrapper(addStandardLayout(elem))
+			elem = addStandardLayout(addAccountWrapper(elem))
 		}
 
 		const App = [

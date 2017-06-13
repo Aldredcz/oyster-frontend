@@ -6,6 +6,8 @@ import type {TAccountStore} from 'core/store/account'
 
 import {oysterRequestFetchAccount, oysterRequestFetchAccountGroups, oysterRequestFetchAccountUsers} from 'core/api/account'
 
+import Text from 'core/components/ui/Text'
+
 type TProps = {
 	accountStore: TAccountStore,
 	children: React$Element<*>,
@@ -46,7 +48,17 @@ export default class AccountWrapper extends React.Component<void, TProps, void> 
 		const {accountStore: {uuid, usersByIds, groupsByIds}} = this.props
 
 		if (!uuid || !usersByIds || !groupsByIds) {
-			return <p>Loading account data...</p>
+			return (
+				<Text
+					block
+					align='center'
+					marginTop={4}
+					size='30'
+					color='neutral'
+				>
+					Loading account data...
+				</Text>
+			)
 		}
 
 		return (

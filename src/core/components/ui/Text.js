@@ -6,14 +6,13 @@ import type {TBoxProps} from 'libs/box'
 
 import Box from 'libs/box'
 
-type TProps = TBoxProps & {
+export type TProps = TBoxProps & {
 	size?: TTextSize,
 	color?: TColor,
 	align?: 'left' | 'right' | 'center' | 'justify',
 	bold?: boolean,
 	decoration?: 'none' | 'underline' | 'line-through',
 	italic?: boolean,
-	block?: boolean,
 }
 
 type TContext = {
@@ -30,7 +29,6 @@ const Text = (
 		bold,
 		decoration,
 		italic,
-		block,
 		...restProps
 	}: TProps,
 	{
@@ -50,7 +48,6 @@ const Text = (
 	bold && (textStyle.fontWeight = 'bold')
 	decoration && (textStyle.textDecoration = decoration)
 	italic && (textStyle.fontStyle = 'italic')
-	block && (textStyle.display = 'block')
 
 	return (
 		<Box
@@ -64,6 +61,7 @@ const Text = (
 	)
 }
 
+Text.displayName = 'Text'
 Text.contextTypes = {
 	theme: PropTypes.object,
 }

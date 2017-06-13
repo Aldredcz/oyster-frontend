@@ -71,7 +71,7 @@ export const visualTheme: TTheme = {
 		maxWidth: 21,
 	},
 	button: {
-		borderRadius: 6,
+		borderRadius: 4,
 	},
 	heading: {
 		marginBottom: 1,
