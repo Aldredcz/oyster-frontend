@@ -23,7 +23,7 @@ type TSignupParams = {|
 type TSignupResponse = TLoginResponse
 
 export function oysterRequestUserSignup (params: TSignupParams): Promise<TSignupResponse> {
-	return request(`${SETTINGS.oysterApi}/user/sign_up`, {
+	return request(`${SETTINGS.oysterApi}/user/sign-up`, {
 		method: 'POST',
 		body: JSON.stringify(params),
 	}).then((response) => response.json())
