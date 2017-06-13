@@ -97,6 +97,7 @@ export default class Login extends React.Component {
 				<BgPattern />
 				<ContentCol>
 					<Logo
+						width='auto'
 						height={2.5}
 						style={() => ({position: 'absolute', top: 20, left: 20})}
 					/>

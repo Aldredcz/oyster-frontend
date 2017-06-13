@@ -28,6 +28,7 @@ const Menu = () => (
 		<Logo
 			color='blueDark'
 			width='100%'
+			height='auto'
 			padding='10px'
 			marginBottom='20px'
 		/>

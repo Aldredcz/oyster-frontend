@@ -234,6 +234,7 @@ export default class Signup extends React.Component<void, TProps, void> {
 			<Layout>
 				<ContentCol hidden={ui.pendingRequest}>
 					<Logo
+						width='auto'
 						height={2.5}
 						style={() => ({position: 'absolute', top: 20, left: 20})}
 					/>
