@@ -13,9 +13,11 @@ export function processProjectFromApi (projectFromApi: TProjectFromApi, updateSt
 	projectFromApi.name && (project.name = projectFromApi.name)
 	projectFromApi.deadline && (project.deadline = projectFromApi.deadline)
 	projectFromApi.archived && (project.archived = projectFromApi.archived)
-	projectFromApi.tasks && (project.tasksByIds = projectFromApi.tasks.map(
-		(taskFromApi) => processTaskFromApi(taskFromApi, updateStore).uuid,
-	))
+	project.tasksByIds = projectFromApi.tasks
+		? projectFromApi.tasks.map(
+			(taskFromApi) => processTaskFromApi(taskFromApi, updateStore).uuid,
+		)
+		: []
 	projectFromApi.accounts && (project.accountsByIds = projectFromApi.accounts.map((a) => a.uuid))
 	projectFromApi.owners && (project.ownersByIds = projectFromApi.owners.map((a) => a.uuid))
 	projectFromApi.actions && (project.permissions = new Map(projectFromApi.actions.map((action) => [action, true])))
