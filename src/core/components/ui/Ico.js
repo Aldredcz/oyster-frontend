@@ -68,6 +68,8 @@ type TContext = {
 	theme: TTheme,
 }
 
+const defaultIcoSize = '1em'
+
 export default class Ico extends React.Component<void, TProps, void> {
 	static contextTypes = {
 		theme: PropTypes.object,
@@ -85,10 +87,6 @@ export default class Ico extends React.Component<void, TProps, void> {
 
 		const {theme} = this.context
 
-		let defaultSize
-		if (!width && !height) {
-			defaultSize = '1em'
-		}
 		const colorResolved = theme.colors[color || 'neutralDark']
 
 		const Svg = icoMap[type]
@@ -96,8 +94,8 @@ export default class Ico extends React.Component<void, TProps, void> {
 			<Box
 				{...restProps}
 				as={Svg}
-				width={width || defaultSize}
-				height={height || defaultSize}
+				width={width || height || defaultIcoSize}
+				height={height || width || defaultIcoSize}
 				fill={colorResolved}
 			/>
 		)

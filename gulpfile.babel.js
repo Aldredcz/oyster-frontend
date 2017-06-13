@@ -64,12 +64,12 @@ gulp.task('generate-html', () => {
 
 gulp.task('copy-files', () => {
 	fs.copySync(
-		path.join(__dirname, '/build'),
+		PROJECT_CONSTANTS.PATH_BUILD_DIR,
 		path.join(PROJECT_CONSTANTS.PATH_DIST_DIR, '/build'),
 	)
 
 	fs.copySync(
-		path.join(__dirname, '/assets'),
+		PROJECT_CONSTANTS.PATH_ASSETS_DIR,
 		path.join(PROJECT_CONSTANTS.PATH_DIST_DIR, '/assets'),
 	)
 })
