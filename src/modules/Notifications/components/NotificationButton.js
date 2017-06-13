@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import ReactDOM from 'react-dom'
+import {observable} from 'mobx'
 import {inject, observer} from 'mobx-react'
 import type {TNotificationsStore} from '../core/store'
 
@@ -12,28 +13,21 @@ import Ico from 'core/components/ui/Ico'
 type TProps = {
 	notificationsStore: TNotificationsStore,
 }
-type TState = {
-	isExpanded: boolean,
-}
 
 @inject('notificationsStore') @observer
-export default class NotificationButton extends React.Component<void, TProps, TState> {
-	state = {
-		isExpanded: false,
-	}
+export default class NotificationButton extends React.Component<void, TProps, void> {
+	@observable isExpanded: boolean = false
 
 	listEl: ?HTMLElement = null
 
 	showList = () => {
-		if (this.state.isExpanded) {
+		if (this.isExpanded) {
 			return
 		}
 
-		this.setState({
-			isExpanded: true,
-		}, () => {
-			document.addEventListener('click', this.hideListOnClickOutside)
-		})
+		this.props.notificationsStore.fetchNotifications()
+		this.isExpanded = true
+		document.addEventListener('click', this.hideListOnClickOutside)
 	}
 
 	hideListOnClickOutside = (ev: any) => {
@@ -44,15 +38,12 @@ export default class NotificationButton extends React.Component<void, TProps, TS
 
 	hideList = () => {
 		document.removeEventListener('click', this.hideListOnClickOutside)
-		this.setState({
-			isExpanded: false,
-		})
+		this.isExpanded = false
 	}
 
 	render () {
 		const {notificationsStore} = this.props
 		const {unreadNotificationsCount, notifications} = notificationsStore
-		const {isExpanded} = this.state
 
 		return (
 			<Box>
@@ -84,7 +75,7 @@ export default class NotificationButton extends React.Component<void, TProps, TS
 						: ''
 					}
 				</Box>
-				{isExpanded && (
+				{this.isExpanded && (
 					<NotificationList
 						ref={(reactEl) => {
 							// eslint-disable-next-line react/no-find-dom-node
