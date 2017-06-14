@@ -252,9 +252,6 @@ export const projectFactory = ({
 
 			return (
 				<ScrollArea
-					stopScrollPropagation={true}
-					vertical={false}
-					horizontal={false}
 					onMove={(dX, dY) => {
 						this.translateX = this.translateX + dX
 						// TODO: limits
