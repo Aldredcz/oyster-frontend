@@ -18,6 +18,7 @@ type TProps = $Shape<{
 	task: TTask,
 	updateField: $PropertyType<TTaskEntity, 'updateField'>,
 	assignContributor: $PropertyType<TTaskEntity, 'assignContributor'>,
+	deleteContributor: $PropertyType<TTaskEntity, 'deleteContributor'>,
 	editNameOnMount: boolean,
 }>
 
@@ -42,6 +43,7 @@ type TStateField = TTaskField & $Keys<TState>
 		task: entity.data,
 		updateField: entity.updateField.bind(entity),
 		assignContributor: entity.assignContributor.bind(entity),
+		deleteContributor: entity.deleteContributor.bind(entity),
 		editNameOnMount: !entity.data.name,
 	}),
 })
@@ -169,11 +171,18 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 				<div>
 					Contributors:
 					{ownersByIds && ownersByIds.map((userUuid) => (
-						<UserSelect
-							key={userUuid}
-							selectedUserUuid={userUuid}
-							editable={false}
-						/>
+						<span key={userUuid}>
+							<UserSelect
+								selectedUserUuid={userUuid}
+								editable={false}
+							/>
+							{permissions && permissions.has('assign') && (
+								<Button
+									backgroundColor='red'
+									onClick={() => this.props.deleteContributor(userUuid)}
+								>Delete</Button>
+							)}
+						</span>
 					))}
 					{permissions && permissions.has('assign') && (
 						<UserSelect

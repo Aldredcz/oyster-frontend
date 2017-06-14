@@ -31,6 +31,21 @@ export class TaskEntity extends createUpdatableEntityClass({
 			)
 	}
 
+	@action deleteContributor (userUuid: string) {
+		const originalOwnersByIds = this.data.ownersByIds || []
+		const newValue = originalOwnersByIds.filter((ownerId) => ownerId !== userUuid)
+
+		this.data.ownersByIds = newValue
+		TaskAPI.deleteContributor(this.data.uuid, userUuid)
+			.catch(
+				() => {
+					alert('Deleting failed, TODO:')
+					this.data.ownersByIds = originalOwnersByIds
+				},
+			)
+	}
+
+
 	@action changeTaskStatus (action: TTaskPermission) {
 		let promise
 		switch (action) {

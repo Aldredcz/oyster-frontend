@@ -80,6 +80,15 @@ export function oysterRequestProjectAssignManager (uuid: string, userUuid: strin
 		.then(({owners}) => owners.map((owner) => owner.uuid))
 }
 
+export function oysterRequestProjectDeleteManager (uuid: string, userUuid: string): Promise<any> {
+	return request(`${SETTINGS.oysterApi}/project/${uuid}/assign`, {
+		method: 'DELETE',
+		body: JSON.stringify({
+			owner: userUuid,
+		}),
+	})
+}
+
 
 export const ProjectAPI = {
 	fetch: oysterRequestFetchProject,
@@ -93,4 +102,5 @@ export const ProjectAPI = {
 	},
 	create: oysterRequestCreateProject,
 	assignProjectManager: oysterRequestProjectAssignManager,
+	deleteProjectManager: oysterRequestProjectAssignManager,
 }

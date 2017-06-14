@@ -35,6 +35,20 @@ export class ProjectEntity extends UpdatableProject {
 				},
 			)
 	}
+
+	@action deleteProjectManager (userUuid: string) {
+		const originalOwnersByIds = this.data.ownersByIds || []
+		const newValue = originalOwnersByIds.filter((ownerId) => ownerId !== userUuid)
+
+		this.data.ownersByIds = newValue
+		ProjectAPI.deleteProjectManager(this.data.uuid, userUuid)
+			.catch(
+				() => {
+					alert('Deleting failed, TODO:')
+					this.data.ownersByIds = originalOwnersByIds
+				},
+			)
+	}
 }
 
 export type TProjectEntity = ProjectEntity & IUpdatableEntity<typeof initialState>

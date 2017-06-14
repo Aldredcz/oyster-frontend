@@ -13,6 +13,7 @@ import UserSelect from 'core/components/ui/UserSelect'
 
 import Box from 'libs/box'
 import Text from 'core/components/ui/Text'
+import Button from 'core/components/ui/Button'
 import Ico from 'core/components/ui/Ico'
 
 type TProps = $Shape<{
@@ -22,6 +23,7 @@ type TProps = $Shape<{
 	addNewTask: $PropertyType<TProjectEntity, 'addNewTask'>,
 	updateField: $PropertyType<TProjectEntity, 'updateField'>,
 	assignProjectManager: $PropertyType<TProjectEntity, 'assignProjectManager'>,
+	deleteProjectManager: $PropertyType<TProjectEntity, 'deleteProjectManager'>,
 	editNameOnMount: boolean,
 }>
 
@@ -116,6 +118,7 @@ export const projectFactory = ({
 			addNewTask: entity.addNewTask.bind(entity),
 			updateField: entity.updateField.bind(entity),
 			assignProjectManager: entity.assignProjectManager.bind(entity),
+			deleteProjectManager: entity.deleteProjectManager.bind(entity),
 			editNameOnMount: !entity.data.name,
 		}),
 	})
@@ -211,11 +214,18 @@ export const projectFactory = ({
 				<div>
 					Project managers:
 					{ownersByIds && ownersByIds.map((userUuid) => (
-						<UserSelect
-							key={userUuid}
-							selectedUserUuid={userUuid}
-							editable={false}
-						/>
+						<span key={userUuid}>
+							<UserSelect
+								selectedUserUuid={userUuid}
+								editable={false}
+							/>
+							{permissions && permissions.has('assign') && (
+								<Button
+									backgroundColor='red'
+									onClick={() => this.props.deleteProjectManager(userUuid)}
+								>Delete</Button>
+							)}
+						</span>
 					))}
 					{permissions && permissions.has('assign') && (
 						<UserSelect

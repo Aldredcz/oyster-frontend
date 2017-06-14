@@ -139,6 +139,15 @@ export function oysterRequestTaskAssignContributor (uuid: string, userUuid: stri
 		.then(({owners}) => owners.map((owner) => owner.uuid))
 }
 
+export function oysterRequestTaskDeleteContributor (uuid: string, userUuid: string): Promise<any> {
+	return request(`${SETTINGS.oysterApi}/task/${uuid}/assign`, {
+		method: 'DELETE',
+		body: JSON.stringify({
+			owner: userUuid,
+		}),
+	})
+}
+
 export const TaskAPI = {
 	fetch: oysterRequestFetchTask,
 	create: oysterRequestCreateTask,
@@ -161,4 +170,5 @@ export const TaskAPI = {
 	reopen: oysterRequestTaskReopen,
 	reject: oysterRequestTaskReject,
 	assignContributor: oysterRequestTaskAssignContributor,
+	deleteContributor: oysterRequestTaskDeleteContributor,
 }
