@@ -6,5 +6,8 @@ if env === 'development'
 	script(src=PROJECT_CONSTANTS.WEBPACK_DEVSERVER_IP + '/build/main.js')
 
 if env === 'production'
+	script(src='https://cdn.ravenjs.com/3.15.0/raven.min.js')
+	script.
+		Raven.config('http://f553f63722c54751934cf234193231cf@chipmunk.jemelik.eu:9000/3').install()
 	script(src='/build/#{dllFilename}')
 	script(src='/build/main.#{buildHash}.js')
