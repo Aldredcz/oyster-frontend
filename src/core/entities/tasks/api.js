@@ -73,18 +73,18 @@ export function oysterRequestTaskBriefChange (uuid: string, brief: string): Prom
 		.then(({brief}) => brief)
 }
 
-export function oysterRequestTaskDeadlineChange (uuid: string, deadline: Date): Promise<Date> {
+export function oysterRequestTaskDeadlineChange (uuid: string, deadline: ?Date): Promise<?Date> {
 	return request(`${SETTINGS.oysterApi}/task/${uuid}/deadline`, {
 		method: 'PUT',
 		body: JSON.stringify({
-			deadline: format(deadline, 'YYYY-MM-DD'),
+			deadline: deadline ? format(deadline, 'YYYY-MM-DD') : null,
 		}),
 	})
 		.then(
 			(response) => response.json(),
 			// TODO: error handling
 		)
-		.then(({deadline}) => new Date(deadline))
+		.then(({deadline}) => deadline ? new Date(deadline) : null)
 }
 
 export function oysterRequestTaskComplete (uuid: string): Promise<Date> {

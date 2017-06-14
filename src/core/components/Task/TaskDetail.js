@@ -9,6 +9,7 @@ import type {TTaskEntity} from 'core/entities/tasks/store'
 
 import Datetime from 'core/components/ui/Datetime'
 import UserSelect from 'core/components/ui/UserSelect'
+import Button from 'core/components/ui/Button'
 
 
 type TProps = $Shape<{
@@ -158,6 +159,12 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 						time={false}
 						minDate={new Date()}
 					/>
+					{deadline && Boolean(permissions && permissions.has('deadline')) && (
+						<Button
+							backgroundColor='red'
+							onClick={() => this.props.updateField('deadline', null)}
+						>Remove deadline</Button>
+					)}
 				</div>
 				<div>
 					Contributors:
