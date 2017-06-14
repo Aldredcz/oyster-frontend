@@ -61,6 +61,7 @@ const StandardLayout = ({children}: any) => (
 				paddingHorizontal='15px'
 				paddingVertical='8px'
 				position='fixed'
+				zIndex={1}
 				height='36px'
 				backgroundColor='neutralLight'
 			>
