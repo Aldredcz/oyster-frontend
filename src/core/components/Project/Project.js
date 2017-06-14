@@ -6,7 +6,7 @@ import {moduleManager} from 'core/router'
 
 import {projectsStore} from 'core/entities/projects'
 import type {TProject, TProjectEntity} from 'core/entities/projects'
-import {oysterRequestCreateTask} from 'core/entities/tasks'
+import {tasksStore, oysterRequestCreateTask} from 'core/entities/tasks'
 
 import TaskPreviewBox from 'core/components/Task/TaskPreviewBox'
 import UserSelect from 'core/components/ui/UserSelect'
@@ -15,6 +15,8 @@ import Box from 'libs/box'
 import Text from 'core/components/ui/Text'
 import Button from 'core/components/ui/Button'
 import Ico from 'core/components/ui/Ico'
+
+import ScrollArea from 'libs/scrollarea'
 
 type TProps = $Shape<{
 	uuid: string,
@@ -133,6 +135,8 @@ export const projectFactory = ({
 		}
 
 		nameEl: ?HTMLInputElement = null
+		tasksWrapperEl: ?HTMLElement = null
+		translateX: number = 0
 
 		componentDidMount () {
 			const {editNameOnMount, project: {permissions}} = this.props
@@ -241,33 +245,62 @@ export const projectFactory = ({
 		renderTasks () {
 			const {uuid, project: {tasksByIds, permissions}} = this.props
 
+			const firstUnapprovedTaskIndex = tasksByIds && tasksByIds.findIndex((taskUuid) => {
+				const taskEntity = tasksStore.getEntity(taskUuid)
+				return taskEntity && !taskEntity.data.approvedAt
+			})
+
 			return (
-				<Box flex width='100%' paddingLeft={5}>
-					{tasksByIds && (
-						tasksByIds.map((taskId) => (
-							<Box
-								key={taskId}
-								width={12} height={12}
-								flexShrink={0}
-								marginRight={1}
-							>
-								<TaskPreviewBox projectUuid={uuid} uuid={taskId} />
-							</Box>
-						))
-					)}
-					{permissions && permissions.has('task') && (
-						<AddTaskButton
-							isCreating={this.state.creatingNewTask}
-							onClick={() => this.createNewTask()}
-						/>
-					)}
-				</Box>
+				<ScrollArea
+					stopScrollPropagation={true}
+					vertical={false}
+					horizontal={false}
+					onMove={(dX, dY) => {
+						this.translateX = this.translateX + dX
+						// TODO: limits
+						// TODO: unify tasksWrapperEl translateX and marginLeft
+						if (this.tasksWrapperEl) {
+							this.tasksWrapperEl.style.transform = `translateX(${this.translateX}px)`
+						}
+					}}
+				>
+					<Box
+						flex
+						paddingLeft={5}
+						getRef={(el) => this.tasksWrapperEl = el}
+						marginLeft={-(firstUnapprovedTaskIndex || 0) * 13}
+					>
+						{tasksByIds && (
+							tasksByIds.map((taskId) => (
+								<Box
+									key={taskId}
+									width={12} height={12}
+									flexShrink={0}
+									marginRight={1}
+								>
+									<TaskPreviewBox projectUuid={uuid} uuid={taskId} />
+								</Box>
+							))
+						)}
+						{permissions && permissions.has('task') && (
+							<AddTaskButton
+								isCreating={this.state.creatingNewTask}
+								onClick={() => this.createNewTask()}
+							/>
+						)}
+					</Box>
+				</ScrollArea>
 			)
 		}
 
 		render () {
 			return (
-				<Box marginVertical={1}>
+				<Box
+					marginVertical={1}
+					marginHorizontal={-1}
+					width='100%'
+					overflow='hidden'
+				>
 					{titleRenderer
 						? titleRenderer(this.renderTitle(), this)
 						: this.renderTitle()}

@@ -59,8 +59,8 @@ const StandardLayout = ({children}: any) => (
 		<Box width='calc(100% - 130px)' marginLeft='130px'>
 			<Box
 				width='calc(100% - 130px)'
-				paddingHorizontal='15px'
-				paddingVertical='8px'
+				paddingHorizontal={1}
+				paddingVertical={0.5}
 				position='fixed'
 				zIndex={1}
 				height='36px'
@@ -76,8 +76,8 @@ const StandardLayout = ({children}: any) => (
 			</Box>
 			<Box
 				marginTop='0px'
-				padding='15px'
-				paddingTop='51px'
+				paddingTop={'36px' /* compensating top bar */}
+				id='contentWrapper'
 			>
 				{children}
 			</Box>
