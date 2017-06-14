@@ -17,6 +17,7 @@ export type TTaskStatus =
 
 type TProps = {
 	preventClick?: boolean,
+	actionsExpanded?: boolean,
 	status: TTaskStatus,
 	permissions: $PropertyType<TTask, 'permissions'>,
 	onChange: (action: TTaskPermission) => any,
@@ -73,7 +74,7 @@ const icoBoxProps = {
 @observer
 export default class TaskStatus extends React.Component<void, TProps, void> {
 	render () {
-		const {status, permissions, preventClick, onChange} = this.props
+		const {status, permissions, preventClick, actionsExpanded, onChange} = this.props
 
 		const statusActions = []
 
@@ -86,7 +87,7 @@ export default class TaskStatus extends React.Component<void, TProps, void> {
 
 		return (
 			<Box
-				width='20px'
+				width={actionsExpanded ? '100%' : '20px'}
 				overflow='hidden'
 				style={() => ({
 					whiteSpace: 'nowrap',

@@ -1,5 +1,6 @@
 // @flow
 import React from 'react'
+import {observable} from 'mobx'
 import {observer} from 'mobx-react'
 import formatDate from 'date-fns/format'
 import isPastDate from 'date-fns/is_past'
@@ -57,6 +58,8 @@ type TProps = $Shape<{
 })
 @observer
 export default class TaskPreviewBox extends React.Component<void, TProps, void> {
+	@observable isHover: boolean = false
+
 	render () {
 		const {task, projectUuid, changeTaskStatus} = this.props
 		const {uuid, name, deadline, ownersByIds, completedAt, approvedAt, permissions} = task
@@ -76,6 +79,8 @@ export default class TaskPreviewBox extends React.Component<void, TProps, void> 
 		return (
 			<Link
 				module='projectDetail' params={{projectUuid, selectedTaskUuid: uuid}}
+				onMouseEnter={() => this.isHover = true}
+				onMouseLeave={() => this.isHover = false}
 				block
 				width='100%' height='100%'
 				borderWidth={1}
@@ -86,6 +91,7 @@ export default class TaskPreviewBox extends React.Component<void, TProps, void> 
 			>
 				<TaskStatus
 					preventClick
+					actionsExpanded={this.isHover}
 					status={status}
 					permissions={permissions}
 					onChange={changeTaskStatus}
