@@ -43,7 +43,7 @@ const statusIcoMap: {[key: TTaskStatus]: TIcoDescriptor} = {
 	},
 	approved: {
 		type: 'okFull',
-		color: 'neutralDark',
+		color: 'neutral',
 	},
 }
 
@@ -54,7 +54,7 @@ const actionsIcoMap: {[key: TTaskPermission]: TIcoDescriptor} = {
 	},
 	approve: {
 		type: 'okFull',
-		color: 'neutralDark',
+		color: 'neutral',
 	},
 	reopen: {
 		type: 'undo',

@@ -11,6 +11,7 @@ import type {TTask, TTaskEntity} from 'core/entities/tasks'
 import {usersStore} from 'core/entities/users'
 import type {TUser} from 'core/entities/users'
 
+import type {TColor} from 'core/config/themes/types'
 import Link from 'core/router/Link'
 import Box from 'libs/box'
 import Text from 'core/components/ui/Text'
@@ -40,6 +41,14 @@ class OwnerIco extends React.Component<void, $Shape<{owner: TUser, uuid: string}
 		)
 	}
 }
+
+const borderColorPerStatus: {[key: TTaskStatus]: TColor} = {
+	new: 'neutral',
+	afterDeadline: 'red',
+	completed: 'neutral',
+	approved: 'neutralLight',
+}
+
 
 type TProps = $Shape<{
 	task: TTask,
@@ -83,8 +92,9 @@ export default class TaskPreviewBox extends React.Component<void, TProps, void> 
 				onMouseLeave={() => this.isHover = false}
 				block
 				width='100%' height='100%'
+				backgroundColor={status === 'approved' ? 'neutralLight' : undefined}
 				borderWidth={1}
-				borderColor='neutral'
+				borderColor={borderColorPerStatus[status]}
 				borderRadius={5}
 				padding={0.75}
 				style={() => ({position: 'relative'})}
