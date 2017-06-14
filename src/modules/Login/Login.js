@@ -1,5 +1,7 @@
 // @flow
 import React from 'react'
+import {observable, action} from 'mobx'
+import {observer} from 'mobx-react'
 import {isEmail, isPassword} from 'libs/validation/validators'
 import {moduleManager} from 'core/router'
 import {oysterRequestUserLogin} from 'core/api/auth'
@@ -41,55 +43,46 @@ const Content = (props) => (
 	>{props.children}</Box>
 )
 
+@observer
 export default class Login extends React.Component {
-	state = {
-		formData: {
-			email: '',
-			password: '',
-		},
-		processing: false,
-		error: null,
+	@observable formData = {
+		email: '',
+		password: '',
 	}
+	@observable processing: boolean = false
+	@observable error: ?string = null
 
-	handleChange = (ev: KeyboardEvent) => {
+	handleChange = action((ev: KeyboardEvent) => {
 		if (ev.target instanceof HTMLInputElement) {
-			this.setState({
-				formData: {
-					...this.state.formData,
-					[ev.target.name]: ev.target.value,
-				},
-			})
+			this.formData[ev.target.name] = ev.target.value
 		}
-	}
+	})
 
-	handleSubmit = (ev: Event) => {
+	handleSubmit = action((ev: Event) => {
 		ev.preventDefault()
 
-		this.setState({
-			processing: true,
-			error: null,
-		})
-		oysterRequestUserLogin(this.state.formData)
+		this.processing = true
+		this.error = null
+		oysterRequestUserLogin(this.formData)
 			.then(
 				(userData) => {
 					moduleManager.handleLogin(userData.uuid, userData.token)
 				},
 				async ({response}) => {
 					const responseJson = await response.json()
-					this.setState({
-						formData: {
-							...this.state.formData,
-							password: '',
-						},
-						error: responseJson && responseJson.error || null,
-						processing: false,
-					})
+					this.handleLoginError(responseJson)
 				},
 			)
+	})
+
+	@action handleLoginError (responseJson: ?Object) {
+		this.formData.password = ''
+		this.error = responseJson && responseJson.error || null
+		this.processing = false
 	}
 
 	render () {
-		const {formData, processing, error} = this.state
+		const {formData, processing, error} = this
 		const isValid = isEmail(formData.email) && isPassword(formData.password)
 
 		return (
