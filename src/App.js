@@ -23,6 +23,7 @@ const Menu = () => (
 		backgroundColor='blue'
 		height='100vh'
 		position='fixed'
+		zIndex={1}
 		width='130px'
 	>
 		<Logo
