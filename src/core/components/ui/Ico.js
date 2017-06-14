@@ -10,9 +10,9 @@ import Box from 'libs/box'
 
 // INTERNAL
 import LogoSvg from 'assets/images/logo.svg'
-import AddSvg from 'assets/images/icons/O_icon_add.svg'
+import PlusSvg from 'assets/images/icons/O_icon_plus.svg'
+import PlusFullSvg from 'assets/images/icons/O_icon_plus-full.svg'
 // import AddBigSvg from 'assets/images/icons/O_icon_add_big.svg'
-// import AddProjectSvg from 'assets/images/icons/O_icon_add_project.svg'
 // import ArchiveSvg from 'assets/images/icons/O_icon_archive.svg'
 // import Arrow_LSvg from 'assets/images/icons/O_icon_arrow_L.svg'
 // import Arrow_RSvg from 'assets/images/icons/O_icon_arrow_R.svg'
@@ -54,7 +54,8 @@ const icoMap = {
 	ok: OkSvg,
 	okFull: OkFullSvg,
 	undo: UndoSvg,
-	plus: AddSvg,
+	plus: PlusSvg,
+	plusFull: PlusFullSvg,
 	spinner: SpinnerSvg,
 }
 
