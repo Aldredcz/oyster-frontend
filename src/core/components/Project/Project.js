@@ -18,7 +18,7 @@ import Text from 'core/components/ui/Text'
 import Button from 'core/components/ui/Button'
 import Ico from 'core/components/ui/Ico'
 
-import ScrollArea from 'libs/scrollarea'
+import MoveDetector from 'libs/move-detector'
 
 type TProps = $Shape<{
 	uuid: string,
@@ -275,8 +275,11 @@ export const projectFactory = ({
 			const originalTranslateX = -Math.max(firstUnapprovedTaskIndex, 0) * 13 * 16
 
 			return (
-				<ScrollArea
-					onMove={(dX, dY) => {
+				<MoveDetector
+					onMove={({dX, type}) => {
+						if (type === 'touch') {
+							dX = -dX
+						}
 						this.translateXTmp += dX
 						this.translateXTmp = Math.min(-originalTranslateX, this.translateXTmp)
 						this.translateXTmp = Math.max(
@@ -317,7 +320,7 @@ export const projectFactory = ({
 							/>
 						)}
 					</Box>
-				</ScrollArea>
+				</MoveDetector>
 			)
 		}
 

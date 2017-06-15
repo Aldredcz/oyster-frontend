@@ -5,7 +5,7 @@ import lineHeight from 'line-height'
 import throttle from 'lodash/throttle'
 
 type TProps = $Shape<{
-	onMove: (dX: number, dY: number, ev: Event) => any,
+	onMove: (params: {dX: number, dY: number, event: Event, type: 'drag' | 'scroll' | 'touch'}) => any,
 	speed: number,
 	touchEvents: boolean,
 	scrollEvents: boolean,
@@ -13,7 +13,7 @@ type TProps = $Shape<{
 	children: any,
 }>
 
-export default class ScrollArea extends React.Component<*, TProps, void> {
+export default class MoveDetector extends React.Component<*, TProps, void> {
 	static defaultProps = {
 		touchEvents: true,
 		scrollEvents: true,
@@ -56,10 +56,10 @@ export default class ScrollArea extends React.Component<*, TProps, void> {
 	handleDragMove = throttle((ev: MouseEvent) => {
 		const {clientX, clientY} = ev
 
-		const deltaX = clientX - this.dragEventPreviousValues.clientX
-		const deltaY = clientY - this.dragEventPreviousValues.clientY
+		const dX = clientX - this.dragEventPreviousValues.clientX
+		const dY = clientY - this.dragEventPreviousValues.clientY
 
-		this.props.onMove(deltaX, deltaY, ev)
+		this.props.onMove({dX, dY, event: ev, type: 'drag'})
 
 		this.dragEventPreviousValues = {
 			clientX,
@@ -91,21 +91,21 @@ export default class ScrollArea extends React.Component<*, TProps, void> {
 		if (touches.length === 1) {
 			const {clientX, clientY} = touches[0]
 
-			const deltaY = this.touchEventPreviousValues.clientY - clientY
-			const deltaX = this.touchEventPreviousValues.clientX - clientX
+			const dY = this.touchEventPreviousValues.clientY - clientY
+			const dX = this.touchEventPreviousValues.clientX - clientX
 
 			this.touchEventPreviousValues = {
 				clientY,
 				clientX,
 			}
 
-			this.props.onMove(deltaX, deltaY, ev)
+			this.props.onMove({dX, dY, event: ev, type: 'touch'})
 		}
 	}, 16, {trailing: false})
 
 	handleWheel = (ev: WheelEvent) => {
-		let deltaY = ev.deltaY
-		let deltaX = ev.deltaX
+		let dY = ev.deltaY
+		let dX = ev.deltaX
 
 		/*
 		 * WheelEvent.deltaMode can differ between browsers and must be normalized
@@ -114,14 +114,14 @@ export default class ScrollArea extends React.Component<*, TProps, void> {
 		 * https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent/deltaMode
 		 */
 		if (ev.deltaMode === 1) {
-			deltaY = deltaY * this.lineHeightPx
-			deltaX = deltaX * this.lineHeightPx
+			dY = dY * this.lineHeightPx
+			dX = dX * this.lineHeightPx
 		}
 
-		deltaY = deltaY * (this.props.speed || 1)
-		deltaX = deltaX * (this.props.speed || 1)
+		dY = dY * (this.props.speed || 1)
+		dX = dX * (this.props.speed || 1)
 
-		this.props.onMove(deltaX, deltaY, ev)
+		this.props.onMove({dX, dY, event: ev, type: 'scroll'})
 	}
 
 	render () {

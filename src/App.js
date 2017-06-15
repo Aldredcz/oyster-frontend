@@ -56,7 +56,7 @@ const Menu = () => (
 const StandardLayout = ({children}: any) => (
 	<Box>
 		<Menu />
-		<Box width='calc(100% - 130px)' marginLeft='130px'>
+		<Box width='calc(100% - 130px)' marginLeft='130px' marginBottom={3}>
 			<Box
 				width='calc(100% - 130px)'
 				paddingHorizontal={1}
