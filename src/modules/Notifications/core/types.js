@@ -6,38 +6,77 @@ import type {TTaskFromApi, TTask} from 'core/entities/tasks'
 export type TNotificationPermission =
 	| 'complete'
 
-export type TNotificationType =
+export type TEventType =
 	| 'rename'
 	| 'deadline'
 	| 'brief'
 	| 'assign'
 	| 'approve'
 
+
+// EVENT SUBJECTS
+type TEventFromApiSubjectTask = {type: 'task'} & TTaskFromApi
+type TEventFromApiSubjectProject = {type: 'project'} & TProjectFromApi
+type TEventFromApiSubject =
+	| TEventFromApiSubjectTask
+	| TEventFromApiSubjectProject
+
+type TEventSubjectTask = {type?: 'task'} & TTask
+type TEventSubjectProject = {type?: 'project'} & TProject
+type TEventSubject =
+	| TEventSubjectTask
+	| TEventSubjectProject
+
+
+/***
+ EVENT - NOTIFICATION rules:
+ for every event in notification.events
+ - same event.name
+ - same event.subject.type
+***/
+
+// EVENT
+export type TEventCommon = {
+	uuid: string,
+	name: TEventType,
+}
+
+export type TEvent = TEventCommon & {
+	createdAt: Date,
+	authorsByIds: ?Array<string>,
+	subject: ?TEventSubject,
+}
+
+export type TEventFromApi = $Shape<TEventCommon & {
+	created_at: string,
+	authors: ?Array<TUserFromApi>,
+	subject: TEventFromApiSubject,
+}>
+
+// NOTIFICATION
 export type TNotificationCommon = {
 	uuid: string,
-	name: TNotificationType,
 }
 
 export type TNotification = TNotificationCommon & {
+	name: TEventType,
+	authorsByIds: Array<string>,
 	createdAt: Date,
+	updatedAt: ?Date,
 	completedAt: ?Date,
-	authorsByIds: ?Array<string>,
-	ownersByIds: ?Array<string>,
-	permissions: ?Map<TNotificationPermission, boolean>, // TODO: change to Set when mobx supports it
-	objects: {
-		project?: TProject,
-		task?: TTask,
+	subjects: {
+		projects?: Array<TProject>,
+		tasks?: Array<TTask>,
 	},
+	permissions: ?Map<TNotificationPermission, boolean>, // TODO: change to Set when mobx supports it
+
 }
 
 export type TNotificationFromApi = $Shape<TNotificationCommon & {
 	created_at: ?string,
+	updated_at: ?string,
 	completed_at: ?string,
-	authors: ?Array<TUserFromApi>,
 	owners: ?Array<TUserFromApi>,
+	events: ?Array<TEventFromApi>,
 	actions: ?Array<TNotificationPermission>,
-	objects: ?{
-		project?: TProjectFromApi,
-		task?: TTaskFromApi,
-	},
 }>

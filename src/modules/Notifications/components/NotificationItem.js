@@ -149,16 +149,16 @@ export default class NotificationItem extends React.Component<void, TProps, void
 		let content
 		const authors = (notification.authorsByIds || []).map((authorUuid) => usersStore.getEntity(authorUuid))
 
-		if (notification.objects.project) {
+		if (notification.subjects.projects) {
 			content = ProjectNotification({
-				project: notification.objects.project,
+				project: notification.subjects.projects[0],
 				onClick,
 				type: notification.name,
 				authors,
 			})
-		} else if (notification.objects.task) {
+		} else if (notification.subjects.tasks) {
 			content = TaskNotification({
-				task: notification.objects.task,
+				task: notification.subjects.tasks[0],
 				onClick,
 				type: notification.name,
 				authors,
