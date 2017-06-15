@@ -21,6 +21,8 @@ class ModuleManager implements IRoutingStore {
 		return url
 	}
 
+	@observable moduleConfigs = moduleConfigs
+
 	constructor () {
 		// internal stuff - mounting module and connecting with nestedPath provider
 		reaction(
@@ -34,7 +36,7 @@ class ModuleManager implements IRoutingStore {
 				if (!module) {
 					return
 				}
-				const moduleConfig = moduleConfigs[module]
+				const moduleConfig = this.moduleConfigs[module]
 
 				if (moduleConfig.hasSubroute) {
 					this.setData({
@@ -81,7 +83,7 @@ class ModuleManager implements IRoutingStore {
 			return
 		}
 
-		const moduleConfig = moduleConfigs[module]
+		const moduleConfig = this.moduleConfigs[module]
 		if (!dryRun) {
 			// redirect to 'login' if not logged in
 			if (moduleConfig.isAuthRequired && !this.isLoggedIn) {
@@ -114,15 +116,15 @@ class ModuleManager implements IRoutingStore {
 	}
 
 	@computed get isAuthRequired () {
-		return this.module ? moduleConfigs[this.module].isAuthRequired : null
+		return this.module ? this.moduleConfigs[this.module].isAuthRequired : null
 	}
 
 	@computed get Component (): ?ReactClass<any> {
-		return this.module ? moduleConfigs[this.module].Component : null
+		return this.module ? this.moduleConfigs[this.module].Component : null
 	}
 
 	@computed get store () {
-		return this.module ? moduleConfigs[this.module].store : null
+		return this.module ? this.moduleConfigs[this.module].store : null
 	}
 
 	@computed get currentPath () {
@@ -175,3 +177,8 @@ if (typeof window === 'object') {
 	window.router = router
 }
 
+if (__DEV__ && module.hot) {
+	module.hot.accept('./moduleConfigs', () => {
+		Object.assign(moduleManager.moduleConfigs, moduleConfigs)
+	})
+}

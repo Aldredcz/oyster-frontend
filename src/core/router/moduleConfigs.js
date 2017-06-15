@@ -1,9 +1,14 @@
 // @flow
 import type {IRoutingStore, TModuleId} from './types'
-import {moduleStore as projectDetailStore, ComponentLoadable as ProjectDetail} from 'modules/ProjectDetail'
-import {ComponentLoadable as Login} from 'modules/Login'
-import {moduleStore as signupStore, ComponentLoadable as Signup} from 'modules/Signup'
-import {moduleStore as dashboardStore, ComponentLoadable as Dashboard} from 'modules/Dashboard'
+import {moduleStore as projectDetailStore} from 'modules/ProjectDetail'
+import {moduleStore as signupStore} from 'modules/Signup'
+import {moduleStore as dashboardStore} from 'modules/Dashboard'
+
+import ProjectDetail from 'modules/ProjectDetail/component'
+import Login from 'modules/Login/component'
+import Signup from 'modules/Signup/component'
+import Dashboard from 'modules/Dashboard/component'
+
 
 type TModuleDetailStore = {
 	hasSubroute: true,
