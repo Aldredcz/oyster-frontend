@@ -1,8 +1,10 @@
 // @flow
 import React from 'react'
+import {observable} from 'mobx'
 import {observer} from 'mobx-react'
 import injectEntity from 'core/utils/mobx/entityInjector'
 import {moduleManager} from 'core/router'
+import debounce from 'lodash/debounce'
 
 import {projectsStore} from 'core/entities/projects'
 import type {TProject, TProjectEntity} from 'core/entities/projects'
@@ -135,8 +137,11 @@ export const projectFactory = ({
 		}
 
 		nameEl: ?HTMLInputElement = null
+		projectWrapperEl: ?HTMLElement = null
+		projectWrapperWidth: number = 0
 		tasksWrapperEl: ?HTMLElement = null
-		translateX: number = 0
+		translateXTmp: number = 0
+		@observable translateX: number = 0
 
 		componentDidMount () {
 			const {editNameOnMount, project: {permissions}} = this.props
@@ -242,30 +247,56 @@ export const projectFactory = ({
 			)
 		}
 
+		saveTranslateXDebounced = debounce((translateX) => {
+			this.translateX = translateX
+		}, 50)
+
 		renderTasks () {
 			const {uuid, project: {tasksByIds, permissions}} = this.props
 
-			const firstUnapprovedTaskIndex = tasksByIds && tasksByIds.findIndex((taskUuid) => {
-				const taskEntity = tasksStore.getEntity(taskUuid)
-				return taskEntity && !taskEntity.data.approvedAt
-			})
+			const canCreateNewTask = permissions && permissions.has('task')
+			const firstUnapprovedTaskIndex = tasksByIds && tasksByIds.length
+				? tasksByIds.findIndex((taskUuid) => {
+					const taskEntity = tasksStore.getEntity(taskUuid)
+					return taskEntity && !taskEntity.data.approvedAt
+				})
+				: 0
+
+			// width + marginRight
+			const taskWidthRem = 12 + 1
+
+			let tasksWidth = ( // tasks + ?newtask
+				(tasksByIds ? tasksByIds.length : 0) + (canCreateNewTask ? 1 : 0)
+			) * taskWidthRem
+			tasksWidth -= 1 // subtracting last marginRight
+			tasksWidth += 5 + 2 // paddingLeft + paddingRight
+			tasksWidth *= 16 // rem -> px
+
+			const originalTranslateX = -Math.max(firstUnapprovedTaskIndex, 0) * 13 * 16
 
 			return (
 				<ScrollArea
 					onMove={(dX, dY) => {
-						this.translateX = this.translateX + dX
-						// TODO: limits
-						// TODO: unify tasksWrapperEl translateX and marginLeft
+						this.translateXTmp += dX
+						this.translateXTmp = Math.min(-originalTranslateX, this.translateXTmp)
+						this.translateXTmp = Math.max(
+							this.translateXTmp,
+							Math.min(originalTranslateX, this.projectWrapperWidth - tasksWidth) - originalTranslateX,
+						)
+
 						if (this.tasksWrapperEl) {
-							this.tasksWrapperEl.style.transform = `translateX(${this.translateX}px)`
+							this.tasksWrapperEl.style.transform = `translateX(${originalTranslateX + this.translateXTmp}px)`
 						}
+						this.saveTranslateXDebounced(this.translateXTmp)
 					}}
 				>
 					<Box
 						flex
 						paddingLeft={5}
 						getRef={(el) => this.tasksWrapperEl = el}
-						marginLeft={-(firstUnapprovedTaskIndex || 0) * 13}
+						style={() => ({
+							transform: `translateX(${originalTranslateX + this.translateX}px)`,
+						})}
 					>
 						{tasksByIds && (
 							tasksByIds.map((taskId) => (
@@ -279,7 +310,7 @@ export const projectFactory = ({
 								</Box>
 							))
 						)}
-						{permissions && permissions.has('task') && (
+						{canCreateNewTask && (
 							<AddTaskButton
 								isCreating={this.state.creatingNewTask}
 								onClick={() => this.createNewTask()}
@@ -294,9 +325,12 @@ export const projectFactory = ({
 			return (
 				<Box
 					marginVertical={1}
-					marginHorizontal={-1}
 					width='100%'
 					overflow='hidden'
+					getRef={(el) => {
+						this.projectWrapperEl = el
+						this.projectWrapperWidth = el ? el.clientWidth : 0
+					}}
 				>
 					{titleRenderer
 						? titleRenderer(this.renderTitle(), this)
