@@ -30,7 +30,13 @@ const Project = projectFactory({
 		}
 
 		if (project.permissions && project.permissions.has('rename')) {
-			edit = <small><a href='javascript://' onClick={() => self.editField('name')}>edit name</a></small>
+			title = React.cloneElement(title, {
+				editable: true,
+				onChange (ev) {},
+				onBlur (ev) {
+					self.submitEditingField('name', ev.target.textContent)
+				},
+			})
 		}
 
 		return (
