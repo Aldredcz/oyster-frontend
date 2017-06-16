@@ -7,7 +7,9 @@ import {tasksStore} from 'core/entities/tasks'
 import type {TTask, TTaskField} from 'core/entities/tasks'
 import type {TTaskEntity} from 'core/entities/tasks/store'
 
+import Box from 'libs/box'
 import Datetime from 'core/components/ui/Datetime'
+import UserPreview from 'core/components/ui/UserPreview'
 import UserSelect from 'core/components/ui/UserSelect'
 import Button from 'core/components/ui/Button'
 
@@ -169,25 +171,28 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 					)}
 				</div>
 				<div>
-					Contributors:
 					{ownersByIds && ownersByIds.map((userUuid) => (
-						<span key={userUuid}>
-							<UserSelect
-								selectedUserUuid={userUuid}
-								editable={false}
+						<Box flex marginVertical={0.75} key={userUuid}>
+							<UserPreview
+								userUuid={userUuid}
+								role='contributor'
+								avatarSize={1.625}
 							/>
 							{permissions && permissions.has('assign') && (
 								<Button
+									alignSelf='center'
+									marginLeft={0.5}
 									backgroundColor='red'
 									onClick={() => this.props.deleteContributor(userUuid)}
 								>Delete</Button>
 							)}
-						</span>
+						</Box>
 					))}
 					{permissions && permissions.has('assign') && (
 						<UserSelect
+							blacklist={new Set(ownersByIds)}
+							hideIfNoOption
 							selectedUserUuid={null}
-							editable={true}
 							onChange={(userUuid) => userUuid && this.props.assignContributor(userUuid)}
 						/>
 					)}

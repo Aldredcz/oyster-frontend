@@ -47,12 +47,10 @@ class AddNewProjectButton extends React.Component<void, *, void> {
 				height={2.5}
 				backgroundColor='blue'
 				borderRadius={100}
+				cursor='pointer'
 				position='fixed'
-				style={() => ({
-					bottom: '1.5rem',
-					right: '1.5rem',
-					cursor: 'pointer',
-				})}
+				bottom={1.5}
+				right={1.5}
 			>
 				<Ico
 					type={!isCreating ? 'plus' : 'spinner'}

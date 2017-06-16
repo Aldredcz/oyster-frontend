@@ -7,25 +7,27 @@ import type {TBoxProps} from 'libs/box'
 
 type TProps = TBoxProps & {
 	user: TUser,
+	size?: number | string,
 }
 
 
 export default class Avatar extends React.Component<void, TProps, void> {
 	render () {
-		const {user} = this.props
-		const {width = '20px'} = this.props
+		const {user, size = 1.25, ...restProps} = this.props
+		const sizeResolved = typeof size === 'number' ? `${size}rem` : size // TODO: solve better
 
 		return (
 			<Box
 				backgroundColor='blueDark'
-				width={width}
-				height={width}
+				width={size}
+				height={size}
 				title={`${user.name || ''} ${user.surname || ''}`}
+				{...restProps}
 				style={(theme) => ({
 					fontFamily: theme.typography.fontFamily,
-					fontSize: `calc(${width} * 0.5)`,
-					borderRadius: width,
-					lineHeight: width,
+					fontSize: `calc(${sizeResolved} * 0.5)`,
+					borderRadius: sizeResolved,
+					lineHeight: sizeResolved,
 					textAlign: 'center',
 					color: 'white',
 				})}

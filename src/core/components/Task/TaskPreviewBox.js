@@ -35,7 +35,6 @@ class OwnerIco extends React.Component<void, $Shape<{owner: TUser, uuid: string}
 			<Box title={uuid} display='inline-block' marginRight={0.2}>
 				<Avatar
 					user={this.props.owner}
-					width='20px'
 				/>
 			</Box>
 		)

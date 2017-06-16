@@ -11,12 +11,13 @@ import type {TProject, TProjectEntity} from 'core/entities/projects'
 import {tasksStore, oysterRequestCreateTask} from 'core/entities/tasks'
 
 import TaskPreviewBox from 'core/components/Task/TaskPreviewBox'
-import UserSelect from 'core/components/ui/UserSelect'
 
 import Box from 'libs/box'
 import Text from 'core/components/ui/Text'
 import Button from 'core/components/ui/Button'
 import Ico from 'core/components/ui/Ico'
+import UserSelect from 'core/components/ui/UserSelect'
+import UserPreview from 'core/components/ui/UserPreview'
 
 import MoveDetector from 'libs/move-detector'
 
@@ -49,9 +50,7 @@ const AddTaskButton = ({isCreating, onClick}) => (
 		borderRadius={5}
 		flexShrink={0}
 		position='relative'
-		style={() => ({
-			cursor: 'pointer',
-		})}
+		cursor='pointer'
 		onClick={onClick}
 	>
 		<Box
@@ -220,30 +219,33 @@ export const projectFactory = ({
 			const {project: {permissions, ownersByIds}} = this.props
 
 			return (
-				<div>
-					Project managers:
+				<Box flex paddingLeft={5} paddingVertical={1}>
 					{ownersByIds && ownersByIds.map((userUuid) => (
-						<span key={userUuid}>
-							<UserSelect
-								selectedUserUuid={userUuid}
-								editable={false}
+						<Box flex marginRight={0.5} key={userUuid}>
+							<UserPreview
+								userUuid={userUuid}
+								role='project manager'
+								avatarSize={1.625}
 							/>
 							{permissions && permissions.has('assign') && (
 								<Button
+									alignSelf='center'
+									marginLeft={0.5}
 									backgroundColor='red'
 									onClick={() => this.props.deleteProjectManager(userUuid)}
 								>Delete</Button>
 							)}
-						</span>
+						</Box>
 					))}
 					{permissions && permissions.has('assign') && (
 						<UserSelect
+							blacklist={new Set(ownersByIds)}
+							hideIfNoOption
 							selectedUserUuid={null}
-							editable={true}
 							onChange={(userUuid) => userUuid && this.props.assignProjectManager(userUuid)}
 						/>
 					)}
-				</div>
+				</Box>
 			)
 		}
 

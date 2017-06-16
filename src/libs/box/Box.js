@@ -27,6 +27,7 @@ import React from 'react'
 
 // If a number, then it's multiplied by theme typography rhythm.
 type TMaybeRhythm = number | string
+type TBorderStyle = 'solid' | 'dotted' | 'dashed'
 
 export type TProps = {
 	as?: string | ((props: Object) => React.Element<*>),
@@ -81,7 +82,11 @@ export type TProps = {
 	position?: 'absolute' | 'relative' | 'fixed' | 'static' | 'sticky',
 	zIndex?: number,
 
-	borderStyle?: 'solid' | 'dotted' | 'dashed',
+	borderStyle?: TBorderStyle,
+	borderBottomStyle?: TBorderStyle,
+	borderLeftStyle?: TBorderStyle,
+	borderRightStyle?: TBorderStyle,
+	borderTopStyle?: TBorderStyle,
 
 	borderWidth?: number,
 	borderBottomWidth?: number,
@@ -100,6 +105,8 @@ export type TProps = {
 	borderLeftColor?: TColor,
 	borderRightColor?: TColor,
 	borderTopColor?: TColor,
+
+	cursor?: 'default' | 'pointer' | 'not-allowed',
 }
 
 type TBoxContent = {
@@ -127,7 +134,7 @@ const justValue = (props) => reduceObject(props, (value) => value)
 const restrictedFlex = (
 	flex,
 	flexBasis = 'auto',
-	flexShrink = 1,
+	flexShrink,
 ) => {
 	if (flex === undefined) {
 		return null
@@ -202,14 +209,14 @@ const Box = (props: TProps, {renderer, theme}: TBoxContent) => {
 		flexBasis,
 		flexDirection,
 		flexGrow,
-		flexShrink,
+		flexShrink = 0,
 		flexWrap,
 		justifyContent,
 		backgroundColor,
 		opacity,
 		overflow,
 		position,
-		zIndex,
+		zIndex = ((position === 'absolute' || position === 'fixed') ? 1 : undefined),
 
 		borderWidth,
 		borderBottomWidth = borderWidth,
@@ -223,18 +230,19 @@ const Box = (props: TProps, {renderer, theme}: TBoxContent) => {
 		borderTopLeftRadius = borderRadius,
 		borderTopRightRadius = borderRadius,
 
-		borderColor = (borderBottomWidth || borderLeftWidth || borderRightWidth || borderTopWidth)
-			? 'neutral'
-			: undefined,
+		borderColor = (borderWidth && 'neutral') || undefined,
+		borderBottomColor = borderColor || (borderBottomWidth && 'neutral') || undefined,
+		borderLeftColor = borderColor || (borderLeftWidth && 'neutral') || undefined,
+		borderRightColor = borderColor || (borderRightWidth && 'neutral') || undefined,
+		borderTopColor = borderColor || (borderTopWidth && 'neutral') || undefined,
 
-		borderBottomColor = borderColor,
-		borderLeftColor = borderColor,
-		borderRightColor = borderColor,
-		borderTopColor = borderColor,
+		borderStyle = (borderWidth && 'solid') || undefined,
+		borderBottomStyle = borderStyle || (borderBottomWidth && 'solid') || undefined,
+		borderLeftStyle = borderStyle || (borderLeftWidth && 'solid') || undefined,
+		borderRightStyle = borderStyle || (borderRightWidth && 'solid') || undefined,
+		borderTopStyle = borderStyle || (borderTopWidth && 'solid') || undefined,
 
-		borderStyle = (borderBottomWidth || borderLeftWidth || borderRightWidth || borderTopWidth)
-			? 'solid'
-			: undefined,
+		cursor,
 
 		...restProps
 	} = props
@@ -286,7 +294,10 @@ const Box = (props: TProps, {renderer, theme}: TBoxContent) => {
 			overflow,
 			position,
 			zIndex,
-			borderStyle,
+			borderBottomStyle,
+			borderLeftStyle,
+			borderRightStyle,
+			borderTopStyle,
 			borderBottomWidth,
 			borderLeftWidth,
 			borderRightWidth,
@@ -295,6 +306,7 @@ const Box = (props: TProps, {renderer, theme}: TBoxContent) => {
 			borderBottomRightRadius,
 			borderTopLeftRadius,
 			borderTopRightRadius,
+			cursor,
 		}),
 		...restrictedFlex(flex, flexBasis, flexShrink),
 		...themeColor(theme.colors, {

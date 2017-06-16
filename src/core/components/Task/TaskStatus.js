@@ -106,10 +106,8 @@ export default class TaskStatus extends React.Component<void, TProps, void> {
 				<Ico
 					type={statusIcoMap[status].type}
 					color={statusIcoMap[status].color}
+					cursor='default'
 					{...icoBoxProps}
-					style={() => ({
-						cursor: 'default',
-					})}
 				/>
 				{statusActions.map((action) => (
 					<Ico
