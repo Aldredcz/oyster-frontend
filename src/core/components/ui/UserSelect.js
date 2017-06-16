@@ -2,7 +2,7 @@
 import React from 'react'
 import {observable} from 'mobx'
 import {observer, inject} from 'mobx-react'
-import type {TUserEntity, TUsersStore} from 'core/entities/users/store'
+import type {TUsersStore} from 'core/entities/users/store'
 
 import UserPreview from './UserPreview'
 import Box from 'libs/box'
