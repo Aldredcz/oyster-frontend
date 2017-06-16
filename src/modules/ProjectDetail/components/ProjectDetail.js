@@ -12,28 +12,14 @@ import Box from 'libs/box'
 const Project = projectFactory({
 	titleRenderer: (title, self) => {
 		const {project} = self.props
-		const {name} = self.state
-
-		let edit
-		if (name.isEditing) {
-			return (
-				<div>
-					<input
-						ref={(el) => self.nameEl = el}
-						type='text'
-						value={name.value || ''}
-						onChange={(ev) => self.updateEditingField('name', ev.target.value)}
-						onKeyDown={(ev) => ev.key === 'Enter' && self.submitEditingField('name')}
-					/>
-				</div>
-			)
-		}
 
 		if (project.permissions && project.permissions.has('rename')) {
 			title = React.cloneElement(title, {
 				editable: true,
-				onChange (ev) {},
-				onBlur (ev) {
+				onInput (ev) {
+					self.updateEditingField('name', ev.target.textContent)
+				},
+				onSubmit (ev) {
 					self.submitEditingField('name', ev.target.textContent)
 				},
 			})
@@ -42,7 +28,6 @@ const Project = projectFactory({
 		return (
 			<div>
 				{title}
-				{edit}
 			</div>
 		)
 	},
