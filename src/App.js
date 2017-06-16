@@ -42,10 +42,8 @@ const Menu = () => (
 				width='75px'
 				display='inline-block'
 				color='white'
-				style={() => ({
-					position: 'relative',
-					top: '-4px',
-				})}
+				position='relative'
+				top={-0.25}
 			>
 				projects
 			</Text>

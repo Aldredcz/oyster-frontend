@@ -32,8 +32,8 @@ const BgPattern = (props) => (
 const ContentCol = (props) => (
 	<Box
 		width={props.hidden ? '0%' : '50%'}
+		position='relative'
 		style={() => ({
-			position: 'relative',
 			overflow: 'hidden',
 			transition: 'width 1s',
 		})}
@@ -45,8 +45,8 @@ const ContentCol = (props) => (
 const Content = (props) => (
 	<Box
 		width='80%'
+		position='absolute'
 		style={() => ({
-			position: 'absolute',
 			top: '50%',
 			left: '50%',
 			transform: 'translate(-50%, -50%)',
@@ -236,7 +236,9 @@ export default class Signup extends React.Component<void, TProps, void> {
 					<Logo
 						width='auto'
 						height={2.5}
-						style={() => ({position: 'absolute', top: 20, left: 20})}
+						position='absolute'
+						top={1.25}
+						left={1.25}
 					/>
 					<Content>
 						{step === 1 && this.renderStep1()}

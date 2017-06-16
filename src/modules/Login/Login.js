@@ -28,14 +28,14 @@ const BgPattern = () => (
 )
 
 const ContentCol = (props) => (
-	<Box width='50%' style={() => ({position: 'relative'})}>{props.children}</Box>
+	<Box width='50%' position='relative'>{props.children}</Box>
 )
 
 const Content = (props) => (
 	<Box
 		width='80%'
+		position='absolute'
 		style={() => ({
-			position: 'absolute',
 			top: '50%',
 			left: '50%',
 			transform: 'translate(-50%, -50%)',
@@ -92,7 +92,9 @@ export default class Login extends React.Component {
 					<Logo
 						width='auto'
 						height={2.5}
-						style={() => ({position: 'absolute', top: 20, left: 20})}
+						position='absolute'
+						top={1.25}
+						left={1.25}
 					/>
 					<Content>
 						<Text

@@ -47,8 +47,8 @@ class AddNewProjectButton extends React.Component<void, *, void> {
 				height={2.5}
 				backgroundColor='blue'
 				borderRadius={100}
+				position='fixed'
 				style={() => ({
-					position: 'fixed',
 					bottom: '1.5rem',
 					right: '1.5rem',
 					cursor: 'pointer',

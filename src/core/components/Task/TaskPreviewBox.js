@@ -97,7 +97,7 @@ export default class TaskPreviewBox extends React.Component<void, TProps, void> 
 				borderColor={borderColorPerStatus[status]}
 				borderRadius={5}
 				padding={0.75}
-				style={() => ({position: 'relative'})}
+				position='relative'
 			>
 				<TaskStatus
 					preventClick
@@ -109,16 +109,16 @@ export default class TaskPreviewBox extends React.Component<void, TProps, void> 
 				<Text
 					title={uuid}
 					size='17'
+					position='absolute'
 					style={() => ({
-						position: 'absolute',
 						top: '50%',
 						transform: 'translateY(-50%)',
 					})}
 				>{name || '[unnamed]'}</Text>
 
 				<Box
+					position='absolute'
 					style={() => ({
-						position: 'absolute',
 						bottom: 10,
 						left: 10,
 						right: 10,

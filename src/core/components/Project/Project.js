@@ -48,15 +48,15 @@ const AddTaskButton = ({isCreating, onClick}) => (
 		borderColor='neutral'
 		borderRadius={5}
 		flexShrink={0}
+		position='relative'
 		style={() => ({
-			position: 'relative',
 			cursor: 'pointer',
 		})}
 		onClick={onClick}
 	>
 		<Box
+			position='absolute'
 			style={() => ({
-				position: 'absolute',
 				top: '50%',
 				left: '50%',
 				transform: 'translate(-50%, -50%)',
@@ -67,8 +67,8 @@ const AddTaskButton = ({isCreating, onClick}) => (
 				type={isCreating ? 'spinner' : 'plus'}
 				spin={isCreating}
 				width={2}
+				position='absolute'
 				style={() => ({
-					position: 'absolute',
 					left: '50%',
 					transform: 'translateX(-50%)',
 				})}

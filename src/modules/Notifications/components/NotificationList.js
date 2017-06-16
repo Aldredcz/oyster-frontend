@@ -25,13 +25,11 @@ export default class NotificationList extends React.Component<void, TProps, void
 		return (
 			<Box
 				position='fixed'
+				top='40px'
+				right='10px'
 				width={15}
 				backgroundColor='neutralLight'
 				borderRadius={5}
-				style={() => ({
-					top: '40px',
-					right: '10px',
-				})}
 			>
 				<Text
 					block

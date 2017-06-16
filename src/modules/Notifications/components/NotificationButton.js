@@ -65,8 +65,8 @@ export default class NotificationButton extends React.Component<void, TProps, vo
 								height='8px'
 								backgroundColor='red'
 								borderRadius={8}
+								position='absolute'
 								style={() => ({
-									position: 'absolute',
 									bottom: '2px',
 									right: '-1px',
 								})}
