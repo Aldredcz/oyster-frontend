@@ -196,8 +196,8 @@ export const projectFactory = ({
 			})
 		}
 
-		submitEditingField (field: TStateField) {
-			this.props.updateField(field, this.state[field].value)
+		submitEditingField (field: TStateField, value?: any) {
+			this.props.updateField(field, value || this.state[field].value)
 			this.setState({
 				[field]: {
 					isEditing: false,
