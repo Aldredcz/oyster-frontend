@@ -83,8 +83,8 @@ export default class Text extends React.Component<void, TProps, TState> {
 						this.element && this.element.blur()
 					}
 				}}
-				onClick={(ev) => this.setState({isEditing: true})}
-				onFocus={(ev) => this.setState({isEditing: true})}
+				onClick={(ev) => editable && this.setState({isEditing: true})}
+				onFocus={(ev) => editable && this.setState({isEditing: true})}
 				onBlur={(ev) => {
 					this.props.onSubmit && this.props.onSubmit(ev)
 					this.setState({isEditing: false})
