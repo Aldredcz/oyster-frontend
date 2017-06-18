@@ -15,8 +15,10 @@ export type TProps = TBoxProps & {
 	italic?: boolean,
 	editable?: boolean,
 	isEditing?: boolean,
+	onKeyDown?: (event: KeyboardEvent) => any,
 	onClick?: (event: MouseEvent) => any,
 	onChange?: (event: KeyboardEvent) => any,
+	onFocus?: (event: FocusEvent) => any,
 	onBlur?: (event: FocusEvent) => any,
 	onSubmit?: (event: Event) => any,
 	onInput?: (event: Event) => any,
@@ -52,7 +54,11 @@ export default class Text extends React.Component<void, TProps, TState> {
 			decoration,
 			italic,
 			editable,
+			onKeyDown,
 			onClick,
+			onFocus,
+			onBlur,
+			onSubmit,
 			...restProps
 		} = this.props
 
@@ -80,6 +86,7 @@ export default class Text extends React.Component<void, TProps, TState> {
 				contentEditable={editable && this.state.isEditing}
 				{...restProps}
 				onKeyDown={(ev) => {
+					onKeyDown && onKeyDown(ev)
 					if (ev.key === 'Enter') {
 						ev.preventDefault()
 						this.element && this.element.blur()
@@ -89,12 +96,19 @@ export default class Text extends React.Component<void, TProps, TState> {
 					onClick && onClick(ev)
 					editable && this.setState({isEditing: true})
 				}}
-				onFocus={(ev) => editable && this.setState({isEditing: true})}
+				onFocus={(ev) => {
+					onFocus && onFocus(ev)
+					editable && this.setState({isEditing: true})
+				}}
 				onBlur={(ev) => {
+					onBlur && onBlur(ev)
 					this.props.onSubmit && this.props.onSubmit(ev)
 					this.setState({isEditing: false})
 				}}
-				onSubmit={(ev) => this.setState({isEditing: false})}
+				onSubmit={(ev) => {
+					onSubmit && onSubmit(ev)
+					this.setState({isEditing: false})
+				}}
 				style={(theme, boxStyle) => ({
 					...textStyle,
 					...(style && style(theme, {...boxStyle, ...textStyle})),
