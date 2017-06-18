@@ -15,7 +15,8 @@ export type TProps = TBoxProps & {
 	italic?: boolean,
 	editable?: boolean,
 	isEditing?: boolean,
-	onChange?: (event: Event) => any,
+	onClick?: (event: MouseEvent) => any,
+	onChange?: (event: KeyboardEvent) => any,
 	onBlur?: (event: FocusEvent) => any,
 	onSubmit?: (event: Event) => any,
 	onInput?: (event: Event) => any,
@@ -51,6 +52,7 @@ export default class Text extends React.Component<void, TProps, TState> {
 			decoration,
 			italic,
 			editable,
+			onClick,
 			...restProps
 		} = this.props
 
@@ -83,7 +85,10 @@ export default class Text extends React.Component<void, TProps, TState> {
 						this.element && this.element.blur()
 					}
 				}}
-				onClick={(ev) => editable && this.setState({isEditing: true})}
+				onClick={(ev) => {
+					onClick && onClick(ev)
+					editable && this.setState({isEditing: true})
+				}}
 				onFocus={(ev) => editable && this.setState({isEditing: true})}
 				onBlur={(ev) => {
 					this.props.onSubmit && this.props.onSubmit(ev)
