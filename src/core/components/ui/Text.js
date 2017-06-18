@@ -15,10 +15,10 @@ export type TProps = TBoxProps & {
 	italic?: boolean,
 	editable?: boolean,
 	isEditing?: boolean,
-	onChange?: (event: any) => any,
-	onBlur?: (event: any) => any,
-	onSubmit?: (event: any) => any,
-	onInput?: (event: any) => any,
+	onChange?: (event: Event) => any,
+	onBlur?: (event: FocusEvent) => any,
+	onSubmit?: (event: Event) => any,
+	onInput?: (event: Event) => any,
 }
 type TState = {
 	isEditing: boolean,
