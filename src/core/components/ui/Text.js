@@ -106,7 +106,7 @@ export default class Text extends React.Component<void, TProps, TState> {
 					this.setState({isEditing: false})
 				}}
 				onSubmit={(ev) => {
-					onSubmit && onSubmit(ev)
+					onSubmit && onSubmit(ev)
 					this.setState({isEditing: false})
 				}}
 				style={(theme, boxStyle) => ({
