@@ -10,7 +10,7 @@ import type {TTaskEntity} from 'core/entities/tasks/store'
 import Box from 'libs/box'
 import Datetime from 'core/components/ui/Datetime'
 import UserPreview from 'core/components/ui/UserPreview'
-import UserSelect from 'core/components/ui/UserSelect'
+import UserSelect, {AddUserPlaceholder} from 'core/components/ui/UserSelect'
 import Button from 'core/components/ui/Button'
 
 
@@ -194,7 +194,12 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 							hideIfNoOption
 							selectedUserUuid={null}
 							onChange={(userUuid) => userUuid && this.props.assignContributor(userUuid)}
-						/>
+						>
+							<AddUserPlaceholder
+								role='contributor'
+								icoSize={1.625}
+							/>
+						</UserSelect>
 					)}
 				</div>
 			</div>

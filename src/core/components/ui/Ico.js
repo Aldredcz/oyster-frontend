@@ -12,7 +12,7 @@ import Box from 'libs/box'
 import LogoSvg from 'assets/images/logo.svg'
 import PlusSvg from 'assets/images/icons/O_icon_plus.svg'
 import PlusFullSvg from 'assets/images/icons/O_icon_plus-full.svg'
-// import AddBigSvg from 'assets/images/icons/O_icon_add_big.svg'
+import PlusDashedSvg from 'assets/images/icons/O_icon_add_big.svg'
 // import ArchiveSvg from 'assets/images/icons/O_icon_archive.svg'
 // import Arrow_LSvg from 'assets/images/icons/O_icon_arrow_L.svg'
 // import Arrow_RSvg from 'assets/images/icons/O_icon_arrow_R.svg'
@@ -56,6 +56,7 @@ const icoMap = {
 	undo: UndoSvg,
 	plus: PlusSvg,
 	plusFull: PlusFullSvg,
+	plusDashed: PlusDashedSvg,
 	spinner: SpinnerSvg,
 }
 
@@ -73,7 +74,7 @@ type TContext = {
 	theme: TTheme,
 }
 
-const defaultIcoSize = '1em'
+const defaultIcoSize = 1
 const spinKeyframe = getRenderer().renderKeyframe(() => ({
 	from: {
 		transform: 'rotate(0deg)',

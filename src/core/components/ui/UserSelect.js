@@ -3,10 +3,45 @@ import React from 'react'
 import {observable} from 'mobx'
 import {observer, inject} from 'mobx-react'
 import type {TUsersStore} from 'core/entities/users/store'
+import type {TColor, TTextSize} from 'core/config/themes/types'
 
 import UserPreview from './UserPreview'
+import type {TBoxProps} from 'libs/box'
 import Box from 'libs/box'
 import Text from 'core/components/ui/Text'
+import Ico from 'core/components/ui/Ico'
+
+
+type TAddUserPlaceholderProps = TBoxProps & {
+	icoSize?: number | string,
+	textSize?: TTextSize,
+	textColor?: TColor,
+	role?: string,
+}
+
+export const AddUserPlaceholder = ({
+	//$FlowFixMe - no idea what's wrong with this default param assignment
+	icoSize = 1.25,
+	textSize,
+	textColor,
+	role = 'user',
+	...restProps
+}: TAddUserPlaceholderProps) => (
+	<Box flex alignItems='center' {...(restProps: any)}>
+		<Ico
+			type='plusDashed'
+			width={icoSize}
+			marginRight={0.5}
+			color={textColor}
+		/>
+		<Text size={textSize} color={textColor}>
+			add
+			{role && <br />}
+			{role}
+		</Text>
+	</Box>
+)
+
 
 type TProps = $Shape<{
 	// component API
@@ -89,7 +124,11 @@ export default class UserSelect extends React.Component<void, TProps, void> {
 		const children = this.props.children || (
 			selectedUserUuid
 				? <UserPreview userUuid={selectedUserUuid} avatarSize={1.5} />
-				: <Text>Select user</Text>
+				: (
+					<AddUserPlaceholder
+						role='user'
+					/>
+				)
 		)
 
 		const optionList = this.renderOptionList()

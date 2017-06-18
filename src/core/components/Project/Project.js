@@ -16,7 +16,7 @@ import Box from 'libs/box'
 import Text from 'core/components/ui/Text'
 import Button from 'core/components/ui/Button'
 import Ico from 'core/components/ui/Ico'
-import UserSelect from 'core/components/ui/UserSelect'
+import UserSelect, {AddUserPlaceholder} from 'core/components/ui/UserSelect'
 import UserPreview from 'core/components/ui/UserPreview'
 
 import MoveDetector from 'libs/move-detector'
@@ -243,7 +243,12 @@ export const projectFactory = ({
 							hideIfNoOption
 							selectedUserUuid={null}
 							onChange={(userUuid) => userUuid && this.props.assignProjectManager(userUuid)}
-						/>
+						>
+							<AddUserPlaceholder
+								role='project manager'
+								icoSize={1.625}
+							/>
+						</UserSelect>
 					)}
 				</Box>
 			)
