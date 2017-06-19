@@ -3,7 +3,6 @@ import React from 'react'
 import {observable} from 'mobx'
 import {observer} from 'mobx-react'
 import formatDate from 'date-fns/format'
-import parseDate from 'date-fns/parse'
 import DatePicker from 'react-day-picker'
 
 import type {TColor, TTextSize} from 'core/config/themes/types'
@@ -12,15 +11,6 @@ import Box from 'libs/box'
 import Text from 'core/components/ui/Text'
 import Ico from 'core/components/ui/Ico'
 
-type TProps = {
-	value: ?Date,
-	onChange: (value: Date) => any,
-	editable?: boolean,
-	time?: boolean,
-	minDate?: Date,
-	maxDate?: Date,
-	children?: any,
-}
 
 type TDatetimePreviewProps =  $Shape<TBoxProps & {
 	value: ?Date,
@@ -58,6 +48,14 @@ export const DatetimePreview = ({
 	</Box>
 )
 
+type TProps = {
+	value: ?Date,
+	onChange: (value: Date) => any,
+	time?: boolean,
+	minDate?: Date,
+	maxDate?: Date,
+	children?: any,
+}
 
 @observer
 export default class Datetime extends React.Component<void, TProps, void> {
@@ -103,7 +101,7 @@ export default class Datetime extends React.Component<void, TProps, void> {
 	}
 
 	render () {
-		const {value, editable, children} = this.props
+		const {value, children} = this.props
 
 		return (
 			<Box position='relative'>
