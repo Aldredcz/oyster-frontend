@@ -2,6 +2,8 @@
 import placeholderPrefixer from 'fela-plugin-placeholder-prefixer'
 import webPreset from 'fela-preset-web'
 import {createRenderer} from 'fela'
+//$FlowFixMe
+import reactDayPickerStyles from 'raw-loader!react-day-picker/lib/style.css'
 
 const staticStyles = `
 	${/*
@@ -104,6 +106,10 @@ const staticStyles = `
 	input[type="search"] {
 		-webkit-appearance: none;
 	}
+	abbr[title],
+	acronym[title] {
+		text-decoration: none;
+	}
 `
 
 const renderer = createRenderer({
@@ -111,6 +117,7 @@ const renderer = createRenderer({
 })
 
 renderer.renderStatic(staticStyles)
+renderer.renderStatic(reactDayPickerStyles)
 
 export const getRenderer = () => renderer
 

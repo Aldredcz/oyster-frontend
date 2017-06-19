@@ -1,51 +1,119 @@
 // @flow
 import React from 'react'
+import {observable} from 'mobx'
+import {observer} from 'mobx-react'
 import formatDate from 'date-fns/format'
 import parseDate from 'date-fns/parse'
+import DatePicker from 'react-day-picker'
+
+import type {TColor, TTextSize} from 'core/config/themes/types'
+import type {TBoxProps} from 'libs/box'
+import Box from 'libs/box'
+import Text from 'core/components/ui/Text'
+import Ico from 'core/components/ui/Ico'
 
 type TProps = {
 	value: ?Date,
-	onChange?: (value: Date) => any,
+	onChange: (value: Date) => any,
 	editable?: boolean,
 	time?: boolean,
 	minDate?: Date,
 	maxDate?: Date,
+	children?: any,
 }
 
-export const datetimeFactory = ({
-	renderer,
-}: {
-	renderer?: (self: *) => React$Element<any>,
-} = {}): * => {
-	class Datetime extends React.Component<void, TProps, void> {
-		render () {
-			const {value, time, editable, onChange} = this.props
+type TDatetimePreviewProps =  $Shape<TBoxProps & {
+	value: ?Date,
+	time?: boolean,
+	icoSize?: number | string,
+	textSize?: TTextSize,
+	textColor?: TColor,
+	usage?: string,
+}>
 
-			const baseElem = (
-				<span style={{cursor: editable ? 'pointer' : 'default'}}>
-					{value
-						? formatDate(value, 'DD. MM. YYYY')
-						: '__.__.___'
-					}
-				</span>
-			)
-
-			if (editable) {
-				return (
-					<input
-						required='required'
-						type={time ? 'datetime-local' : 'date'}
-						value={value ? formatDate(value, time ? 'YYYY-MM-DDTHH:mm' : 'YYYY-MM-DD') : ''}
-						onChange={(ev) => onChange && onChange(parseDate(ev.target.value))}
-					/>
-				)
-			} else {
-				return baseElem
+export const DatetimePreview = ({
+	value,
+	//$FlowFixMe - no idea what's wrong with this default param assignment
+	icoSize = 1.25,
+	textSize,
+	textColor,
+	usage,
+	...restProps
+}: TDatetimePreviewProps) => (
+	<Box flex alignItems='center' {...(restProps: any)}>
+		<Ico
+			type='calendar'
+			width={icoSize}
+			marginRight={0.5}
+			color={textColor}
+		/>
+		<Text size={textSize} color={textColor}>
+			{value
+				? formatDate(value, 'DD. MM. YYYY')
+				: '__.__.___'
 			}
+			{usage && <br />}
+			{usage}
+		</Text>
+	</Box>
+)
+
+
+@observer
+export default class Datetime extends React.Component<void, TProps, void> {
+	@observable isOpen = false
+	calendarWrapperEl: ?HTMLElement = null
+
+	showCalendar = () => {
+		this.isOpen = true
+		document.addEventListener('click', this.hideCalendarOnClickOutside)
+	}
+
+	hideCalendarOnClickOutside = (ev: any) => {
+		if (ev.path && !ev.path.includes(this.calendarWrapperEl)) {
+			this.hideCalendar()
 		}
 	}
 
-	return Datetime
-}
+	hideCalendar = () => {
+		document.removeEventListener('click', this.hideCalendarOnClickOutside)
+		this.isOpen = false
+	}
 
-export default datetimeFactory()
+	renderCalendar () {
+		const {value, onChange} = this.props
+
+		return (
+			<Text
+				getRef={(el) => this.calendarWrapperEl = el}
+				position='absolute'
+				backgroundColor='white'
+				size='13'
+			>
+				<DatePicker
+					firstDayOfWeek={1}
+					onDayClick={(date) => {
+						this.hideCalendar()
+						onChange(date)
+					}}
+					selectedDays={value}
+				/>
+			</Text>
+		)
+	}
+
+	render () {
+		const {value, editable, children} = this.props
+
+		return (
+			<Box position='relative'>
+				<Box onClick={this.showCalendar} cursor='pointer'>
+					{children || (
+						<DatetimePreview value={value} />
+					)}
+				</Box>
+				{this.isOpen && this.renderCalendar()}
+			</Box>
+		)
+	}
+}

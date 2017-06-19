@@ -17,7 +17,7 @@ import PlusDashedSvg from 'assets/images/icons/O_icon_add_big.svg'
 // import Arrow_LSvg from 'assets/images/icons/O_icon_arrow_L.svg'
 // import Arrow_RSvg from 'assets/images/icons/O_icon_arrow_R.svg'
 // import BoxSvg from 'assets/images/icons/O_icon_box.svg'
-// import CalendarSvg from 'assets/images/icons/O_icon_calendar.svg'
+import CalendarSvg from 'assets/images/icons/O_icon_calendar.svg'
 // import ClockSvg from 'assets/images/icons/O_icon_clock.svg'
 import ClockFullSvg from 'assets/images/icons/O_icon_clock-full.svg'
 // import DeleteSvg from 'assets/images/icons/O_icon_delete.svg'
@@ -50,6 +50,7 @@ const icoMap = {
 	logo: LogoSvg,
 	projects: ProjectsSvg,
 	notification: NotificationSvg,
+	calendar: CalendarSvg,
 	clockFull: ClockFullSvg,
 	ok: OkSvg,
 	okFull: OkFullSvg,

@@ -2,13 +2,14 @@
 import React from 'react'
 import {observer} from 'mobx-react'
 import injectEntity from 'core/utils/mobx/entityInjector'
+import isPastDate from 'date-fns/is_past'
 
 import {tasksStore} from 'core/entities/tasks'
 import type {TTask, TTaskField} from 'core/entities/tasks'
 import type {TTaskEntity} from 'core/entities/tasks/store'
 
 import Box from 'libs/box'
-import Datetime from 'core/components/ui/Datetime'
+import Datetime, {DatetimePreview} from 'core/components/ui/Datetime'
 import UserPreview from 'core/components/ui/UserPreview'
 import UserSelect, {AddUserPlaceholder} from 'core/components/ui/UserSelect'
 import Button from 'core/components/ui/Button'
@@ -155,14 +156,20 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 					}
 				</div>
 				<div>
-					Deadline:
 					<Datetime
 						value={deadline}
 						editable={Boolean(permissions && permissions.has('deadline'))}
 						onChange={(value) => this.props.updateField('deadline', value)}
 						time={false}
 						minDate={new Date()}
-					/>
+					>
+						<DatetimePreview
+							value={deadline}
+							textColor={(deadline && isPastDate(deadline)) ? 'red' : undefined}
+							icoSize={1.625}
+							usage='deadline'
+						/>
+					</Datetime>
 					{deadline && Boolean(permissions && permissions.has('deadline')) && (
 						<Button
 							backgroundColor='red'
