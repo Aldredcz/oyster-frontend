@@ -34,7 +34,7 @@ import NotificationSvg from 'assets/images/icons/O_icon_notification.svg'
 // import PhoneSvg from 'assets/images/icons/O_icon_phone.svg'
 // import PrioritiesSvg from 'assets/images/icons/O_icon_priorities.svg'
 import ProjectsSvg from 'assets/images/icons/O_icon_projects.svg'
-// import RemoveSvg from 'assets/images/icons/O_icon_remove.svg'
+import XSvg from 'assets/images/icons/O_icon_remove.svg'
 // import SearchSvg from 'assets/images/icons/O_icon_search.svg'
 // import SettingsSvg from 'assets/images/icons/O_icon_settings.svg'
 // import SmileSvg from 'assets/images/icons/O_icon_smile.svg'
@@ -59,6 +59,7 @@ const icoMap = {
 	plusFull: PlusFullSvg,
 	plusDashed: PlusDashedSvg,
 	spinner: SpinnerSvg,
+	x: XSvg,
 }
 
 export type TIcoType = $Keys<typeof icoMap>

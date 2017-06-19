@@ -52,6 +52,7 @@ type TProps = {
 	value: ?Date,
 	onChange: (value: Date) => any,
 	time?: boolean,
+	editable?: boolean,
 	minDate?: Date,
 	maxDate?: Date,
 	children?: any,
@@ -101,11 +102,14 @@ export default class Datetime extends React.Component<void, TProps, void> {
 	}
 
 	render () {
-		const {value, children} = this.props
+		const {value, children, editable} = this.props
 
 		return (
 			<Box position='relative'>
-				<Box onClick={this.showCalendar} cursor='pointer'>
+				<Box
+					onClick={editable && this.showCalendar}
+					cursor={editable ? 'pointer' : 'default'}
+				>
 					{children || (
 						<DatetimePreview value={value} />
 					)}

@@ -2,7 +2,6 @@
 import React from 'react'
 import {observer} from 'mobx-react'
 import injectEntity from 'core/utils/mobx/entityInjector'
-import isPastDate from 'date-fns/is_past'
 
 import {tasksStore} from 'core/entities/tasks'
 import type {TTask, TTaskField} from 'core/entities/tasks'
@@ -12,7 +11,7 @@ import Box from 'libs/box'
 import Datetime, {DatetimePreview} from 'core/components/ui/Datetime'
 import UserPreview from 'core/components/ui/UserPreview'
 import UserSelect, {AddUserPlaceholder} from 'core/components/ui/UserSelect'
-import Button from 'core/components/ui/Button'
+import Ico from 'core/components/ui/Ico'
 
 
 type TProps = $Shape<{
@@ -23,6 +22,8 @@ type TProps = $Shape<{
 	assignContributor: $PropertyType<TTaskEntity, 'assignContributor'>,
 	deleteContributor: $PropertyType<TTaskEntity, 'deleteContributor'>,
 	editNameOnMount: boolean,
+	isPastDeadline: boolean,
+	isIncomplete: boolean,
 }>
 
 type TState = {
@@ -48,6 +49,8 @@ type TStateField = TTaskField & $Keys<TState>
 		assignContributor: entity.assignContributor.bind(entity),
 		deleteContributor: entity.deleteContributor.bind(entity),
 		editNameOnMount: !entity.data.name,
+		isPastDeadline: entity.isPastDeadline,
+		isIncomplete: entity.isIncomplete,
 	}),
 })
 @observer
@@ -107,11 +110,91 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 
 	render () {
 		const state = this.state
-		const {uuid, name, brief, deadline, permissions, ownersByIds} = this.props.task
+		const {isIncomplete, isPastDeadline, task} = this.props
+		const {uuid, name, brief, deadline, permissions, ownersByIds} = task
 
 		return (
-			<div style={{border: '1px solid red'}}>
-				<div>
+			<Box
+				flex
+				width='100%'
+				backgroundColor='neutralLight'
+				paddingVertical={2}
+			>
+				<Box
+					width='180px'
+					paddingHorizontal={1}
+					marginTop={2}
+					position='relative'
+				>
+					<Box marginBottom={2}>
+						{ownersByIds && ownersByIds.map((userUuid) => (
+							<Box position='relative' marginVertical={0.75} key={userUuid}>
+								<UserPreview
+									userUuid={userUuid}
+									role='contributor'
+									avatarSize={1.625}
+								/>
+								{permissions && permissions.has('assign') && (
+									<Ico
+										type='x'
+										color='red'
+										width={0.625}
+										cursor='pointer'
+										onClick={() => this.props.deleteContributor(userUuid)}
+										position='absolute'
+										right='0'
+										top='2px'
+									/>
+								)}
+							</Box>
+						))}
+						{permissions && permissions.has('assign') && (
+							<UserSelect
+								blacklist={new Set(ownersByIds)}
+								hideIfNoOption
+								selectedUserUuid={null}
+								onChange={(userUuid) => userUuid && this.props.assignContributor(userUuid)}
+							>
+								<AddUserPlaceholder
+									role='contributor'
+									icoSize={1.625}
+								/>
+							</UserSelect>
+						)}
+					</Box>
+					<Box position='relative'>
+						<Datetime
+							value={deadline}
+							editable={Boolean(permissions && permissions.has('deadline'))}
+							onChange={(value) => this.props.updateField('deadline', value)}
+							time={false}
+							minDate={new Date()}
+						>
+							<DatetimePreview
+								value={deadline}
+								textColor={(isPastDeadline && isIncomplete) ? 'red' : undefined}
+								icoSize={1.625}
+								usage='deadline'
+							/>
+						</Datetime>
+						{deadline && Boolean(permissions && permissions.has('deadline')) && (
+							<Ico
+								type='x'
+								color='red'
+								width={0.625}
+								cursor='pointer'
+								onClick={() => this.props.updateField('deadline', null)}
+								position='absolute'
+								right='0'
+								top='2px'
+							/>
+						)}
+					</Box>
+				</Box>
+				<Box
+					width='50%'
+					paddingHorizontal={1}
+				>
 					{!state.name.isEditing
 						? (
 							<div>
@@ -130,86 +213,31 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 							/>
 						)
 					}
-				</div>
-				<br />
-				<div>
-					{!state.brief.isEditing
-						? (
-							<div>
-								Brief: {brief && brief.split('\n').map((paragraph, i) => (
+					<div>
+						{!state.brief.isEditing
+							? (
+								<div>
+									Brief: {brief && brief.split('\n').map((paragraph, i) => (
 									<p key={String(i)}>{paragraph}</p>
 								))}
-								{permissions && permissions.has('brief') && (
-									<a href='javascript://' onClick={() => this.editField('brief')}>edit</a>
-								)}
-							</div>
-						)
-						: (
-							<textarea
-								ref={(el) => this.briefEl = el}
-								style={{width: '100%', height: 200}}
-								value={state.brief.value || ''}
-								onChange={(ev) => this.updateEditingField('brief', ev.target.value)}
-								onKeyDown={(ev) => ev.key === 'Enter' && ev.shiftKey && this.submitEditingField('brief')}
-							/>
-						)
-					}
-				</div>
-				<div>
-					<Datetime
-						value={deadline}
-						editable={Boolean(permissions && permissions.has('deadline'))}
-						onChange={(value) => this.props.updateField('deadline', value)}
-						time={false}
-						minDate={new Date()}
-					>
-						<DatetimePreview
-							value={deadline}
-							textColor={(deadline && isPastDate(deadline)) ? 'red' : undefined}
-							icoSize={1.625}
-							usage='deadline'
-						/>
-					</Datetime>
-					{deadline && Boolean(permissions && permissions.has('deadline')) && (
-						<Button
-							backgroundColor='red'
-							onClick={() => this.props.updateField('deadline', null)}
-						>Remove deadline</Button>
-					)}
-				</div>
-				<div>
-					{ownersByIds && ownersByIds.map((userUuid) => (
-						<Box flex marginVertical={0.75} key={userUuid}>
-							<UserPreview
-								userUuid={userUuid}
-								role='contributor'
-								avatarSize={1.625}
-							/>
-							{permissions && permissions.has('assign') && (
-								<Button
-									alignSelf='center'
-									marginLeft={0.5}
-									backgroundColor='red'
-									onClick={() => this.props.deleteContributor(userUuid)}
-								>Delete</Button>
-							)}
-						</Box>
-					))}
-					{permissions && permissions.has('assign') && (
-						<UserSelect
-							blacklist={new Set(ownersByIds)}
-							hideIfNoOption
-							selectedUserUuid={null}
-							onChange={(userUuid) => userUuid && this.props.assignContributor(userUuid)}
-						>
-							<AddUserPlaceholder
-								role='contributor'
-								icoSize={1.625}
-							/>
-						</UserSelect>
-					)}
-				</div>
-			</div>
+									{permissions && permissions.has('brief') && (
+										<a href='javascript://' onClick={() => this.editField('brief')}>edit</a>
+									)}
+								</div>
+							)
+							: (
+								<textarea
+									ref={(el) => this.briefEl = el}
+									style={{width: '100%', height: 200}}
+									value={state.brief.value || ''}
+									onChange={(ev) => this.updateEditingField('brief', ev.target.value)}
+									onKeyDown={(ev) => ev.key === 'Enter' && ev.shiftKey && this.submitEditingField('brief')}
+								/>
+							)
+						}
+					</div>
+				</Box>
+			</Box>
 		)
 	}
 }

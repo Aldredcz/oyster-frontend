@@ -12,6 +12,12 @@ export type TTaskPermission =
 	| 'reopen'
 	| 'reject'
 
+export type TTaskStatus =
+	| 'new'
+	| 'afterDeadline'
+	| 'completed'
+	| 'approved'
+
 export type TTaskCommon = {
 	uuid: string,
 	name: ?string,

@@ -3,11 +3,10 @@ import React from 'react'
 import {observable} from 'mobx'
 import {observer} from 'mobx-react'
 import formatDate from 'date-fns/format'
-import isPastDate from 'date-fns/is_past'
 import injectEntity from 'core/utils/mobx/entityInjector'
 
 import {tasksStore} from 'core/entities/tasks'
-import type {TTask, TTaskEntity} from 'core/entities/tasks'
+import type {TTask, TTaskEntity, TTaskStatus} from 'core/entities/tasks'
 import {usersStore} from 'core/entities/users'
 import type {TUser} from 'core/entities/users'
 
@@ -17,7 +16,6 @@ import Box from 'libs/box'
 import Text from 'core/components/ui/Text'
 import Avatar from 'core/components/ui/Avatar'
 import TaskStatus from './TaskStatus'
-import type {TTaskStatus} from './TaskStatus'
 
 @injectEntity({
 	entityStore: usersStore,
@@ -53,6 +51,7 @@ type TProps = $Shape<{
 	task: TTask,
 	uuid: string,
 	projectUuid: string,
+	taskStatus: TTaskStatus,
 	changeTaskStatus: $PropertyType<TTaskEntity, 'changeTaskStatus'>,
 }>
 
@@ -62,6 +61,7 @@ type TProps = $Shape<{
 	mapEntityToProps: (entity) => ({
 		task: entity.data,
 		changeTaskStatus: entity.changeTaskStatus.bind(entity),
+		taskStatus: entity.status,
 	}),
 })
 @observer
@@ -69,20 +69,8 @@ export default class TaskPreviewBox extends React.Component<void, TProps, void> 
 	@observable isHover: boolean = false
 
 	render () {
-		const {task, projectUuid, changeTaskStatus} = this.props
-		const {uuid, name, deadline, ownersByIds, completedAt, approvedAt, permissions} = task
-
-		let status: TTaskStatus
-
-		if (approvedAt) {
-			status = 'approved'
-		} else if (completedAt) {
-			status = 'completed'
-		} else if (deadline && isPastDate(deadline)) {
-			status = 'afterDeadline'
-		} else {
-			status = 'new'
-		}
+		const {task, projectUuid, changeTaskStatus, taskStatus} = this.props
+		const {uuid, name, deadline, ownersByIds, permissions} = task
 
 		return (
 			<Link
@@ -91,9 +79,9 @@ export default class TaskPreviewBox extends React.Component<void, TProps, void> 
 				onMouseLeave={() => this.isHover = false}
 				block
 				width='100%' height='100%'
-				backgroundColor={status === 'approved' ? 'neutralLight' : undefined}
+				backgroundColor={taskStatus === 'approved' ? 'neutralLight' : undefined}
 				borderWidth={1}
-				borderColor={borderColorPerStatus[status]}
+				borderColor={borderColorPerStatus[taskStatus]}
 				borderRadius={5}
 				padding={0.75}
 				position='relative'
@@ -101,7 +89,7 @@ export default class TaskPreviewBox extends React.Component<void, TProps, void> 
 				<TaskStatus
 					preventClick
 					actionsExpanded={this.isHover}
-					status={status}
+					status={taskStatus}
 					permissions={permissions}
 					onChange={changeTaskStatus}
 				/>

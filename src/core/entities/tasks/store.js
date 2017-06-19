@@ -1,8 +1,9 @@
 // @flow
-import {action} from 'mobx'
+import {action, computed} from 'mobx'
+import isPastDate from 'date-fns/is_past'
 import {TaskAPI} from './api'
 import {initialState} from './types'
-import type {TTaskPermission} from './types'
+import type {TTaskPermission, TTaskStatus} from './types'
 import createUpdatableEntityClass from 'core/store/utils/createUpdatableEntityClass'
 import type {IUpdatableEntity} from 'core/store/utils/createUpdatableEntityClass'
 import createEntityStoreClass from 'core/store/utils/createEntityStoreClass'
@@ -72,6 +73,27 @@ export class TaskEntity extends createUpdatableEntityClass({
 				TaskAPI.fetch(this.data.uuid)
 			})
 	}
+
+	@computed get isPastDeadline (): boolean {
+		return this.data.deadline && isPastDate(this.data.deadline)
+	}
+
+	@computed get status (): TTaskStatus {
+		if (this.data.approvedAt) {
+			return 'approved'
+		} else if (this.data.completedAt) {
+			return 'completed'
+		} else if (this.isPastDeadline) {
+			return 'afterDeadline'
+		} else {
+			return 'new'
+		}
+	}
+
+	@computed get isIncomplete (): boolean {
+		return this.status === 'new' || this.status === 'afterDeadline'
+	}
+
 }
 
 export type TTaskEntity = IUpdatableEntity<typeof initialState> & TaskEntity

@@ -73,6 +73,7 @@ const StandardLayout = ({children}: any) => (
 				</Box>
 			</Box>
 			<Box
+				position='relative'
 				marginTop='0px'
 				paddingTop={'36px' /* compensating top bar */}
 				id='contentWrapper'

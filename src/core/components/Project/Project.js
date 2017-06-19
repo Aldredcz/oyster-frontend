@@ -14,7 +14,6 @@ import TaskPreviewBox from 'core/components/Task/TaskPreviewBox'
 
 import Box from 'libs/box'
 import Text from 'core/components/ui/Text'
-import Button from 'core/components/ui/Button'
 import Ico from 'core/components/ui/Ico'
 import UserSelect, {AddUserPlaceholder} from 'core/components/ui/UserSelect'
 import UserPreview from 'core/components/ui/UserPreview'
@@ -221,19 +220,22 @@ export const projectFactory = ({
 			return (
 				<Box flex paddingLeft={5} paddingVertical={1}>
 					{ownersByIds && ownersByIds.map((userUuid) => (
-						<Box flex marginRight={0.5} key={userUuid}>
+						<Box flex marginRight={1.25} key={userUuid}>
 							<UserPreview
 								userUuid={userUuid}
 								role='project manager'
 								avatarSize={1.625}
 							/>
 							{permissions && permissions.has('assign') && (
-								<Button
-									alignSelf='center'
-									marginLeft={0.5}
-									backgroundColor='red'
+								<Ico
+									type='x'
+									color='red'
+									alignSelf='flex-start'
+									width={0.625}
+									marginLeft={0.625}
+									cursor='pointer'
 									onClick={() => this.props.deleteProjectManager(userUuid)}
-								>Delete</Button>
+								/>
 							)}
 						</Box>
 					))}

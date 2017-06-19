@@ -1,18 +1,12 @@
 // @flow
 import React from 'react'
 import {observer} from 'mobx-react'
-import type {TTask, TTaskPermission} from 'core/entities/tasks'
+import type {TTask, TTaskPermission, TTaskStatus} from 'core/entities/tasks'
 import type {TColor} from 'core/config/themes/types'
 
 import Box from 'libs/box'
 import Ico from 'core/components/ui/Ico'
 import type {TIcoType} from 'core/components/ui/Ico'
-
-export type TTaskStatus =
-	| 'new'
-	| 'afterDeadline'
-	| 'completed'
-	| 'approved'
 
 
 type TProps = {

@@ -7,6 +7,7 @@ import type {TProjectDetailStore} from '../core/store'
 import {projectFactory} from 'core/components/Project/Project'
 import TaskDetail from 'core/components/Task/TaskDetail'
 
+import Box from 'libs/box'
 
 const Project = projectFactory({
 	titleRenderer: (title, self) => {
@@ -51,10 +52,13 @@ export default class ProjectDetail extends React.Component<void, TProps, void> {
 		const {projectDetailStore: {projectUuid, selectedTaskUuid}} = this.props
 
 		return (
-			<div>
-				<p>
-					<Link module='dashboard'>{'<'} Back to dashboard</Link>
-				</p>
+			<Box>
+				<Link
+					module='dashboard'
+					position='absolute'
+					top='11px'
+					left={1}
+				>{'<'} Back to dashboard</Link>
 				{projectUuid && <Project uuid={projectUuid} />}
 				{projectUuid && selectedTaskUuid && (
 					<TaskDetail
@@ -63,7 +67,7 @@ export default class ProjectDetail extends React.Component<void, TProps, void> {
 						projectUuid={projectUuid}
 					/>
 				)}
-			</div>
+			</Box>
 		)
 	}
 }
