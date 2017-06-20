@@ -30,7 +30,7 @@ class OwnerIco extends React.Component<void, $Shape<{owner: TUser, uuid: string}
 		const {uuid} = this.props.owner
 
 		return (
-			<Box title={uuid} display='inline-block' marginRight={0.2}>
+			<Box debugTitle={uuid} display='inline-block' marginRight={0.2}>
 				<Avatar
 					user={this.props.owner}
 				/>
@@ -95,7 +95,7 @@ export default class TaskPreviewBox extends React.Component<void, TProps, void> 
 				/>
 				<Text
 					italic={!name}
-					title={uuid}
+					debugTitle={uuid}
 					textSize='17'
 					position='absolute'
 					style={() => ({

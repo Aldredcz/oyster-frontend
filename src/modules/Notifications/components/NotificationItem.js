@@ -170,7 +170,7 @@ export default class NotificationItem extends React.Component<void, TProps, void
 		return content
 			? (
 				<Box
-					title={notification.uuid}
+					debugTitle={notification.uuid}
 					style={() => ({
 						backgroundColor: !notification.completedAt && '#EAEAEA',
 					})}

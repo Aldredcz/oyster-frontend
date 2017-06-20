@@ -108,6 +108,8 @@ export type TProps = {
 	borderTopColor?: TColor,
 
 	cursor?: 'default' | 'pointer' | 'not-allowed',
+	title?: string,
+	debugTitle?: string,
 }
 
 type TBoxContent = {
@@ -244,6 +246,8 @@ const Box = (props: TProps, {renderer, theme}: TBoxContent) => {
 		borderTopStyle = borderStyle || (borderTopWidth && 'solid') || undefined,
 
 		cursor,
+		title,
+		debugTitle,
 
 		...restProps
 	} = props
@@ -328,6 +332,7 @@ const Box = (props: TProps, {renderer, theme}: TBoxContent) => {
 		...(style && style(theme, boxStyles)),
 	}))
 	return React.createElement(as || 'div', {
+		title: title || (__DEV__ && debugTitle) || undefined,
 		...restProps,
 		className,
 		ref: getRef,

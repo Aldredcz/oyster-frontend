@@ -211,7 +211,7 @@ export const projectFactory = ({
 
 			return isLoading
 				? <Title>{uuid}</Title>
-				: <Title italic={!name} title={uuid}>{name || 'Add project name'}</Title>
+				: <Title italic={!name} debugTitle={uuid}>{name || 'Add project name'}</Title>
 		}
 
 		renderProjectManagerSelect () {
