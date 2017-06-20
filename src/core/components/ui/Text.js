@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import type {TColor, TTextSize, TTheme} from 'core/config/themes/types'
 import type {TBoxProps} from 'libs/box'
 
-import Box from 'libs/box'
+import Box, {composeStyles} from 'libs/box'
 
 export type TProps = TBoxProps & {
 	+textSize?: TTextSize,
@@ -38,27 +38,28 @@ export default class Text extends React.Component<void, TProps, void> {
 		} = this.props
 
 		const {fontSize, lineHeight, letterSpacing} = this.context.theme.typography.sizes[textSize]
-		const textStyles: Object = {
-			fontSize,
-			lineHeight,
-			letterSpacing,
-			color: this.context.theme.colors[color],
-			fontFamily: this.context.theme.typography.fontFamily,
+		const getTextStyles = (theme) => {
+			const textStyles: Object = {
+				fontSize,
+				lineHeight,
+				letterSpacing,
+				color: theme.colors[color],
+				fontFamily: theme.typography.fontFamily,
+			}
+			align && (textStyles.textAlign = align)
+			bold && (textStyles.fontWeight = 'bold')
+			decoration && (textStyles.textDecoration = decoration)
+			italic && (textStyles.fontStyle = 'italic')
+
+			return textStyles
 		}
 
-		align && (textStyles.textAlign = align)
-		bold && (textStyles.fontWeight = 'bold')
-		decoration && (textStyles.textDecoration = decoration)
-		italic && (textStyles.fontStyle = 'italic')
 
 		return (
 			<Box
 				as={as || (this.props.block ? 'div' : 'span')}
 				{...restProps}
-				style={(theme, boxStyles) => ({
-					...textStyles,
-					...(style && style(theme, {...boxStyles, ...textStyles})),
-				})}
+				style={composeStyles(style, getTextStyles)}
 			/>
 		)
 	}

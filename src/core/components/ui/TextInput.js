@@ -2,6 +2,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import {composeStyles} from 'libs/box'
 import Text from 'core/components/ui/Text'
 import type {TProps as TTextProps} from 'core/components/ui/Text'
 
@@ -51,10 +52,7 @@ const TextInput = (
 			block={block}
 			width={width}
 			{...restProps}
-			style={(theme, textStyles) => ({
-				...getTextInputStyles(theme),
-				...(style && style(theme, {...textStyles, ...getTextInputStyles(theme)})),
-			})}
+			style={composeStyles(style, getTextInputStyles)}
 		/>
 	)
 }

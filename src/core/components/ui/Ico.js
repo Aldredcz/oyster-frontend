@@ -5,7 +5,7 @@ import {getRenderer} from 'core/config/fela'
 import type {TColor, TTheme} from 'core/config/themes/types'
 import type {TBoxProps} from 'libs/box'
 
-import Box from 'libs/box'
+import Box, {composeStyles} from 'libs/box'
 
 
 // INTERNAL
@@ -107,6 +107,12 @@ export default class Ico extends React.Component<void, TProps, void> {
 
 		const colorResolved = theme.colors[color || 'neutralDark']
 
+		const getIcoStyles = (theme) => spin
+			? {
+				animation: `${spinKeyframe} 2s infinite linear`,
+			}
+			: {}
+
 		const Svg = icoMap[type]
 		return (
 			<Box
@@ -115,10 +121,7 @@ export default class Ico extends React.Component<void, TProps, void> {
 				width={width || height || defaultIcoSize}
 				height={height || width || defaultIcoSize}
 				fill={colorResolved}
-				style={(theme, boxProps) => ({
-					...(spin ? {animation: `${spinKeyframe} 2s infinite linear`} : {}),
-					...(style ? style(theme, boxProps) : {}),
-				})}
+				style={composeStyles(style, getIcoStyles)}
 			/>
 		)
 	}
