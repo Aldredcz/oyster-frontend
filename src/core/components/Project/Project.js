@@ -14,6 +14,7 @@ import TaskPreviewBox from 'core/components/Task/TaskPreviewBox'
 
 import Box from 'libs/box'
 import Text from 'core/components/ui/Text'
+import EditableText from 'core/components/ui/EditableText'
 import Ico from 'core/components/ui/Ico'
 import UserSelect, {AddUserPlaceholder} from 'core/components/ui/UserSelect'
 import UserPreview from 'core/components/ui/UserPreview'
@@ -53,6 +54,8 @@ const AddTaskButton = ({isCreating, onClick}) => (
 		onClick={onClick}
 	>
 		<Box
+			flex
+			flexDirection='column'
 			position='absolute'
 			style={() => ({
 				top: '50%',
@@ -65,18 +68,14 @@ const AddTaskButton = ({isCreating, onClick}) => (
 				type={isCreating ? 'spinner' : 'plus'}
 				spin={isCreating}
 				width={2}
-				position='absolute'
-				style={() => ({
-					left: '50%',
-					transform: 'translateX(-50%)',
-				})}
+				marginHorizontal='auto'
 			/>
 			<Text
 				block
 				bold
 				width='100%'
-				size='9'
-				marginTop={2.25}
+				textSize='9'
+				marginTop={0.25}
 				color='neutral'
 				align='center'
 			>
@@ -90,12 +89,13 @@ const AddTaskButton = ({isCreating, onClick}) => (
 )
 
 const Title = (props) => (
-	<Text
-		size='13'
+	<EditableText
+		textSize='13'
 		bold
 		block
 		marginLeft={5}
-		marginVertical={1}
+		marginTop={1}
+		marginBottom={0.75}
 		{...props}
 	/>
 )
@@ -211,7 +211,7 @@ export const projectFactory = ({
 
 			return isLoading
 				? <Title>{uuid}</Title>
-				: <Title title={uuid}>{name || '[unnamed project]'}</Title>
+				: <Title italic={!name} title={uuid}>{name || 'Add project name'}</Title>
 		}
 
 		renderProjectManagerSelect () {

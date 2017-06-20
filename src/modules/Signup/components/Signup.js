@@ -127,7 +127,7 @@ export default class Signup extends React.Component<void, TProps, void> {
 			<Form onSubmit={this.nextStep} noValidate marginHorizontal='-10px'>
 				<Text
 					block
-					size='30'
+					textSize='30'
 					marginBottom={5}
 					color='neutral'
 				>
@@ -164,7 +164,7 @@ export default class Signup extends React.Component<void, TProps, void> {
 				<Button
 					submit
 					block
-					size='13'
+					textSize='13'
 					width='50%'
 					disabled={!isWholeStepValid}
 				>
@@ -186,7 +186,7 @@ export default class Signup extends React.Component<void, TProps, void> {
 			<Form onSubmit={this.handleFormSubmit} noValidate marginHorizontal='-10px'>
 				<Text
 					block
-					size='30'
+					textSize='30'
 					marginBottom={5}
 					color='neutral'
 				>
@@ -208,7 +208,7 @@ export default class Signup extends React.Component<void, TProps, void> {
 				))}
 				<Text
 					block
-					size='13'
+					textSize='13'
 					color='red'
 					marginVertical={2}
 				>
@@ -217,7 +217,7 @@ export default class Signup extends React.Component<void, TProps, void> {
 				<Button
 					submit
 					block
-					size='13'
+					textSize='13'
 					width='50%'
 					disabled={!isWholeStepValid || ui.pendingRequest}
 				>

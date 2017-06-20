@@ -99,7 +99,7 @@ export default class Login extends React.Component {
 					<Content>
 						<Text
 							block
-							size='30'
+							textSize='30'
 							marginBottom={5}
 							color='neutral'
 						>
@@ -107,23 +107,27 @@ export default class Login extends React.Component {
 							Please login below.
 						</Text>
 						<Form onSubmit={this.handleSubmit}>
-							<Text size='9' bold color='blue'>
+							<Text textSize='9' bold color='blue'>
 								Email
 							</Text>
 							<TextInput
 								block
-								size='17'
+								textSize='17'
+								paddingVertical={1}
+								paddingHorizontal={0.4}
 								marginBottom={2}
 								name='email'
 								value={formData.email}
 								onChange={this.handleChange}
 							/>
-							<Text size='9' bold color='blue'>
+							<Text textSize='9' bold color='blue'>
 								Password
 							</Text>
 							<TextInput
 								block
-								size='17'
+								textSize='17'
+								paddingVertical={1}
+								paddingHorizontal={0.4}
 								marginBottom={5}
 								type='password'
 								name='password'
@@ -133,7 +137,7 @@ export default class Login extends React.Component {
 							<Button
 								submit
 								block
-								size='13'
+								textSize='13'
 								width='50%'
 								disabled={processing || !isValid}
 							>

@@ -33,7 +33,7 @@ export default class NotificationList extends React.Component<void, TProps, void
 			>
 				<Text
 					block
-					size='9'
+					textSize='9'
 					color={notifications.length ? 'neutral' : 'neutralDark'}
 					paddingHorizontal={0.6} paddingVertical={0.3}
 				>

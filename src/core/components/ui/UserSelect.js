@@ -34,7 +34,7 @@ export const AddUserPlaceholder = ({
 			marginRight={0.5}
 			color={textColor}
 		/>
-		<Text size={textSize} color={textColor}>
+		<Text textSize={textSize} color={textColor}>
 			add
 			{role && <br />}
 			{role}

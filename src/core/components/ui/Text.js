@@ -7,111 +7,57 @@ import type {TBoxProps} from 'libs/box'
 import Box from 'libs/box'
 
 export type TProps = TBoxProps & {
-	size?: TTextSize,
-	color?: TColor,
-	align?: 'left' | 'right' | 'center' | 'justify',
-	bold?: boolean,
-	decoration?: 'none' | 'underline' | 'line-through',
-	italic?: boolean,
-	editable?: boolean,
-	isEditing?: boolean,
-	onKeyDown?: (event: KeyboardEvent) => any,
-	onClick?: (event: MouseEvent) => any,
-	onChange?: (event: KeyboardEvent) => any,
-	onFocus?: (event: FocusEvent) => any,
-	onBlur?: (event: FocusEvent) => any,
-	onSubmit?: (event: Event) => any,
-	onInput?: (event: Event) => any,
-}
-type TState = {
-	isEditing: boolean,
+	+textSize?: TTextSize,
+	+color?: TColor,
+	+align?: 'left' | 'right' | 'center' | 'justify',
+	+bold?: boolean,
+	+decoration?: 'none' | 'underline' | 'line-through',
+	+italic?: boolean,
 }
 
 type TContext = {
 	theme: TTheme,
 }
-export default class Text extends React.Component<void, TProps, TState> {
+export default class Text extends React.Component<void, TProps, void> {
 	static contextTypes = {
 		theme: PropTypes.object,
 	}
-
-	state = {
-		isEditing: false,
-	}
-
 	context: TContext
 
-	element: ?HTMLElement = null
-	
 	render () {
 		const {
 			as,
 			style,
-			size = '9',
+			textSize = '9',
 			color = 'neutralDark',
 			align,
 			bold,
 			decoration,
 			italic,
-			editable,
-			onKeyDown,
-			onClick,
-			onFocus,
-			onBlur,
-			onSubmit,
 			...restProps
 		} = this.props
 
-		const {fontSize, lineHeight, letterSpacing} = this.context.theme.typography.sizes[size]
-		const textStyle: Object = {
+		const {fontSize, lineHeight, letterSpacing} = this.context.theme.typography.sizes[textSize]
+		const textStyles: Object = {
 			fontSize,
 			lineHeight,
 			letterSpacing,
 			color: this.context.theme.colors[color],
-			outline: this.state.isEditing ? `1px solid ${this.context.theme.colors.neutral}` : 'none',
-			outlineOffset: '4px',
-			display: 'inline-block',
+			fontFamily: this.context.theme.typography.fontFamily,
 		}
 
-		textStyle.fontFamily = this.context.theme.typography.fontFamily
-		align && (textStyle.textAlign = align)
-		bold && (textStyle.fontWeight = 'bold')
-		decoration && (textStyle.textDecoration = decoration)
-		italic && (textStyle.fontStyle = 'italic')
+		align && (textStyles.textAlign = align)
+		bold && (textStyles.fontWeight = 'bold')
+		decoration && (textStyles.textDecoration = decoration)
+		italic && (textStyles.fontStyle = 'italic')
 
 		return (
 			<Box
-				getRef={(el) => this.element = el}
-				as={as || 'span'}
-				contentEditable={editable && this.state.isEditing}
+				as={as || (this.props.block ? 'div' : 'span')}
 				{...restProps}
-				onKeyDown={(ev) => {
-					onKeyDown && onKeyDown(ev)
-					if (ev.key === 'Enter') {
-						ev.preventDefault()
-						this.element && this.element.blur()
-					}
-				}}
-				onClick={(ev) => {
-					onClick && onClick(ev)
-					editable && this.setState({isEditing: true})
-				}}
-				onFocus={(ev) => {
-					onFocus && onFocus(ev)
-					editable && this.setState({isEditing: true})
-				}}
-				onBlur={(ev) => {
-					onBlur && onBlur(ev)
-					this.props.onSubmit && this.props.onSubmit(ev)
-					this.setState({isEditing: false})
-				}}
-				onSubmit={(ev) => {
-					onSubmit && onSubmit(ev)
-					this.setState({isEditing: false})
-				}}
-				style={(theme, boxStyle) => ({
-					...textStyle,
-					...(style && style(theme, {...boxStyle, ...textStyle})),
+				style={(theme, boxStyles) => ({
+					...textStyles,
+					...(style && style(theme, {...boxStyles, ...textStyles})),
 				})}
 			/>
 		)

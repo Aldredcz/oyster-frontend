@@ -65,7 +65,7 @@ class AddNewProjectButton extends React.Component<void, *, void> {
 				/>
 				{(this.isHover || isCreating) && (
 					<Text
-						size='13'
+						textSize='13'
 						color='white'
 						paddingRight={0.8}
 						style={() => ({

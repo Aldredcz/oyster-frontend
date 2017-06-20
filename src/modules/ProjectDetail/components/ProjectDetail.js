@@ -14,21 +14,39 @@ const Project = projectFactory({
 		const {project} = self.props
 
 		if (project.permissions && project.permissions.has('rename')) {
+			const isEditingProps = self.state.name.isEditing
+				? {
+					children: '',
+					value: self.state.name.value,
+					onChange: (ev) => {
+						self.updateEditingField('name', ev.target.value)
+					},
+					onBlur: () => {
+						self.submitEditingField('name')
+					},
+					onEnter: () => {
+						self.submitEditingField('name')
+					},
+				}
+				: {}
+
 			title = React.cloneElement(title, {
-				editable: true,
-				onInput (ev) {
-					self.updateEditingField('name', ev.target.textContent)
+				italic: title.props.italic && !self.state.name.isEditing,
+				isEditing: self.state.name.isEditing,
+				onClick: () => {
+					!self.state.name.isEditing && self.editField('name')
 				},
-				onSubmit (ev) {
-					self.submitEditingField('name', ev.target.textContent)
-				},
+				block: false,
+				width: 25,
+				display: 'inline-block',
+				...isEditingProps,
 			})
 		}
 
 		return (
-			<div>
+			<Box>
 				{title}
-			</div>
+			</Box>
 		)
 	},
 })

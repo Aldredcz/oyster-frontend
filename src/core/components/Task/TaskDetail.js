@@ -12,6 +12,7 @@ import Datetime, {DatetimePreview} from 'core/components/ui/Datetime'
 import UserPreview from 'core/components/ui/UserPreview'
 import UserSelect, {AddUserPlaceholder} from 'core/components/ui/UserSelect'
 import Ico from 'core/components/ui/Ico'
+import EditableText from 'core/components/ui/EditableText'
 
 
 type TProps = $Shape<{
@@ -98,8 +99,8 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 		})
 	}
 
-	submitEditingField (field: TStateField) {
-		this.props.updateField(field, this.state[field].value)
+	submitEditingField (field: TStateField, value?: mixed) {
+		this.props.updateField(field, value || this.state[field].value)
 		this.setState({
 			[field]: {
 				isEditing: false,
@@ -111,7 +112,7 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 	render () {
 		const state = this.state
 		const {isIncomplete, isPastDeadline, task} = this.props
-		const {uuid, name, brief, deadline, permissions, ownersByIds} = task
+		const {name, brief, deadline, permissions, ownersByIds} = task
 
 		return (
 			<Box
@@ -195,47 +196,52 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 					width='50%'
 					paddingHorizontal={1}
 				>
-					{!state.name.isEditing
-						? (
-							<div>
-								Name: <h1 title={uuid}> {name}</h1>
-								{permissions && permissions.has('rename') && (
-									<a href='javascript://' onClick={() => this.editField('name')}>edit</a>
-								)}
-							</div>
-						)
-						: (
-							<input
-								ref={(el) => this.nameEl = el}
-								value={state.name.value || ''}
-								onChange={(ev) => this.updateEditingField('name', ev.target.value)}
-								onKeyDown={(ev) => ev.key === 'Enter' && this.submitEditingField('name')}
-							/>
-						)
-					}
-					<div>
-						{!state.brief.isEditing
-							? (
-								<div>
-									Brief: {brief && brief.split('\n').map((paragraph, i) => (
-									<p key={String(i)}>{paragraph}</p>
-								))}
-									{permissions && permissions.has('brief') && (
-										<a href='javascript://' onClick={() => this.editField('brief')}>edit</a>
-									)}
-								</div>
-							)
-							: (
-								<textarea
-									ref={(el) => this.briefEl = el}
-									style={{width: '100%', height: 200}}
-									value={state.brief.value || ''}
-									onChange={(ev) => this.updateEditingField('brief', ev.target.value)}
-									onKeyDown={(ev) => ev.key === 'Enter' && ev.shiftKey && this.submitEditingField('brief')}
-								/>
-							)
-						}
-					</div>
+					<EditableText
+						marginBottom={1}
+						width={25}
+						italic={!state.name.isEditing && !name}
+						textSize='17'
+						isEditing={state.name.isEditing}
+						onClick={Boolean(permissions && permissions.has('rename')) && (() => {
+							this.editField('name')
+						})}
+						onChange={(ev) => this.updateEditingField('name', ev.target.value)}
+						onEnter={() => this.submitEditingField('name')}
+						onBlur={() => this.submitEditingField('name')}
+						value={state.name.value || ''}
+					>
+						{name || 'Task name...'}
+					</EditableText>
+					<Box>
+						<EditableText
+							block
+							multiline
+							height={20}
+							overflow='auto'
+							padding={1}
+							backgroundColor={permissions && permissions.has('brief') ? 'white' : undefined}
+							borderRadius={5}
+							isEditing={state.brief.isEditing}
+							onClick={permissions && permissions.has('brief') && (() => {
+								this.editField('brief')
+							})}
+							onChange={(ev) => this.updateEditingField('brief', ev.target.value)}
+							onEnter={(ev) => {
+								if (ev.shiftKey) {
+									this.submitEditingField('brief')
+								}
+							}}
+							onBlur={() => this.submitEditingField('brief')}
+							value={state.brief.value || ''}
+						>
+							{brief
+								? brief.split('\n').map((p, i) => [
+									p,
+									<br />,
+								])
+								: 'Enter brief...'}
+						</EditableText>
+					</Box>
 				</Box>
 			</Box>
 		)

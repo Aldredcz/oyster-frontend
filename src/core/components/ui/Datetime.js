@@ -37,7 +37,7 @@ export const DatetimePreview = ({
 			marginRight={0.5}
 			color={textColor}
 		/>
-		<Text size={textSize} color={textColor}>
+		<Text textSize={textSize} color={textColor}>
 			{value
 				? formatDate(value, 'DD. MM. YYYY')
 				: '__.__.___'
@@ -87,7 +87,7 @@ export default class Datetime extends React.Component<void, TProps, void> {
 				getRef={(el) => this.calendarWrapperEl = el}
 				position='absolute'
 				backgroundColor='white'
-				size='13'
+				textSize='13'
 			>
 				<DatePicker
 					firstDayOfWeek={1}

@@ -28,10 +28,11 @@ import React from 'react'
 // If a number, then it's multiplied by theme typography rhythm.
 type TMaybeRhythm = number | string
 type TBorderStyle = 'solid' | 'dotted' | 'dashed'
+type TStyleFunction = (theme: TTheme, style: Object) => Object
 
 export type TProps = {
 	as?: string | ((props: Object) => React.Element<*>),
-	style?: (theme: TTheme, style: Object) => Object,
+	style?: TStyleFunction,
 	getRef?: (el: HTMLElement) => any,
 	asBoxBasedComponent?: boolean,
 
@@ -78,7 +79,7 @@ export type TProps = {
 
 	backgroundColor?: TColor,
 	opacity?: number,
-	overflow?: 'visible' | 'hidden' | 'scroll',
+	overflow?: 'auto' | 'visible' | 'hidden' | 'scroll',
 	position?: 'absolute' | 'relative' | 'fixed' | 'static' | 'sticky',
 	zIndex?: number,
 
@@ -257,7 +258,7 @@ const Box = (props: TProps, {renderer, theme}: TBoxContent) => {
 		})
 	}
 
-	const boxStyle = {
+	const boxStyles = {
 		...maybeRhythm({
 			marginBottom,
 			marginLeft,
@@ -318,13 +319,13 @@ const Box = (props: TProps, {renderer, theme}: TBoxContent) => {
 		}),
 	}
 
-	block && (boxStyle.display = 'block')
+	block && (boxStyles.display = 'block')
 
-	const rhythmBoxStyle = tryToEnsureRhythmViaPaddingCompensation(boxStyle)
+	const rhythmBoxStyle = tryToEnsureRhythmViaPaddingCompensation(boxStyles)
 
 	const className = renderer.renderRule(() => ({
 		...rhythmBoxStyle,
-		...(style && style(theme, boxStyle)),
+		...(style && style(theme, boxStyles)),
 	}))
 	return React.createElement(as || 'div', {
 		...restProps,
@@ -344,6 +345,16 @@ export const withTheme = (Component: ReactClass<mixed>) => {
 	Component.contextTypes = {
 		...Component.contextTypes,
 		theme: PropTypes.object,
+	}
+}
+
+export function composeStyles (style: ?TStyleFunction, getStyles?: (theme: TTheme) => Object): TStyleFunction {
+	return (theme: TTheme, parentStyles: Object): Object => {
+		const thisStyles = getStyles ? getStyles(theme) : null
+		return {
+			...thisStyles,
+			...(style && style(theme, {...parentStyles, ...thisStyles})),
+		}
 	}
 }
 

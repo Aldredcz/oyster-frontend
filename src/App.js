@@ -37,7 +37,7 @@ const Menu = () => (
 			<Ico height='20px' type='projects' color='white'  />
 			<Text
 				bold
-				size='9'
+				textSize='9'
 				align='center'
 				width='75px'
 				display='inline-block'

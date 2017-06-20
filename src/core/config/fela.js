@@ -47,6 +47,10 @@ const staticStyles = `
 	textarea {
 		overflow: auto;
 	}
+	input:focus,
+	textarea:focus {
+		outline: none;
+	}
 	[type="number"]::-webkit-inner-spin-button,
 	[type="number"]::-webkit-outer-spin-button {
 		height: auto;
@@ -93,6 +97,7 @@ const staticStyles = `
 	summary,
 	textarea {
 		touch-action: manipulation;
+		background-color: inherit;
 	}
 	input[type="date"],
 	input[type="time"],
@@ -109,6 +114,9 @@ const staticStyles = `
 	abbr[title],
 	acronym[title] {
 		text-decoration: none;
+	}
+	span {
+		display: inline-block;
 	}
 `
 

@@ -28,13 +28,15 @@ const SignupFormField = (props: TProps) => {
 			marginHorizontal='10px'
 			style={() => ({float: 'left'})}
 		>
-			<Text size='9' bold color={isInvalid ? 'red' : 'blue'}>
+			<Text textSize='9' bold color={isInvalid ? 'red' : 'blue'}>
 				{props.title}
 			</Text>
 			<TextInput
 				block
-				size='17'
+				textSize='17'
 				marginBottom={2}
+				paddingVertical={1}
+				paddingHorizontal={0.4}
 				type={props.type}
 				value={props.value}
 				onChange={(ev: KeyboardEvent) => {

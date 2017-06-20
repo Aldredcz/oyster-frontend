@@ -31,10 +31,10 @@ export default class UserPreview extends React.Component<void, TProps, void> {
 				<Avatar
 					user={user}
 					marginRight={0.5}
-					size={avatarSize}
+					avatarSize={avatarSize}
 				/>
 				<Text
-					size={textSize}
+					textSize={textSize}
 					color={textColor}
 				>
 					{user.name} {user.surname}

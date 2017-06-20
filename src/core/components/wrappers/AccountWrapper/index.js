@@ -53,7 +53,7 @@ export default class AccountWrapper extends React.Component<void, TProps, void> 
 					block
 					align='center'
 					marginTop={4}
-					size='30'
+					textSize='30'
 					color='neutral'
 				>
 					Loading account data...

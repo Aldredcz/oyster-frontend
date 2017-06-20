@@ -94,14 +94,15 @@ export default class TaskPreviewBox extends React.Component<void, TProps, void> 
 					onChange={changeTaskStatus}
 				/>
 				<Text
+					italic={!name}
 					title={uuid}
-					size='17'
+					textSize='17'
 					position='absolute'
 					style={() => ({
 						top: '50%',
 						transform: 'translateY(-50%)',
 					})}
-				>{name || '[unnamed]'}</Text>
+				>{name || 'Add task name'}</Text>
 
 				<Box
 					position='absolute'
@@ -124,7 +125,7 @@ export default class TaskPreviewBox extends React.Component<void, TProps, void> 
 						style={() => ({float: 'right'})}
 						marginTop='3px'
 					>
-						{deadline && <Text size='8'>{formatDate(deadline, 'DD. MM. YYYY')}</Text>}
+						{deadline && <Text textSize='8'>{formatDate(deadline, 'DD. MM. YYYY')}</Text>}
 					</Box>
 				</Box>
 			</Link>

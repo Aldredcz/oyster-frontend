@@ -8,6 +8,9 @@ import type {TProps as TTextProps} from 'core/components/ui/Text'
 
 export type TProps = TTextProps & {
 	type?: 'text' | 'password' | 'email',
+	children?: any,
+	value?: string,
+	multiline?: boolean,
 }
 
 const TextInput = (
@@ -15,10 +18,13 @@ const TextInput = (
 		as,
 		type = 'text',
 		block,
+		multiline,
 		width,
-		paddingVertical,
-		paddingHorizontal,
+		padding,
 		borderColor,
+		children,
+		value = String(children),
+		style,
 		...restProps
 	}: TProps,
 ): ?React.Element<any> => {
@@ -26,18 +32,28 @@ const TextInput = (
 		width = '100%'
 	}
 
+	const getTextInputStyles = (theme) => !multiline
+		? ({
+			border: 'none',
+			borderBottom: `1px solid ${borderColor || theme.colors.neutral}`,
+		})
+		: ({
+			border: 'none',
+			boxShadow: `0 0 0 1px ${borderColor || theme.colors.neutral}`,
+		})
+
 	return (
 		<Text
-			as={as || 'input'}
+			as={as || multiline ? 'textarea' : 'input'}
+			padding={padding || 0}
+			value={value}
 			type={type}
-			paddingVertical={paddingVertical || 1}
-			paddingHorizontal={paddingHorizontal || '5px'}
 			block={block}
 			width={width}
 			{...restProps}
-			style={(theme, boxStyle) => ({
-				border: 'none',
-				borderBottom: `1px solid ${borderColor || theme.colors.neutral}`,
+			style={(theme, textStyles) => ({
+				...getTextInputStyles(theme),
+				...(style && style(theme, {...textStyles, ...getTextInputStyles(theme)})),
 			})}
 		/>
 	)
