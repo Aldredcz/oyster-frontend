@@ -23,6 +23,7 @@ import MoveDetector from 'libs/move-detector'
 
 type TProps = $Shape<{
 	uuid: string,
+	selectedTaskUuid: ?string,
 	project: TProject,
 	isLoading: boolean,
 	addNewTask: $PropertyType<TProjectEntity, 'addNewTask'>,
@@ -262,7 +263,7 @@ export const projectFactory = ({
 		}, 50)
 
 		renderTasks () {
-			const {uuid, project: {tasksByIds, permissions}} = this.props
+			const {uuid, selectedTaskUuid, project: {tasksByIds, permissions}} = this.props
 
 			const canCreateNewTask = permissions && permissions.has('task')
 			const firstUnapprovedTaskIndex = tasksByIds && tasksByIds.length
@@ -283,6 +284,13 @@ export const projectFactory = ({
 			tasksWidth *= 16 // rem -> px
 
 			const originalTranslateX = -Math.max(firstUnapprovedTaskIndex, 0) * 13 * 16
+
+			const highlightedTaskProps = {
+				height: 13,
+				width: 13,
+				marginLeft: -0.5,
+				marginRight: 0.5,
+			}
 
 			return (
 				<MoveDetector
@@ -305,6 +313,8 @@ export const projectFactory = ({
 				>
 					<Box
 						flex
+						alignItems='center'
+						height={13}
 						paddingLeft={5}
 						getRef={(el) => this.tasksWrapperEl = el}
 						style={() => ({
@@ -318,6 +328,10 @@ export const projectFactory = ({
 									width={12} height={12}
 									flexShrink={0}
 									marginRight={1}
+									{...(taskId === selectedTaskUuid ? highlightedTaskProps : null)}
+									style={() => ({
+										transition: 'all 0.35s',
+									})}
 								>
 									<TaskPreviewBox projectUuid={uuid} uuid={taskId} />
 								</Box>

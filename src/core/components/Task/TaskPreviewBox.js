@@ -82,7 +82,7 @@ export default class TaskPreviewBox extends React.Component<void, TProps, void> 
 				backgroundColor={taskStatus === 'approved' ? 'neutralLight' : undefined}
 				borderWidth={1}
 				borderColor={borderColorPerStatus[taskStatus]}
-				borderRadius={5}
+				borderRadius={8}
 				padding={0.75}
 				position='relative'
 			>

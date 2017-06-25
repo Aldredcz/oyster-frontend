@@ -68,7 +68,12 @@ export default class ProjectDetail extends React.Component<void, TProps, void> {
 					top='11px'
 					left={1}
 				>{'<'} Back to dashboard</Link>
-				{projectUuid && <Project uuid={projectUuid} />}
+				{projectUuid && (
+					<Project
+						uuid={projectUuid}
+						selectedTaskUuid={selectedTaskUuid}
+					/>
+				)}
 				{projectUuid && selectedTaskUuid && (
 					<TaskDetail
 						key={selectedTaskUuid}
