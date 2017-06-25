@@ -8,12 +8,14 @@ import {projectFactory} from 'core/components/Project/Project'
 import TaskDetail from 'core/components/Task/TaskDetail'
 
 import Box from 'libs/box'
+import Ico from 'core/components/ui/Ico'
 
 const Project = projectFactory({
 	titleRenderer: (title, self) => {
 		const {project} = self.props
+		const nameEditable = project.permissions && project.permissions.has('rename')
 
-		if (project.permissions && project.permissions.has('rename')) {
+		if (nameEditable) {
 			const isEditingProps = self.state.name.isEditing
 				? {
 					children: '',
@@ -39,6 +41,18 @@ const Project = projectFactory({
 				block: false,
 				width: 25,
 				display: 'inline-block',
+				cursor: !self.state.name.isEditing ? 'pointer' : undefined,
+				children: (
+					<Box>
+						{title.props.children}
+						<Ico
+							type='edit'
+							color='neutral'
+							height={0.6}
+							marginLeft={0.75}
+						/>
+					</Box>
+				),
 				...isEditingProps,
 			})
 		}

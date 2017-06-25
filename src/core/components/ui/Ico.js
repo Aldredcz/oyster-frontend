@@ -23,7 +23,7 @@ import ClockFullSvg from 'assets/images/icons/O_icon_clock-full.svg'
 // import DeleteSvg from 'assets/images/icons/O_icon_delete.svg'
 // import DriveSvg from 'assets/images/icons/O_icon_drive.svg'
 // import DropboxSvg from 'assets/images/icons/O_icon_dropbox.svg'
-// import EditSvg from 'assets/images/icons/O_icon_edit.svg'
+import EditSvg from 'assets/images/icons/O_icon_edit.svg'
 // import HamburgerSvg from 'assets/images/icons/O_icon_hamburger.svg'
 // import HelpSvg from 'assets/images/icons/O_icon_help.svg'
 // import LogoutSvg from 'assets/images/icons/O_icon_logout.svg'
@@ -47,6 +47,7 @@ import UndoSvg from 'font-awesome-svg-png/black/svg/undo.svg'
 import SpinnerSvg from 'font-awesome-svg-png/black/svg/spinner.svg'
 
 const icoMap = {
+	edit: EditSvg,
 	logo: LogoSvg,
 	projects: ProjectsSvg,
 	notification: NotificationSvg,

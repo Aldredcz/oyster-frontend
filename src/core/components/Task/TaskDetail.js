@@ -114,6 +114,9 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 		const {isIncomplete, isPastDeadline, task} = this.props
 		const {name, brief, deadline, permissions, ownersByIds} = task
 
+		const briefEditable = Boolean(permissions && permissions.has('brief'))
+		const nameEditable = Boolean(permissions && permissions.has('rename'))
+
 		return (
 			<Box
 				flex
@@ -202,7 +205,8 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 						italic={!state.name.isEditing && !name}
 						textSize='17'
 						isEditing={state.name.isEditing}
-						onClick={Boolean(permissions && permissions.has('rename')) && (() => {
+						cursor={nameEditable && !state.name.isEditing ? 'pointer' : undefined}
+						onClick={nameEditable && (() => {
 							this.editField('name')
 						})}
 						onChange={(ev) => this.updateEditingField('name', ev.target.value)}
@@ -211,6 +215,14 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 						value={state.name.value || ''}
 					>
 						{name || 'Task name...'}
+						{nameEditable && (
+							<Ico
+								type='edit'
+								color='neutral'
+								height={0.8}
+								marginLeft={0.75}
+							/>
+						)}
 					</EditableText>
 					<Box>
 						<EditableText
@@ -219,10 +231,11 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 							height={20}
 							overflow='auto'
 							padding={1}
-							backgroundColor={permissions && permissions.has('brief') ? 'white' : undefined}
+							backgroundColor={briefEditable ? 'white' : undefined}
 							borderRadius={5}
 							isEditing={state.brief.isEditing}
-							onClick={permissions && permissions.has('brief') && (() => {
+							cursor={briefEditable && !state.brief.isEditing ? 'pointer' : undefined}
+							onClick={briefEditable && (() => {
 								this.editField('brief')
 							})}
 							onChange={(ev) => this.updateEditingField('brief', ev.target.value)}
