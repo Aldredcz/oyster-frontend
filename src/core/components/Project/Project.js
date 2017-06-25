@@ -216,6 +216,7 @@ export const projectFactory = ({
 
 		renderProjectManagerSelect () {
 			const {project: {permissions, ownersByIds}} = this.props
+			const canDelete = permissions && permissions.has('assign') && ownersByIds && ownersByIds.length > 1
 
 			return (
 				<Box flex paddingLeft={5} paddingVertical={1}>
@@ -226,7 +227,7 @@ export const projectFactory = ({
 								role='project manager'
 								avatarSize={1.625}
 							/>
-							{permissions && permissions.has('assign') && (
+							{canDelete && (
 								<Ico
 									type='x'
 									color='red'
