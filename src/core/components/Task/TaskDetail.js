@@ -207,7 +207,7 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 						isEditing={state.name.isEditing}
 						cursor={nameEditable && !state.name.isEditing ? 'pointer' : undefined}
 						onClick={nameEditable && (() => {
-							this.editField('name')
+							!state.name.isEditing && this.editField('name')
 						})}
 						onChange={(ev) => this.updateEditingField('name', ev.target.value)}
 						onEnter={() => this.submitEditingField('name')}
@@ -236,7 +236,7 @@ export default class TaskDetail extends React.Component<void, TProps, TState> {
 							isEditing={state.brief.isEditing}
 							cursor={briefEditable && !state.brief.isEditing ? 'pointer' : undefined}
 							onClick={briefEditable && (() => {
-								this.editField('brief')
+								!state.brief.isEditing && this.editField('brief')
 							})}
 							onChange={(ev) => this.updateEditingField('brief', ev.target.value)}
 							onEnter={(ev) => {
