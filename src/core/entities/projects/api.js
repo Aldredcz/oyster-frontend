@@ -102,5 +102,5 @@ export const ProjectAPI = {
 	},
 	create: oysterRequestCreateProject,
 	assignProjectManager: oysterRequestProjectAssignManager,
-	deleteProjectManager: oysterRequestProjectAssignManager,
+	deleteProjectManager: oysterRequestProjectDeleteManager,
 }
