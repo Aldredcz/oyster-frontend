@@ -129,6 +129,7 @@ export default class MoveDetector extends React.Component<*, TProps, void> {
 
 		return (
 			<div
+				style={{position: 'relative'}}
 				onWheel={scrollEvents && this.handleWheel}
 			>
 				<div

@@ -94,19 +94,16 @@ export default class Dashboard extends React.Component<void, TProps, void> {
 
 		return (
 			<Box>
-				{projects
-					? (
-						<Box>
-							{projects.length === 0 && 'No projects!'}
-							{projects.map((project, i) => (
-								<Box key={project.data.uuid} marginTop={i !== 0 ? 2.5 : 0}>
-									<Project uuid={project.data.uuid} />
-								</Box>
-							))}
-						</Box>
-					)
-					: 'Loading data...'
-				}
+				{projects && (
+					<Box>
+						{projects.length === 0 && 'No projects!'}
+						{projects.map((project, i) => (
+							<Box key={project.data.uuid} marginTop={i !== 0 ? 2.5 : 0}>
+								<Project uuid={project.data.uuid} />
+							</Box>
+						))}
+					</Box>
+				)}
 				<AddNewProjectButton
 					onClick={this.createNewProject}
 					isCreating={ui.creatingNewProject}

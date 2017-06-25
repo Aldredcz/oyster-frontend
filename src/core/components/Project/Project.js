@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import {observable} from 'mobx'
+import {observable, autorun} from 'mobx'
 import {observer} from 'mobx-react'
 import injectEntity from 'core/utils/mobx/entityInjector'
 import {moduleManager} from 'core/router'
@@ -137,17 +137,36 @@ export const projectFactory = ({
 
 		nameEl: ?HTMLInputElement = null
 		projectWrapperEl: ?HTMLElement = null
-		projectWrapperWidth: number = 0
 		tasksWrapperEl: ?HTMLElement = null
 		translateXTmp: number = 0
+		@observable projectWrapperWidth: number = 0
 		@observable translateX: number = 0
+
+		constructor (props: TProps) {
+			super(props)
+
+			autorun(() => {
+				this.translateXTmp = this.translateX
+			})
+		}
 
 		componentDidMount () {
 			const {editNameOnMount, project: {permissions}} = this.props
 			if (editNameOnMount && permissions && permissions.has('rename')) {
 				this.editField('name')
 			}
+			window.addEventListener('resize', this.handleWindowResizeDebounced)
 		}
+
+		componentWillUnmount () {
+			window.removeEventListener('resize', this.handleWindowResizeDebounced)
+		}
+
+		handleWindowResizeDebounced = debounce(() => {
+			if (this.projectWrapperEl) {
+				this.projectWrapperWidth = this.projectWrapperEl.clientWidth
+			}
+		}, 100)
 
 		createNewTask () {
 			const {project: {uuid: projectUuid}, addNewTask} = this.props
@@ -259,8 +278,10 @@ export const projectFactory = ({
 		}
 
 		saveTranslateXDebounced = debounce((translateX) => {
+			this.tasksWrapperEl && this.tasksWrapperEl.style.removeProperty('transition')
+			this.tasksWrapperEl && this.tasksWrapperEl.style.removeProperty('transform')
 			this.translateX = translateX
-		}, 50)
+		}, 100)
 
 		renderTasks () {
 			const {uuid, selectedTaskUuid, project: {tasksByIds, permissions}} = this.props
@@ -284,12 +305,71 @@ export const projectFactory = ({
 			tasksWidth *= 16 // rem -> px
 
 			const originalTranslateX = -Math.max(firstUnapprovedTaskIndex, 0) * 13 * 16
+			const translateXUpperBound = -originalTranslateX
+			const translateXLowerBound = Math.min(originalTranslateX, this.projectWrapperWidth - tasksWidth) - originalTranslateX
 
 			const highlightedTaskProps = {
 				height: 13,
 				width: 13,
 				marginLeft: -0.5,
 				marginRight: 0.5,
+			}
+
+			let showPrevEl
+			let showNextEl
+
+			if (this.translateX < translateXUpperBound) {
+				showPrevEl = (
+					<Box
+						flex
+						alignItems='center'
+						justifyContent='center'
+						onClick={() => {
+							this.translateX = Math.min(this.translateX + 13 * 16, translateXUpperBound)
+						}}
+						position='absolute'
+						cursor='pointer'
+						left={0}
+						height='100%'
+						width={5}
+						style={() => ({
+							background: 'linear-gradient(to right, rgba(255,255,255,0.75) 0%,rgba(255,255,255,0.75) 100%)',
+						})}
+					>
+						<Ico
+							type='arrowLeft'
+							color='neutral'
+							height={2}
+						/>
+					</Box>
+				)
+			}
+
+			if (this.translateX > translateXLowerBound) {
+				showNextEl = (
+					<Box
+						flex
+						alignItems='center'
+						justifyContent='center'
+						onClick={() => {
+							this.translateX = Math.max(this.translateX - 13 * 16, translateXLowerBound)
+						}}
+						position='absolute'
+						cursor='pointer'
+						right={0}
+						height='100%'
+						width={5}
+						style={() => ({
+							background: 'linear-gradient(to right, rgba(255,255,255,0.75) 0%,rgba(255,255,255,0.75) 100%)',
+						})}
+					>
+						<Ico
+							type='arrowRight'
+							color='neutral'
+							height={2}
+						/>
+					</Box>
+				)
 			}
 
 			return (
@@ -299,18 +379,18 @@ export const projectFactory = ({
 							dX = -dX
 						}
 						this.translateXTmp += dX
-						this.translateXTmp = Math.min(-originalTranslateX, this.translateXTmp)
-						this.translateXTmp = Math.max(
-							this.translateXTmp,
-							Math.min(originalTranslateX, this.projectWrapperWidth - tasksWidth) - originalTranslateX,
-						)
+						this.translateXTmp = Math.min(this.translateXTmp, translateXUpperBound)
+						this.translateXTmp = Math.max(this.translateXTmp, translateXLowerBound)
 
 						if (this.tasksWrapperEl) {
+							this.tasksWrapperEl.style.transition = 'none'
 							this.tasksWrapperEl.style.transform = `translateX(${originalTranslateX + this.translateXTmp}px)`
 						}
 						this.saveTranslateXDebounced(this.translateXTmp)
 					}}
 				>
+					{showPrevEl}
+					{showNextEl}
 					<Box
 						flex
 						alignItems='center'
@@ -319,6 +399,7 @@ export const projectFactory = ({
 						getRef={(el) => this.tasksWrapperEl = el}
 						style={() => ({
 							transform: `translateX(${originalTranslateX + this.translateX}px)`,
+							transition: 'transform 0.5s',
 						})}
 					>
 						{tasksByIds && (
@@ -356,7 +437,9 @@ export const projectFactory = ({
 					overflow='hidden'
 					getRef={(el) => {
 						this.projectWrapperEl = el
-						this.projectWrapperWidth = el ? el.clientWidth : 0
+						el && setTimeout(() => { // so we don't force rerender inside render
+							this.projectWrapperWidth = el.clientWidth
+						}, 0)
 					}}
 				>
 					{titleRenderer

@@ -14,8 +14,8 @@ import PlusSvg from 'assets/images/icons/O_icon_plus.svg'
 import PlusFullSvg from 'assets/images/icons/O_icon_plus-full.svg'
 import PlusDashedSvg from 'assets/images/icons/O_icon_add_big.svg'
 // import ArchiveSvg from 'assets/images/icons/O_icon_archive.svg'
-// import Arrow_LSvg from 'assets/images/icons/O_icon_arrow_L.svg'
-// import Arrow_RSvg from 'assets/images/icons/O_icon_arrow_R.svg'
+import ArrowLeft from 'assets/images/icons/O_icon_arrow_L.svg'
+import ArrowRight from 'assets/images/icons/O_icon_arrow_R.svg'
 // import BoxSvg from 'assets/images/icons/O_icon_box.svg'
 import CalendarSvg from 'assets/images/icons/O_icon_calendar.svg'
 // import ClockSvg from 'assets/images/icons/O_icon_clock.svg'
@@ -47,6 +47,8 @@ import UndoSvg from 'font-awesome-svg-png/black/svg/undo.svg'
 import SpinnerSvg from 'font-awesome-svg-png/black/svg/spinner.svg'
 
 const icoMap = {
+	arrowLeft: ArrowLeft,
+	arrowRight: ArrowRight,
 	edit: EditSvg,
 	logo: LogoSvg,
 	projects: ProjectsSvg,
