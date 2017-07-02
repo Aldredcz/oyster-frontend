@@ -42,7 +42,7 @@ deploy_canary:
 deploy_production:
   stage: deploy
   script:
-  - rsync --recursive --progress dist/ gitlab-deploy@chipmunk.local.jemelik.eu:/var/www/oyster-app/
+  - rsync --recursive --progress dist/ /var/www/oyster-app/
   environment:
     name: production
   only:
