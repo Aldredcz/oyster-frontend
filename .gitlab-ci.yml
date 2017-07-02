@@ -21,8 +21,8 @@ deploy_devel:
   environment:
     name: devel
   except:
-  - master
   - canary
+  - production
 deploy_staging:
   stage: deploy
   script:
@@ -39,3 +39,11 @@ deploy_canary:
     name: canary
   only:
   - canary
+deploy_production:
+  stage: deploy
+  script:
+  - rsync --recursive --progress dist/ gitlab-deploy@chipmunk.local.jemelik.eu:/var/www/oyster-app/
+  environment:
+    name: production
+  only:
+  - production
