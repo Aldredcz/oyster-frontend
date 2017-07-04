@@ -104,6 +104,12 @@ export default class Signup extends React.Component<void, TProps, void> {
 		this.props.signupStore.setNextStep()
 	}
 
+	previousStep = (ev: Event) => {
+		ev.preventDefault()
+
+		this.props.signupStore.setPreviousStep()
+	}
+
 	handleFormSubmit = (ev: Event) => {
 		ev.preventDefault()
 		this.props.signupStore.setPendingRequest(true)
@@ -117,11 +123,11 @@ export default class Signup extends React.Component<void, TProps, void> {
 
 	renderStep1 () {
 		const {signupStore} = this.props
-		const {formData, inviteToken, formMetadata, ui} = signupStore
+		const {formData, inviteToken, formMetadata, ui, isInviteTokenValid} = signupStore
 		const fields: Array<TSignupFormField> = ['name', 'surname', 'email']
 		const isWholeStepValid = fields.every(
 			(fieldId) => !validateField(fieldId, formData[fieldId]),
-		) && (ui.isInviteTokenInputVisible ? inviteToken : true)
+		) && (ui.isInviteTokenInputVisible ? inviteToken : true) && isInviteTokenValid
 
 		return (
 			<Form onSubmit={this.nextStep} noValidate marginHorizontal='-10px'>
@@ -155,9 +161,13 @@ export default class Signup extends React.Component<void, TProps, void> {
 							title={Signup.fieldsConfig.inviteToken.title}
 							value={inviteToken || ''}
 							onChange={(value) => signupStore.setInviteToken(value)}
-							onBlur={() => this.handleBlur('inviteToken')}
+							onBlur={() => {
+								this.handleBlur('inviteToken')
+								signupStore.checkInviteToken(inviteToken)
+									.catch(() => { /* TODO: anything? */ })
+							}}
 							isDirty={formMetadata.inviteToken.dirty}
-							validation={validateField('inviteToken', inviteToken)}
+							validation={validateField('inviteToken', inviteToken) || (!isInviteTokenValid ? 'This is not a valid token.' : null)}
 						/>
 					</div>
 				)}
@@ -214,21 +224,32 @@ export default class Signup extends React.Component<void, TProps, void> {
 				>
 					{formMetadata.password.dirty && formMetadata.passwordConfirm.dirty && passwordsMatchValidation || '\u00a0'}
 				</Text>
-				<Button
-					submit
-					block
-					textSize='13'
-					width='50%'
-					disabled={!isWholeStepValid || ui.pendingRequest}
-				>
-					Get started!
-				</Button>
+				<Box flex justifyContent='space-between'>
+					<Button
+						block
+						transparent
+						textSize='13'
+						width='45%'
+						onClick={this.previousStep}
+					>
+						Back
+					</Button>
+					<Button
+						submit
+						block
+						textSize='13'
+						width='45%'
+						disabled={!isWholeStepValid || ui.pendingRequest}
+					>
+						Get started!
+					</Button>
+				</Box>
 			</Form>
 		)
 	}
 
 	render () {
-		const {signupStore: {step, ui}} = this.props
+		const {signupStore: {step, ui, accountName}} = this.props
 
 		return (
 			<Layout>
@@ -240,6 +261,17 @@ export default class Signup extends React.Component<void, TProps, void> {
 						top={1.25}
 						left={1.25}
 					/>
+					{accountName && (
+						<Text
+							textSize='17'
+							position='absolute'
+							color='neutralDark'
+							top={1.85}
+							left={10.25}
+						>
+							|{'\u00a0\u00a0'}{accountName}
+						</Text>
+					)}
 					<Content>
 						{step === 1 && this.renderStep1()}
 						{step === 2 && this.renderStep2()}

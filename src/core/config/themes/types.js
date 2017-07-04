@@ -2,6 +2,7 @@
 
 export type TColor =
 	| 'inherit'
+	| 'transparent'
 	| 'white'
 	| 'neutralLight'
 	| 'neutral'
