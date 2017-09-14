@@ -29,6 +29,13 @@ export function oysterRequestUserSignup (params: TSignupParams): Promise<TSignup
 	}).then((response) => response.json())
 }
 
+export function oysterRequestCheckInviteToken (token: string): Promise<{name: string}> {
+	return request(`${SETTINGS.oysterApi}/user/sign-up/check-invite`, {
+		method: 'POST',
+		body: JSON.stringify({invite: token}),
+	}).then((response) => response.json())
+}
+
 export function oysterRequestUserLogin (params: TLoginParams): Promise<TLoginResponse> {
 	return request(`${SETTINGS.oysterApi}/user/login`, {
 		method: 'POST',

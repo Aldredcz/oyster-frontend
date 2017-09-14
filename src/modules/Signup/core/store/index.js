@@ -3,7 +3,7 @@ import {observable, action} from 'mobx'
 import URI from 'urijs'
 import {generateSingleton} from 'core/utils/mobx'
 import {moduleManager} from 'core/router'
-import {oysterRequestUserSignup} from 'core/api/auth'
+import {oysterRequestUserSignup, oysterRequestCheckInviteToken} from 'core/api/auth'
 
 import type {ISignupStoreShape, TSignupFormField} from './types'
 
@@ -31,6 +31,8 @@ function generateFormMetadata (): $PropertyType<ISignupStoreShape, 'formMetadata
 class SignupStore implements ISignupStoreShape {
 	@observable step = 1
 	@observable inviteToken = ''
+	@observable isInviteTokenValid = false
+	@observable accountName = ''
 	@observable formData = generateFormData()
 	@observable formMetadata = generateFormMetadata()
 	@observable ui = {
@@ -58,6 +60,10 @@ class SignupStore implements ISignupStoreShape {
 		this.step++
 	}
 
+	@action setPreviousStep () {
+		this.step = Math.max(1, this.step - 1)
+	}
+
 	@action submitForm () {
 		return oysterRequestUserSignup({
 			name: this.formData.name,
@@ -81,6 +87,10 @@ class SignupStore implements ISignupStoreShape {
 		if (!query.invite) {
 			this.ui.isInviteTokenInputVisible = true
 		} else {
+			this.checkInviteToken(query.invite)
+				.catch(() => {
+					alert('We\'re sorry. It looks like this signup address is not valid. Please contant us at hello@getoyster.com')
+				})
 			this.ui.isInviteTokenInputVisible = false
 			this.setInviteToken(query.invite)
 		}
@@ -89,6 +99,19 @@ class SignupStore implements ISignupStoreShape {
 			this.setFormValue('email', query.email)
 			this.setFormDisabled('email', true)
 		}
+	}
+
+	@action checkInviteToken (token: string): Promise<void> {
+		if (!token) {
+			return Promise.reject()
+		}
+		return oysterRequestCheckInviteToken(token)
+			.then(
+				({name}) => {
+					this.accountName = name
+					this.isInviteTokenValid = true
+				},
+			)
 	}
 
 	@action setPendingRequest (value: boolean) {

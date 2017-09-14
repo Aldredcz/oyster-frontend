@@ -11,6 +11,7 @@ import DummySubmit from './DummySubmit'
 type TProps = TBoxProps & {
 	textSize?: TTextSize,
 	disabled?: boolean,
+	transparent?: boolean,
 	submit?: boolean,
 	children?: any,
 	onClick?: (ev: Event) => any,
@@ -47,7 +48,8 @@ export default class Button extends React.Component<void, TProps, void> {
 		const {
 			textSize,
 			disabled,
-			backgroundColor = 'blue',
+			transparent,
+			backgroundColor = transparent ? 'transparent' : 'blue',
 			submit,
 			onClick,
 			children,
@@ -82,7 +84,7 @@ export default class Button extends React.Component<void, TProps, void> {
 				<Text
 					bold
 					textSize={textSize}
-					color='white'
+					color={transparent ? 'neutralDark' : 'white'}
 				>
 					{children}
 				</Text>
