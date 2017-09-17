@@ -1,4 +1,3 @@
-// @noflow
 import * as NotificationsAPI from './api'
 
 const eventName = 'rename'

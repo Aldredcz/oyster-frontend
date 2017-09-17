@@ -29,7 +29,7 @@ export default (params) => {
 		entry: {
 			main: [
 				...(isDev ? hotReloadEntries : []),
-				'./src/main.js',
+				'./src/main.tsx',
 			],
 		},
 		output: {
@@ -45,18 +45,14 @@ export default (params) => {
 			alias: {
 				'assets': PATH_ASSETS_DIR,
 			},
+			extensions: ['.ts', '.tsx', '.js'],
 		},
 		module: {
 			rules: [
 				{
-					test: /\.js$/,
+					test: /\.tsx?$/,
 					exclude: /node_modules/,
-					use: {
-						loader: 'babel-loader',
-						options: {
-							cacheDirectory: true,
-						},
-					},
+					loader: 'ts-loader',
 				},
 				{
 					test: /\.svg$/,
@@ -87,6 +83,7 @@ export default (params) => {
 					'process.env': {
 						NODE_ENV: JSON.stringify(process.env.NODE_ENV),
 					},
+					__DEV__: isDev,
 				}),
 				new webpack.DllReferencePlugin({
 					context: '.',

@@ -5,7 +5,6 @@
 		"react"
 	],
 	"plugins": [
-		"transform-flow-strip-types",
 		"transform-decorators-legacy",
 		"dev-expression",
 		"syntax-dynamic-import"
@@ -14,15 +13,6 @@
 		"development": {
 			"plugins": [
 				"react-hot-loader/babel"
-			]
-		},
-		"test": {
-			"plugins": [
-				"transform-es2015-modules-commonjs",
-				"dynamic-import-node",
-				["module-resolver", {
-					"root": ["./src"]
-				}]
 			]
 		}
 	}

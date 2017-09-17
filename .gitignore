@@ -3,7 +3,6 @@
 node_modules
 /build
 /dist
-flow-typed
 
 /dll
 /assets/dll

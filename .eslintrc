@@ -2,7 +2,6 @@
 	"extends": [
 		"eslint:recommended",
 		"plugin:react/recommended",
-		"plugin:flowtype/recommended"
 	],
 	"rules": {
 		// Possible errors
@@ -117,17 +116,6 @@
 
 		// Import plugin
 		"import/no-duplicates": 2,
-
-		// Flowtype plugin
-		"flowtype/delimiter-dangle": [2, "always-multiline"],
-		"flowtype/no-dupe-keys": 2,
-		"flowtype/no-primitive-constructor-types": 2,
-		"flowtype/object-type-delimiter": [2, "comma"],
-		"flowtype/semi": [2, "never"],
-		"flowtype/type-id-match": [
-			2,
-			"^T([A-Z][a-zA-Z0-9]*)$"
-		]
 	},
 	"env": {
 		"es6": true,
@@ -147,7 +135,6 @@
 	"plugins": [
 		"react",
 		"babel",
-		"flowtype",
 		"import"
 	],
 	"globals": {
